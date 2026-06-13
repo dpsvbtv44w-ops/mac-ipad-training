@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Εκπαίδευση Mac & iPad — Αρχάριοι</title>
+<style>
+  :root {
+    --blue: #0071e3;
+    --dark: #1d1d1f;
+    --gray: #6e6e73;
+    --light: #f5f5f7;
+    --white: #fff;
+    --green: #34c759;
+    --orange: #ff9f0a;
+    --red: #ff3b30;
+    --purple: #af52de;
+    --border: rgba(0,0,0,0.08);
+    --sidebar: 260px;
+    --header: 60px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+    background: var(--light); color: var(--dark); font-size: 15px; line-height: 1.6;
+  }
+
+  /* HEADER */
+  .header {
+    position: sticky; top: 0; z-index: 100;
+    height: var(--header);
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; padding: 0 24px; gap: 16px;
+  }
+  .header-title { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
+  .header-sub { font-size: 12px; color: var(--gray); }
+  .progress-wrap { flex: 1; max-width: 180px; margin-left: auto; }
+  .progress-lbl { font-size: 11px; color: var(--gray); margin-bottom: 4px; }
+  .progress-bg { background: #e5e5ea; border-radius: 4px; height: 5px; }
+  .progress-fill { background: var(--blue); height: 5px; border-radius: 4px; width: 0%; transition: width 0.4s; }
+  .header-badge { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: var(--blue); color: white; white-space: nowrap; }
+
+  /* LAYOUT */
+  .layout { display: flex; min-height: calc(100vh - var(--header)); }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: var(--sidebar); flex-shrink: 0;
+    background: var(--white); border-right: 1px solid var(--border);
+    position: sticky; top: var(--header);
+    height: calc(100vh - var(--header));
+    overflow-y: auto; padding: 16px 0;
+  }
+  .sb-label { font-size: 10px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; padding: 8px 18px 4px; }
+  .sb-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 18px; cursor: pointer; font-size: 13px;
+    color: var(--dark); border-left: 3px solid transparent;
+    transition: background 0.15s; user-select: none;
+  }
+  .sb-item:hover { background: var(--light); }
+  .sb-item.active { background: #e8f0fe; border-left-color: var(--blue); color: var(--blue); font-weight: 600; }
+  .sb-item .sb-icon { font-size: 15px; width: 20px; text-align: center; }
+  .sb-item .sb-check { margin-left: auto; color: var(--green); font-size: 12px; opacity: 0; transition: opacity 0.2s; }
+  .sb-item.done .sb-check { opacity: 1; }
+
+  /* MAIN */
+  .main { flex: 1; padding: 36px 44px; max-width: 860px; }
+  .module { display: none; animation: fadeUp 0.3s ease; }
+  .module.active { display: block; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  /* MODULE HEADER */
+  .mod-eyebrow { font-size: 11px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .mod-title { font-size: 30px; font-weight: 700; letter-spacing: -0.7px; line-height: 1.1; margin-bottom: 10px; }
+  .mod-desc { font-size: 16px; color: var(--gray); line-height: 1.5; margin-bottom: 6px; }
+  .mod-meta { display: flex; gap: 14px; margin: 12px 0 24px; flex-wrap: wrap; }
+  .mod-meta span { font-size: 12px; color: var(--gray); }
+  .mod-divider { height: 1px; background: var(--border); margin-bottom: 24px; }
+
+  /* CARDS */
+  .card { background: var(--white); border-radius: 14px; padding: 22px 24px; margin-bottom: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); border: 1px solid var(--border); }
+  .card-title { font-size: 17px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+
+  /* PRODUCT CARDS */
+  .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 14px; margin: 16px 0; }
+  .product-card {
+    background: var(--white); border-radius: 14px; padding: 18px;
+    border: 2px solid var(--border); box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    transition: all 0.2s;
+  }
+  .product-card:hover { border-color: var(--blue); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,113,227,0.1); }
+  .chip-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 5px; margin-bottom: 8px; letter-spacing: 0.3px; }
+  .c-m5 { background: #e8f0fe; color: #0071e3; }
+  .c-m5p { background: #1d1d1f; color: #f5f5f7; }
+  .c-m5x { background: #0071e3; color: white; }
+  .c-m4 { background: #f0e8fe; color: #7a2fa0; }
+  .c-a18p { background: #e8fef0; color: #1a7340; }
+  .c-a16 { background: #eefaf4; color: #2e7d52; }
+  .c-a17p { background: #fff8f0; color: #b35900; }
+  .product-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
+  .product-card .sub { font-size: 12px; color: var(--gray); margin-bottom: 10px; }
+  .product-card .price { display: none; }
+  .spec-list { list-style: none; }
+  .spec-list li { font-size: 13px; color: var(--dark); padding: 2px 0; display: flex; gap: 6px; align-items: flex-start; }
+  .spec-list li::before { content: '·'; color: var(--blue); font-weight: 700; flex-shrink: 0; }
+  .for-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+  .tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 5px; }
+  .t-s { background: #e8fef0; color: #1a7340; }
+  .t-p { background: #1d1d1f; color: #f5f5f7; }
+  .t-c { background: #f0e8fe; color: #7a2fa0; }
+  .t-b { background: #e8f0fe; color: #0071e3; }
+  .t-f { background: #fff8f0; color: #b35900; }
+  .t-e { background: #f0f0f5; color: #6e6e73; }
+
+  /* COMPARE TABLE */
+  .compare-wrap { overflow-x: auto; border-radius: 12px; margin: 16px 0; border: 1px solid var(--border); }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .compare-table th { background: var(--dark); color: white; padding: 10px 12px; text-align: center; font-size: 11px; font-weight: 600; }
+  .compare-table th:first-child { text-align: left; background: #3a3a3c; }
+  .compare-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); text-align: center; font-size: 12px; }
+  .compare-table td:first-child { text-align: left; font-weight: 500; background: var(--light); }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table .hl { background: #e8f0fe !important; color: var(--blue); font-weight: 700; }
+
+  /* CALLOUT */
+  .callout { border-radius: 12px; padding: 14px 18px; margin: 16px 0; display: flex; gap: 12px; align-items: flex-start; font-size: 14px; }
+  .callout-blue { background: #e8f0fe; border: 1px solid #c2d4f8; }
+  .callout-green { background: #edfaf2; border: 1px solid #b2e5c4; }
+  .callout-yellow { background: #fffbea; border: 1px solid #fde68a; }
+  .callout-red { background: #fef0f0; border: 1px solid #fcc; }
+  .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .callout-body { line-height: 1.55; }
+  .callout-body strong { display: block; font-size: 15px; margin-bottom: 2px; color: var(--dark); }
+
+  /* SCENARIO CARDS */
+  .scenario { background: var(--white); border-radius: 12px; padding: 18px 20px; margin-bottom: 14px; border-left: 4px solid var(--blue); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .scenario.or { border-left-color: var(--orange); }
+  .scenario.gr { border-left-color: var(--green); }
+  .scenario.pu { border-left-color: var(--purple); }
+  .scenario-who { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--gray); margin-bottom: 5px; }
+  .scenario-quote { font-size: 15px; font-style: italic; margin-bottom: 12px; }
+  .scenario-rec { font-size: 14px; margin-bottom: 6px; }
+  .scenario-rec strong { color: var(--blue); }
+  .scenario-tip { font-size: 13px; color: var(--gray); }
+  .scenario-tip span { color: var(--green); font-weight: 600; }
+
+  /* ACC GRID */
+  .acc-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(170px,1fr)); gap: 12px; margin: 14px 0; }
+  .acc-card { background: var(--white); border-radius: 12px; padding: 14px; border: 1px solid var(--border); text-align: center; }
+  .acc-card .acc-icon { font-size: 28px; margin-bottom: 6px; }
+  .acc-card h4 { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+  .acc-card .acc-sub { font-size: 11px; color: var(--gray); }
+  .acc-card.featured { border-color: var(--blue); }
+
+  /* COMPAT TABLE */
+  .compat-wrap { overflow-x: auto; border-radius: 12px; margin: 14px 0; border: 1px solid var(--border); }
+  .compat-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .compat-table th { background: var(--light); padding: 9px 12px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray); }
+  .compat-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+  .compat-table tr:last-child td { border-bottom: none; }
+  .compat-table tr:hover td { background: var(--light); }
+  .cy { color: var(--green); font-weight: 700; text-align: center; }
+  .cn { color: #d1d1d6; text-align: center; }
+
+  /* STEPS */
+  .step-list { margin: 12px 0; }
+  .step-item { display: flex; gap: 14px; margin-bottom: 18px; align-items: flex-start; }
+  .step-num { width: 30px; height: 30px; border-radius: 50%; background: var(--blue); color: white; font-size: 13px; font-weight: 700; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .step-body h4 { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+  .step-body p { font-size: 13px; color: var(--gray); line-height: 1.5; }
+  .step-body .tip { margin-top: 5px; font-size: 12px; background: #edfaf2; color: #1a7340; padding: 5px 10px; border-radius: 6px; font-weight: 500; }
+
+  /* TECHNIQUE CARDS */
+  .technique { background: var(--white); border-radius: 12px; padding: 18px 20px; margin-bottom: 12px; display: flex; gap: 14px; align-items: flex-start; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+  .technique-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--light); font-size: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .technique-body h4 { font-size: 15px; font-weight: 600; margin-bottom: 5px; }
+  .technique-body p { font-size: 13px; color: var(--gray); line-height: 1.5; }
+  .technique-body .example { margin-top: 8px; background: var(--light); border-left: 3px solid var(--blue); border-radius: 0 8px 8px 0; padding: 8px 12px; font-size: 13px; font-style: italic; }
+
+  /* OBJECTION TABLE */
+  .obj-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .obj-table th { background: var(--light); padding: 9px 14px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray); }
+  .obj-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .obj-table tr:last-child td { border-bottom: none; }
+  .obj-table td:first-child { font-weight: 600; }
+
+  /* SECTION TITLE */
+  .section-title { font-size: 20px; font-weight: 700; letter-spacing: -0.4px; margin: 26px 0 12px; }
+
+  /* MINI QUIZ */
+  .quiz-section { background: linear-gradient(135deg, #e8f0fe, #d4e4fc); border-radius: 14px; padding: 24px; margin: 28px 0 0; border: 1px solid #c2d4f8; }
+  .quiz-header { font-size: 13px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 18px; }
+  .mini-quiz-card { background: var(--white); border-radius: 12px; padding: 18px; margin-bottom: 12px; border: 1px solid var(--border); }
+  .mini-quiz-card:last-of-type { margin-bottom: 0; }
+  .quiz-q { font-size: 14px; font-weight: 600; margin-bottom: 12px; color: var(--dark); }
+  .quiz-opts { display: flex; flex-direction: column; gap: 7px; }
+  .quiz-opt { padding: 10px 14px; border-radius: 9px; border: 2px solid var(--border); cursor: pointer; font-size: 13px; background: var(--light); transition: all 0.15s; user-select: none; }
+  .quiz-opt:hover { border-color: var(--blue); background: #e8f0fe; }
+  .quiz-opt.correct { border-color: var(--green); background: #edfaf2; color: #1a7340; font-weight: 600; }
+  .quiz-opt.wrong { border-color: var(--red); background: #fef0f0; color: #c0392b; }
+  .quiz-opt.disabled { pointer-events: none; }
+  .quiz-feedback { margin-top: 10px; font-size: 13px; padding: 8px 12px; border-radius: 8px; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.c { background: #edfaf2; color: #1a7340; }
+  .quiz-feedback.w { background: #fef0f0; color: #c0392b; }
+  .quiz-score { margin-top: 16px; padding: 12px 16px; border-radius: 10px; background: var(--white); border: 1px solid var(--border); font-size: 14px; font-weight: 600; display: none; }
+  .quiz-score.show { display: block; }
+
+  /* FINAL QUIZ */
+  .final-quiz-card { background: var(--white); border-radius: 14px; padding: 22px; margin-bottom: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); border: 1px solid var(--border); }
+  .final-result { background: var(--white); border-radius: 14px; padding: 32px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.06); display: none; margin-top: 20px; }
+  .final-result.show { display: block; }
+  .result-emoji { font-size: 52px; margin-bottom: 12px; }
+  .result-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+  .result-score { font-size: 36px; font-weight: 800; color: var(--blue); margin: 12px 0 6px; letter-spacing: -1px; }
+  .result-msg { font-size: 15px; color: var(--gray); }
+
+  /* NAV BUTTONS */
+  .nav-btns { display: flex; justify-content: space-between; gap: 12px; margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+  .btn { padding: 11px 22px; border-radius: 10px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; }
+  .btn-primary { background: var(--blue); color: white; }
+  .btn-primary:hover { background: #005bbf; transform: translateY(-1px); }
+  .btn-secondary { background: var(--light); color: var(--dark); }
+  .btn-secondary:hover { background: #e5e5ea; }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important; }
+
+  @media (max-width: 700px) {
+    .sidebar { display: none; }
+    .main { padding: 20px 16px; }
+    .product-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div>
+    <div class="header-title">🍎 Mac & iPad Training</div>
+    <div class="header-sub">Εκπαίδευση Αρχαρίων · Lineup 2025–2026</div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-lbl" id="pLabel">Ενότητα 1 από 8</div>
+    <div class="progress-bg"><div class="progress-fill" id="pFill"></div></div>
+  </div>
+  <div class="header-badge" id="pBadge">Ξεκίνα →</div>
+</header>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sb-label">Ενότητες</div>
+  <div class="sb-item active" onclick="go(0)" data-i="0"><span class="sb-icon">🏠</span>Εισαγωγή<span class="sb-check">✓</span></div>
+  <div class="sb-item" onclick="go(1)" data-i="1"><span class="sb-icon">💻</span>Γκάμα Mac<span class="sb-check">✓</span></div>
+  <div class="sb-item" onclick="go(2)" data-i="2"><span class="sb-icon">📱</span>Γκάμα iPad<span class="sb-check">✓</span></div>
+  <div class="sb-item" onclick="go(3)" data-i="3"><span class="sb-icon">🎒</span>Αξεσουάρ<span class="sb-check">✓</span></div>
+  <div class="sb-item" onclick="go(4)" data-i="4"><span class="sb-icon">🧑‍💼</span>Σενάρια Πελατών<span class="sb-check">✓</span></div>
+  <div class="sb-item" onclick="go(5)" data-i="5"><span class="sb-icon">📈</span>Τεχνικές Πωλήσεων<span class="sb-check">✓</span></div>
+  <div class="sb-item" onclick="go(6)" data-i="6"><span class="sb-icon">🛠</span>Setup & Λογισμικό<span class="sb-check">✓</span></div>
+  <div class="sb-item" onclick="go(7)" data-i="7"><span class="sb-icon">🎯</span>Τελική Αξιολόγηση<span class="sb-check">✓</span></div>
+</nav>
+
+<main class="main">
+
+<!-- ══ MODULE 0 — ΕΙΣΑΓΩΓΗ ══ -->
+<section class="module active" id="m0">
+  <div class="mod-eyebrow">Ενότητα 1 από 8 · Καλώς ήρθες</div>
+  <h1 class="mod-title">Ξεκινάμε από την αρχή</h1>
+  <p class="mod-desc">Αυτό το training είναι για σένα αν είσαι νέος/α στην πώληση Mac και iPad. Δεν χρειάζεσαι καμία προηγούμενη γνώση.</p>
+  <div class="mod-meta"><span>📚 8 ενότητες</span><span>⏱ ~90 λεπτά</span><span>❓ Quiz σε κάθε ενότητα</span></div>
+  <div class="mod-divider"></div>
+
+  <div class="card">
+    <div class="card-title">🎯 Τι θα μάθεις</div>
+    <ul class="spec-list">
+      <li>Ποια Mac και iPad υπάρχουν και ποιο κάνει τι</li>
+      <li>Ποιο προϊόν ταιριάζει σε κάθε τύπο πελάτη</li>
+      <li>Ποια αξεσουάρ να προτείνεις και πότε</li>
+      <li>Πώς να χειριστείς ερωτήσεις και αντιρρήσεις</li>
+      <li>Βασικές γνώσεις setup για να βοηθάς τον πελάτη μετά την αγορά</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🍎 Η φιλοσοφία της Apple στις πωλήσεις</div>
+    <p style="font-size:15px; color:var(--gray); margin-bottom:16px;">Στην Apple δεν πουλάμε προϊόντα — βοηθάμε τον πελάτη να βρει αυτό που χρειάζεται. Αυτό σημαίνει ότι πρώτα ακούμε, μετά μιλάμε.</p>
+    <div class="technique">
+      <div class="technique-icon">👂</div>
+      <div class="technique-body">
+        <h4>Πρώτα η ερώτηση</h4>
+        <p>Πριν πεις οτιδήποτε για ένα προϊόν, ρώτησε: «Τι θα κάνεις κυρίως με αυτό;» Η απάντηση σου λέει τα πάντα.</p>
+      </div>
+    </div>
+    <div class="technique" style="margin-bottom:0;">
+      <div class="technique-icon">🤝</div>
+      <div class="technique-body">
+        <h4>Ειλικρινής σύσταση</h4>
+        <p>Αν ο πελάτης χρειάζεται MacBook Air, πρότεινε MacBook Air — ακόμα κι αν το Pro κοστίζει περισσότερο. Η εμπιστοσύνη φέρνει πίσω τον πελάτη.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-blue">
+    <span class="callout-icon">💡</span>
+    <div class="callout-body"><strong>Πώς να χρησιμοποιήσεις αυτό το training</strong>Διάβασε κάθε ενότητα με τη σειρά. Στο τέλος κάθε ενότητας υπάρχουν ερωτήσεις για να επιβεβαιώσεις κατανόηση.</div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-secondary" disabled>← Πίσω</button>
+    <button class="btn btn-primary" onclick="next()">Γκάμα Mac →</button>
+  </div>
+</section>
+
+
+<!-- ══ MODULE 1 — MAC LINEUP ══ -->
+<section class="module" id="m1">
+  <div class="mod-eyebrow">Ενότητα 2 από 8 · Προϊόντα</div>
+  <h1 class="mod-title">Η γκάμα Mac</h1>
+  <p class="mod-desc">Από το πιο προσιτό ως το πιο ισχυρό — μάθε κάθε μοντέλο, το chip του, την τιμή του και σε ποιον απευθύνεται.</p>
+  <div class="mod-meta"><span>💻 8 μοντέλα</span><span>⏱ ~15 λεπτά</span></div>
+  <div class="mod-divider"></div>
+
+  <div class="callout callout-yellow">
+    <span class="callout-icon">⚡</span>
+    <div class="callout-body"><strong>Apple Silicon — το κύριο πλεονέκτημα</strong>Κάθε Mac (εκτός MacBook Neo) τρέχει με chip M-series σχεδιασμένο από την Apple. Σημαίνει: κορυφαία απόδοση, αθόρυβη λειτουργία (στα Air), εκπληκτική αυτονομία και τέλεια ενσωμάτωση με iPhone/iPad. Το MacBook Neo τρέχει με A18 Pro — επίσης Apple silicon.</div>
+  </div>
+
+  <div class="section-title">Φορητά Mac</div>
+  <div class="product-grid">
+
+    <div class="product-card">
+      <span class="chip-badge c-a18p">A18 Pro</span>
+      <h3>MacBook Neo</h3>
+      <div class="sub">13" · Το πιο προσιτό Mac laptop</div>
+      <div class="price">Από $599</div>
+      <ul class="spec-list">
+        <li>Οθόνη 13" Liquid Retina</li>
+        <li>A18 Pro chip · 8GB RAM</li>
+        <li>Από 256GB SSD</li>
+        <li>Μπαταρία έως 16 ώρες</li>
+        <li>2× USB-C · Touch ID</li>
+        <li>Χωρίς MagSafe · χωρίς Thunderbolt</li>
+      </ul>
+      <div class="for-tags"><span class="tag t-s">Φοιτητές</span><span class="tag t-e">Πρώτο Mac</span><span class="tag t-f">Καθημερινή χρήση</span></div>
+    </div>
+
+    <div class="product-card">
+      <span class="chip-badge c-m5">M5</span>
+      <h3>MacBook Air 13"</h3>
+      <div class="sub">13.6" · Το πιο δημοφιλές laptop στον κόσμο</div>
+      <div class="price">Από $1.099</div>
+      <ul class="spec-list">
+        <li>Οθόνη 13.6" Liquid Retina</li>
+        <li>M5 chip · Από 16GB RAM</li>
+        <li>Από 512GB SSD</li>
+        <li>Μπαταρία έως 18 ώρες</li>
+        <li>MagSafe · 2× Thunderbolt 4</li>
+        <li>Χωρίς ανεμιστήρα — εντελώς αθόρυβο</li>
+      </ul>
+      <div class="for-tags"><span class="tag t-s">Φοιτητές</span><span class="tag t-b">Επαγγελματίες</span><span class="tag t-f">Καθημερινή χρήση</span></div>
+    </div>
+
+    <div class="product-card">
+      <span class="chip-badge c-m5">M5</span>
+      <h3>MacBook Air 15"</h3>
+      <div class="sub">15.3" · Μεγαλύτερη οθόνη, ίδια ελαφράδα</div>
+      <div class="price">Από $1.299</div>
+      <ul class="spec-list">
+        <li>Οθόνη 15.3" Liquid Retina</li>
+        <li>M5 chip · Από 16GB RAM</li>
+        <li>Από 512GB SSD</li>
+        <li>Μπαταρία έως 18 ώρες</li>
+        <li>6 ηχεία · MagSafe · 2× Thunderbolt 4</li>
+        <li>Χωρίς ανεμιστήρα — εντελώς αθόρυβο</li>
+      </ul>
+      <div class="for-tags"><span class="tag t-s">Φοιτητές</span><span class="tag t-c">Δημιουργικοί</span><span class="tag t-b">Multitasking</span></div>
+    </div>
+
+    <div class="product-card">
+      <span class="chip-badge c-m5">M5</span>
+      <h3>MacBook Pro 14" (M5)</h3>
+      <div class="sub">14.2" · Entry Pro έκδοση</div>
+      <div class="price">Από $1.599</div>
+      <ul class="spec-list">
+        <li>Οθόνη 14.2" Liquid Retina XDR · ProMotion 120Hz</li>
+        <li>M5 chip · Από 16GB RAM</li>
+        <li>Από 1TB SSD</li>
+        <li>Μπαταρία έως 24 ώρες</li>
+        <li>3× Thunderbolt 5 · HDMI · SD Card</li>
+      </ul>
+      <div class="for-tags"><span class="tag t-b">Επαγγελματίες</span><span class="tag t-c">Δημιουργικοί</span></div>
+    </div>
+
+    <div class="product-card">
+      <span class="chip-badge c-m5p">M5 Pro</span>
+      <h3>MacBook Pro 14" (M5 Pro)</h3>
+      <div class="sub">14.2" · Pro απόδοση, συμπαγές μέγεθος</div>
+      <div class="price">Από $1.999</div>
+      <ul class="spec-list">
+        <li>Οθόνη 14.2" Liquid Retina XDR · ProMotion 120Hz</li>
+        <li>M5 Pro chip · Από 24GB RAM</li>
+        <li>Από 1TB SSD</li>
+        <li>Μπαταρία έως 22 ώρες</li>
+        <li>3× Thunderbolt 5 · HDMI · SD Card</li>
+      </ul>
+      <div class="for-tags"><span class="tag t-p">Pro</span><span class="tag t-c">Δημιουργικοί</span><span class="tag t-b">Επαγγελματίες</span></div>
+    </div>
+
+    <div class="product-card">
+      <span class="chip-badge c-m5x">M5 Max</span>
+      <h3>MacBook Pro 14" (M5 Max)</h3>
+      <div class="sub">14.2" · Η πιο ισχυρή 14άρα</div>
+      <div class="price">Από $2.499</div>
+      <ul class="spec-list">
+        <li>Οθόνη 14.2" Liquid Retina XDR · ProMotion 120Hz</li>
+        <li>M5 Max chip · Από 36GB RAM</li>
+        <li>Από 1TB SSD</li>
+        <li>Μπαταρία έως 20 ώρες</li>
+      </ul>
+      <div class="for-tags"><span class="tag t-p">Pro</span><span class="tag t-c">Studio</span></div>
+    </div>
+
+    <div class="product-card">
+      <span class="chip-badge c-m5p">M5 Pro</span>
+      <h3>MacBook Pro 16" (M5 Pro)</h3>
+      <div class="sub">16.2" · Η κορυφαία οθόνη σε laptop</div>
+      <div class="price">Από $2.499</div>
+      <ul class="spec-list">
+        <li>Οθόνη 16.2" Liquid Retina XDR · ProMotion 120Hz</li>
+        <li>M5 Pro chip · Από 24GB RAM</li>
+        <li>Από 1TB SSD</li>
+        <li>Μπαταρία έως 24 ώρες</li>
+        <li>Κάμερα 12MP Center Stage</li>
+      </ul>
+      <div class="for-tags"><span class="tag t-p">Pro</span><span class="tag t-c">Δημιουργικοί</span></div>
+    </div>
+
+    <div class="product-card">
+      <span class="chip-badge c-m5x">M5 Max</span>
+      <h3>MacBook Pro 16" (M5 Max)</h3>
+      <div class="sub">16.2" · Το απόλυτο pro laptop</div>
+      <div class="price">Από $3.499</div>
+      <ul class="spec-list">
+        <li>Οθόνη 16.2" Liquid Retina XDR · ProMotion 120Hz</li>
+        <li>M5 Max chip · Από 36GB RAM</li>
+        <li>Από 2TB SSD</li>
+        <li>Μπαταρία έως 22 ώρες</li>
+      </ul>
+      <div class="for-tags"><span class="tag t-p">Pro</span><span class="tag t-c">Video editing</span></div>
+    </div>
+
+  </div>
+
+  <div class="section-title">Σταθερά Mac</div>
+  <div class="product-grid">
+
+    <div class="product-card">
+      <span class="chip-badge c-m4">M4</span>
+      <h3>Mac mini</h3>
+      <div class="sub">Compact desktop · Χρειάζεται δική σου οθόνη</div>
+      <div class="price">Από $599</div>
+      <ul class="spec-list">
+        <li>M4 ή M4 Pro chip</li>
+        <li>Από 16GB RAM</li>
+        <li>Από 512GB SSD</li>
+        <li>3× Thunderbolt 4 · HDMI · USB-A · Wi-Fi 6E</li>
+      </ul>
+      <div class="for-tags"><span class="tag t-e">Πρώτο desktop</span><span class="tag t-b">Επαγγελματίες</span></div>
+    </div>
+
+    <div class="product-card">
+      <span class="chip-badge c-m4">M4</span>
+      <h3>iMac</h3>
+      <div class="sub">24" All-in-One · Για σπίτι και γραφείο</div>
+      <div class="price">Από $1.299</div>
+      <ul class="spec-list">
+        <li>Οθόνη 24" 4.5K Retina — ενσωματωμένη</li>
+        <li>M4 chip · Από 16GB RAM</li>
+        <li>Από 256GB SSD</li>
+        <li>Κάμερα 12MP Center Stage · 6 ηχεία</li>
+        <li>7 χρώματα · Περιλαμβάνει Magic Keyboard & Mouse</li>
+      </ul>
+      <div class="for-tags"><span class="tag t-f">Οικογένεια</span><span class="tag t-b">Γραφείο</span><span class="tag t-c">Δημιουργικοί</span></div>
+    </div>
+
+    <div class="product-card">
+      <span class="chip-badge c-m5x">M4 Max / M3 Ultra</span>
+      <h3>Mac Studio</h3>
+      <div class="sub">Desktop · Για επαγγελματίες δημιουργούς</div>
+      <div class="price">Από $1.999</div>
+      <ul class="spec-list">
+        <li>M4 Max ή M3 Ultra chip</li>
+        <li>Από 36GB RAM (M4 Max) / 96GB (M3 Ultra)</li>
+        <li>Από 512GB SSD</li>
+        <li>USB-C + SD Card μπροστά · Υποστηρίζει 8K</li>
+      </ul>
+      <div class="for-tags"><span class="tag t-p">Pro</span><span class="tag t-c">Studio</span></div>
+    </div>
+
+  </div>
+
+  <div class="section-title">📊 Σύγκριση Mac με μια ματιά</div>
+  <div class="compare-wrap">
+    <table class="compare-table">
+      <thead>
+        <tr><th>Μοντέλο</th><th>MacBook Neo</th><th>Air 13"</th><th>Air 15"</th><th>Pro 14" M5</th><th>Pro 14" M5 Pro</th><th>iMac</th><th>Mac mini</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Chip</td><td>A18 Pro</td><td>M5</td><td>M5</td><td>M5</td><td class="hl">M5 Pro</td><td>M4</td><td>M4</td></tr>
+        <tr><td>RAM από</td><td>8GB</td><td>16GB</td><td>16GB</td><td>16GB</td><td>24GB</td><td>16GB</td><td>16GB</td></tr>
+        <tr><td>SSD από</td><td>256GB</td><td>512GB</td><td>512GB</td><td>1TB</td><td>1TB</td><td>256GB</td><td>512GB</td></tr>
+        <tr><td>Τιμή από</td><td colspan="4" style="text-align:center; color:var(--gray); font-style:italic;">Για τρέχουσες τιμές, δες apple.com/shop ή ρώτα τον υπεύθυνο</td></tr>
+        <tr><td>Μπαταρία</td><td>16h</td><td>18h</td><td>18h</td><td>24h</td><td>22h</td><td>—</td><td>—</td></tr>
+        <tr><td>Ανεμιστήρας</td><td>Όχι 🤫</td><td>Όχι 🤫</td><td>Όχι 🤫</td><td>Ναι</td><td>Ναι</td><td>Ναι</td><td>Ναι</td></tr>
+        <tr><td>MagSafe</td><td>Όχι</td><td>Ναι</td><td>Ναι</td><td>Ναι</td><td>Ναι</td><td>—</td><td>—</td></tr>
+        <tr><td>Thunderbolt</td><td>Όχι</td><td>TB4 ×2</td><td>TB4 ×2</td><td>TB5 ×3</td><td>TB5 ×3</td><td>TB4 ×4</td><td>TB4 ×3</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-green">
+    <span class="callout-icon">🧠</span>
+    <div class="callout-body"><strong>Εύκολος κανόνας για αρχάριους</strong>Αν ο πελάτης δεν ξέρει τι θέλει → MacBook Air M5. Είναι το ασφαλέστερο, πιο οικονομικό και πιο δημοφιλές Mac. Στο 80% των περιπτώσεων είναι η σωστή επιλογή.</div>
+  </div>
+
+  <div class="callout callout-red">
+    <span class="callout-icon">⚠️</span>
+    <div class="callout-body"><strong>Σημαντικό: MacBook Neo vs MacBook Air</strong>Το Neo είναι πιο προσιτό αλλά δεν έχει MagSafe, Thunderbolt ή ProMotion οθόνη. Δεν είναι ο ίδιος υπολογιστής σε χαμηλότερη τιμή — έχει διαφορετικές δυνατότητες. Να το εξηγείς καθαρά στον πελάτη.</div>
+  </div>
+
+  <!-- MINI QUIZ -->
+  <div class="quiz-section">
+    <div class="quiz-header">❓ Mini Quiz — Γκάμα Mac</div>
+    <div class="mini-quiz-card">
+      <div class="quiz-q">1. Ποια Mac είναι εντελώς αθόρυβα χωρίς ανεμιστήρα;</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" onclick="mq(this,false,'mq1')">MacBook Pro 14" και 16"</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq1')">MacBook Neo, MacBook Air 13" και 15"</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq1')">Μόνο το MacBook Air 13"</div>
+      </div>
+      <div class="quiz-feedback" id="mq1-fb"></div>
+    </div>
+    <div class="mini-quiz-card">
+      <div class="quiz-q">2. Ένας πελάτης έχει ήδη μόνιτορ που θέλει να χρησιμοποιήσει και ψάχνει οικονομικό desktop Mac. Τι προτείνεις;</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" onclick="mq(this,false,'mq2')">iMac — έχει καλύτερη οθόνη</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq2')">Mac mini — οικονομικό desktop χωρίς ενσωματωμένη οθόνη</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq2')">Mac Studio — η πιο ισχυρή επιλογή</div>
+      </div>
+      <div class="quiz-feedback" id="mq2-fb"></div>
+    </div>
+    <div class="mini-quiz-card">
+      <div class="quiz-q">3. Τι chip έχει το MacBook Neo;</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" onclick="mq(this,false,'mq3')">M5</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq3')">A16 Bionic</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq3')">A18 Pro</div>
+      </div>
+      <div class="quiz-feedback" id="mq3-fb"></div>
+    </div>
+    <div class="quiz-score" id="mqs1"></div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-secondary" onclick="prev()">← Εισαγωγή</button>
+    <button class="btn btn-primary" onclick="next()">Γκάμα iPad →</button>
+  </div>
+</section>
+
+
+<!-- ══ MODULE 2 — IPAD LINEUP ══ -->
+<section class="module" id="m2">
+  <div class="mod-eyebrow">Ενότητα 3 από 8 · Προϊόντα</div>
+  <h1 class="mod-title">Η γκάμα iPad</h1>
+  <p class="mod-desc">Τέσσερα iPad, τέσσερις διαφορετικές ανάγκες. Κάθε ένα έχει διαφορετικά αξεσουάρ — μάθε τις διαφορές τους καλά.</p>
+  <div class="mod-meta"><span>📱 4 μοντέλα</span><span>⏱ ~12 λεπτά</span></div>
+  <div class="mod-divider"></div>
+
+  <div class="product-grid">
+
+    <div class="product-card">
+      <span class="chip-badge c-a16">A16</span>
+      <h3>iPad (11η γενιά)</h3>
+      <div class="sub">10.9" · Το βασικό iPad για όλους</div>
+      <div class="price">Από $349</div>
+      <ul class="spec-list">
+        <li>Οθόνη 10.9" Liquid Retina · sRGB (όχι P3)</li>
+        <li>A16 chip · Touch ID στο πλαϊνό κουμπί</li>
+        <li>Από 128GB αποθήκευση</li>
+        <li>USB-C connector · Wi-Fi 6</li>
+        <li>Pencil: Apple Pencil USB-C <em>μόνο</em></li>
+        <li>Keyboard: Magic Keyboard Folio</li>
+        <li>Κάμερα: 12MP Wide · 12MP Center Stage front</li>
+      </ul>
+      <div class="for-tags"><span class="tag t-s">Φοιτητές</span><span class="tag t-f">Παιδιά</span><span class="tag t-e">Πρώτο iPad</span></div>
+    </div>
+
+    <div class="product-card">
+      <span class="chip-badge c-a17p">A17 Pro</span>
+      <h3>iPad mini (7η γενιά)</h3>
+      <div class="sub">8.3" · Τσεπάτος, desktop-class chip</div>
+      <div class="price">Από $499</div>
+      <ul class="spec-list">
+        <li>Οθόνη 8.3" Liquid Retina · P3 wide color</li>
+        <li>A17 Pro chip · Touch ID στο πλαϊνό κουμπί</li>
+        <li>Από 128GB αποθήκευση</li>
+        <li>USB-C · Wi-Fi 6E · Optional 5G</li>
+        <li>Pencil: Apple Pencil Pro (προτεινόμενο) ή USB-C</li>
+        <li>Keyboard: μόνο Bluetooth keyboards</li>
+        <li>Apple Intelligence ready</li>
+      </ul>
+      <div class="for-tags"><span class="tag t-b">Επαγγελματίες εν κινήσει</span><span class="tag t-s">Αναγνώστες</span></div>
+    </div>
+
+    <div class="product-card">
+      <span class="chip-badge c-m4">M4</span>
+      <h3>iPad Air (M4)</h3>
+      <div class="sub">11" & 13" · Η καλύτερη ισορροπία</div>
+      <div class="price">Από $599 / $799</div>
+      <ul class="spec-list">
+        <li>Οθόνη 11" ή 13" Liquid Retina · P3 wide color</li>
+        <li>M4 chip · 8GB ή 16GB RAM</li>
+        <li>Από 128GB αποθήκευση</li>
+        <li>USB-C · Wi-Fi 7 · Optional 5G</li>
+        <li>Touch ID στο πλαϊνό κουμπί</li>
+        <li>Pencil: Apple Pencil Pro</li>
+        <li>Keyboard: Magic Keyboard for iPad Air</li>
+      </ul>
+      <div class="for-tags"><span class="tag t-s">Φοιτητές</span><span class="tag t-b">Επαγγελματίες</span><span class="tag t-c">Δημιουργικοί</span></div>
+    </div>
+
+    <div class="product-card" style="border-color:var(--blue);">
+      <span class="chip-badge c-m5">M5</span>
+      <h3>iPad Pro (M5) ✦</h3>
+      <div class="sub">11" & 13" · Αντικαθιστά laptop</div>
+      <div class="price">Από $999 / $1.199</div>
+      <ul class="spec-list">
+        <li>Ultra Retina XDR OLED (Tandem OLED) · P3</li>
+        <li>M5 chip · 12GB ή 16GB RAM</li>
+        <li>Από 256GB αποθήκευση</li>
+        <li>USB-C Thunderbolt 4 / USB 4 · Wi-Fi 7</li>
+        <li>Face ID · ProRes video recording</li>
+        <li>Pencil: Apple Pencil Pro</li>
+        <li>Keyboard: Magic Keyboard for iPad Pro</li>
+      </ul>
+      <div class="for-tags"><span class="tag t-p">Pro</span><span class="tag t-c">Δημιουργικοί</span><span class="tag t-b">Επαγγελματίες</span></div>
+    </div>
+
+  </div>
+
+  <div class="section-title">📊 Σύγκριση iPad με μια ματιά</div>
+  <div class="compare-wrap">
+    <table class="compare-table">
+      <thead>
+        <tr><th>Χαρακτηριστικό</th><th>iPad (A16)</th><th>iPad mini</th><th>iPad Air</th><th>iPad Pro</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Chip</td><td>A16</td><td>A17 Pro</td><td>M4</td><td class="hl">M5</td></tr>
+        <tr><td>Οθόνη</td><td>10.9" LR · sRGB</td><td>8.3" LR · P3</td><td>11"/13" LR · P3</td><td class="hl">11"/13" OLED XDR · P3</td></tr>
+        <tr><td>Τιμή από</td><td colspan="4" style="text-align:center; color:var(--gray); font-style:italic;">Για τρέχουσες τιμές, δες apple.com/shop ή ρώτα τον υπεύθυνο</td></tr>
+        <tr><td>Apple Pencil</td><td>USB-C / 1st gen</td><td>Pro (+ USB-C βασικό)</td><td>Pro (+ USB-C βασικό)</td><td>Pro (+ USB-C βασικό)</td></tr>
+        <tr><td>Magic Keyboard</td><td>Folio</td><td>Bluetooth μόνο</td><td>Magic KB Air</td><td>Magic KB Pro</td></tr>
+        <tr><td>Αναγνώριση</td><td>Touch ID</td><td>Touch ID</td><td>Touch ID</td><td class="hl">Face ID</td></tr>
+        <tr><td>Wi-Fi</td><td>Wi-Fi 6</td><td>Wi-Fi 6E</td><td>Wi-Fi 7</td><td>Wi-Fi 7</td></tr>
+        <tr><td>Apple Intelligence</td><td>Όχι</td><td>Ναι</td><td>Ναι</td><td>Ναι</td></tr>
+        <tr><td>Ιδανικό για</td><td>Πρώτο iPad</td><td>Φορητότητα</td><td>Ευελιξία</td><td>Αντικαθιστά laptop</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-yellow">
+    <span class="callout-icon">⚠️</span>
+    <div class="callout-body"><strong>Κρίσιμο: Apple Pencil συμβατότητα</strong>Το iPad (11η γενιά / A16) υποστηρίζει Pencil USB-C και Pencil 1st gen — ΟΧΙ το Pencil Pro. Το iPad Air M4 και iPad Pro M5 υποστηρίζουν κυρίως Pencil Pro, αλλά και Pencil USB-C σε βασική λειτουργία. Πάντα επιβεβαίωσε συμβατότητα πριν την πώληση.</div>
+  </div>
+
+  <div class="callout callout-blue">
+    <span class="callout-icon">📲</span>
+    <div class="callout-body"><strong>iPadOS 26 — σημαντικό selling point</strong>Φέρνει νέο σύστημα παραθύρων (windowing), Liquid Glass redesign και βαθύτερη Apple Intelligence. Κάνει το iPad ακόμα πιο κοντά σε laptop εμπειρία — ιδίως για iPad Air και Pro.</div>
+  </div>
+
+  <!-- MINI QUIZ -->
+  <div class="quiz-section">
+    <div class="quiz-header">❓ Mini Quiz — Γκάμα iPad</div>
+    <div class="mini-quiz-card">
+      <div class="quiz-q">1. Ποιο iPad ΔΕΝ υποστηρίζει Apple Pencil Pro;</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" onclick="mq(this,false,'mq4')">iPad mini 7η γενιά</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq4')">iPad 11η γενιά (A16)</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq4')">iPad Air M4</div>
+      </div>
+      <div class="quiz-feedback" id="mq4-fb"></div>
+    </div>
+    <div class="mini-quiz-card">
+      <div class="quiz-q">2. Ποιο iPad έχει οθόνη OLED και Face ID;</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" onclick="mq(this,false,'mq5')">iPad Air M4</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq5')">iPad mini 7η γενιά</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq5')">iPad Pro M5</div>
+      </div>
+      <div class="quiz-feedback" id="mq5-fb"></div>
+    </div>
+    <div class="mini-quiz-card">
+      <div class="quiz-q">3. Ένας γιατρός θέλει iPad στην τσέπη του σακακιού. Ποιο προτείνεις;</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" onclick="mq(this,false,'mq6')">iPad 11η γενιά</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq6')">iPad mini 7η γενιά</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq6')">iPad Air 11"</div>
+      </div>
+      <div class="quiz-feedback" id="mq6-fb"></div>
+    </div>
+    <div class="quiz-score" id="mqs2"></div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-secondary" onclick="prev()">← Mac</button>
+    <button class="btn btn-primary" onclick="next()">Αξεσουάρ →</button>
+  </div>
+</section>
+
+
+<!-- ══ MODULE 3 — ACCESSORIES ══ -->
+<section class="module" id="m3">
+  <div class="mod-eyebrow">Ενότητα 4 από 8 · Αξεσουάρ</div>
+  <h1 class="mod-title">Αξεσουάρ</h1>
+  <p class="mod-desc">Το σωστό αξεσουάρ στη σωστή στιγμή βελτιώνει την εμπειρία του πελάτη και ολοκληρώνει φυσικά την πώληση. Η συμβατότητα είναι κρίσιμη.</p>
+  <div class="mod-meta"><span>🎒 Apple Pencil · Keyboards · AirPods · Displays</span><span>⏱ ~12 λεπτά</span></div>
+  <div class="mod-divider"></div>
+
+  <div class="section-title">✏️ Apple Pencil — Συμβατότητα ανά μοντέλο</div>
+  <div class="compat-wrap">
+    <table class="compat-table">
+      <thead>
+        <tr><th>Apple Pencil</th><th>iPad (A16)</th><th>iPad mini 7</th><th>iPad Air M4</th><th>iPad Pro M5</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>1st generation</strong> <span style="font-size:10px;color:var(--gray)">(Lightning)</span></td><td class="cy">✓ Εναλλακτικά</td><td class="cn">—</td><td class="cn">—</td><td class="cn">—</td></tr>
+        <tr><td><strong>2nd generation</strong></td><td class="cn">—</td><td class="cn">—</td><td class="cn">—</td><td class="cn">—</td></tr>
+        <tr><td><strong>USB-C</strong></td><td class="cy">✓ Προτεινόμενο</td><td style="color:var(--orange);font-weight:700;text-align:center;">Βασικό*</td><td style="color:var(--orange);font-weight:700;text-align:center;">Βασικό*</td><td style="color:var(--orange);font-weight:700;text-align:center;">Βασικό*</td></tr>
+        <tr><td><strong>Pro ⭐</strong></td><td class="cn">—</td><td class="cy">✓ Προτεινόμενο</td><td class="cy">✓ Προτεινόμενο</td><td class="cy">✓ Προτεινόμενο</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:11px; color:var(--gray); margin-top:8px; padding: 0 4px;">*USB-C Pencil δουλεύει στο iPad Air και Pro αλλά χωρίς hover detection, barrel roll και squeeze — μόνο βασική γραφή.</p>
+
+  <div class="callout callout-green">
+    <span class="callout-icon">⭐</span>
+    <div class="callout-body"><strong>Apple Pencil Pro — το πιο προηγμένο</strong>Gesture squeeze, barrel roll, hover detection, Find My. Φορτίζει ασύρματα. Συμβατό με iPad mini 7, iPad Air M4 και iPad Pro M5. Αυτό να προτείνεις για δημιουργικούς χρήστες.</div>
+  </div>
+
+  <div class="callout callout-yellow">
+    <span class="callout-icon">💡</span>
+    <div class="callout-body"><strong>Τι γίνεται με τα 1st και 2nd gen Pencil;</strong>Το Pencil 1st gen δουλεύει με πολύ παλιά iPad Pro (lightning). Το 2nd gen με iPad Pro/Air M1/M2. Κανένα από τα δύο ΔΕΝ δουλεύει με τα νέα μοντέλα. Πάντα ελέγχεις πρώτα ποιο iPad έχει/αγοράζει ο πελάτης.</div>
+  </div>
+
+  <div class="section-title">⌨️ Πληκτρολόγια iPad — Ποιο πάει πού</div>
+  <div class="acc-grid">
+    <div class="acc-card">
+      <div class="acc-icon">⌨️</div>
+      <h4>Magic Keyboard Folio</h4>
+      <div class="acc-sub">iPad 11η γενιά (A16) <em>μόνο</em></div>
+    </div>
+    <div class="acc-card">
+      <div class="acc-icon">⌨️</div>
+      <h4>Magic Keyboard for iPad Air</h4>
+      <div class="acc-sub">iPad Air M4 · 11" & 13"</div>
+    </div>
+    <div class="acc-card featured">
+      <div class="acc-icon">⌨️</div>
+      <h4>Magic Keyboard for iPad Pro</h4>
+      <div class="acc-sub">iPad Pro M5 · 11" & 13"</div>
+    </div>
+    <div class="acc-card">
+      <div class="acc-icon">🔵</div>
+      <h4>Bluetooth Keyboard</h4>
+      <div class="acc-sub">iPad mini 7 — δεν υπάρχει dedicated keyboard</div>
+    </div>
+  </div>
+
+  <div class="section-title">🖱 Mac Peripherals & Displays</div>
+  <div class="acc-grid">
+    <div class="acc-card">
+      <div class="acc-icon">🖱</div>
+      <h4>Magic Mouse</h4>
+      <div class="acc-sub">Όλα τα Mac</div>
+    </div>
+    <div class="acc-card">
+      <div class="acc-icon">🔲</div>
+      <h4>Magic Trackpad</h4>
+      <div class="acc-sub">Όλα τα Mac</div>
+    </div>
+    <div class="acc-card">
+      <div class="acc-icon">⌨️</div>
+      <h4>Magic Keyboard (Mac)</h4>
+      <div class="acc-sub">Όλα τα Mac · με ή χωρίς Touch ID</div>
+    </div>
+    <div class="acc-card">
+      <div class="acc-icon">🖥</div>
+      <h4>Studio Display</h4>
+      <div class="acc-sub">5K Retina · 12MP Center Stage · Θύρα Thunderbolt</div>
+    </div>
+    <div class="acc-card featured">
+      <div class="acc-icon">🖥</div>
+      <h4>Studio Display XDR</h4>
+      <div class="acc-sub">mini-LED · 1000 nits · Nano-texture option</div>
+    </div>
+  </div>
+
+  <div class="section-title">🎧 AirPods</div>
+  <div class="acc-grid">
+    <div class="acc-card">
+      <div class="acc-icon">🎧</div>
+      <h4>AirPods 4</h4>
+      <div class="acc-sub">USB-C · Spatial Audio · Personalized</div>
+    </div>
+    <div class="acc-card">
+      <div class="acc-icon">🎧</div>
+      <h4>AirPods 4 με ANC</h4>
+      <div class="acc-sub">Active Noise Cancellation</div>
+    </div>
+    <div class="acc-card featured">
+      <div class="acc-icon">🎧</div>
+      <h4>AirPods Pro 3 ⭐</h4>
+      <div class="acc-sub">Καρδιακός ρυθμός · Live Translation · H3 chip · Κορυφαίο ANC</div>
+    </div>
+    <div class="acc-card">
+      <div class="acc-icon">🎧</div>
+      <h4>AirPods Max 2</h4>
+      <div class="acc-sub">Over-ear · USB-C · Spatial Audio · ANC</div>
+    </div>
+  </div>
+
+  <!-- MINI QUIZ -->
+  <div class="quiz-section">
+    <div class="quiz-header">❓ Mini Quiz — Αξεσουάρ</div>
+    <div class="mini-quiz-card">
+      <div class="quiz-q">1. Ένας πελάτης αγοράζει iPad Air M4. Ποιο Apple Pencil του προτείνεις;</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" onclick="mq(this,false,'mq7')">Apple Pencil 2nd generation</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq7')">Apple Pencil USB-C</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq7')">Apple Pencil Pro</div>
+      </div>
+      <div class="quiz-feedback" id="mq7-fb"></div>
+    </div>
+    <div class="mini-quiz-card">
+      <div class="quiz-q">2. Ένας πελάτης αγοράζει iPad (A16) και θέλει keyboard. Ποιο του προτείνεις;</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" onclick="mq(this,false,'mq8')">Magic Keyboard for iPad Air</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq8')">Magic Keyboard Folio</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq8')">Magic Keyboard for iPad Pro</div>
+      </div>
+      <div class="quiz-feedback" id="mq8-fb"></div>
+    </div>
+    <div class="quiz-score" id="mqs3"></div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-secondary" onclick="prev()">← iPad</button>
+    <button class="btn btn-primary" onclick="next()">Σενάρια →</button>
+  </div>
+</section>
+
+
+<!-- ══ MODULE 4 — CUSTOMER SCENARIOS ══ -->
+<section class="module" id="m4">
+  <div class="mod-eyebrow">Ενότητα 5 από 8 · Πρακτική</div>
+  <h1 class="mod-title">Σενάρια Πελατών</h1>
+  <p class="mod-desc">Πραγματικοί τύποι πελατών — τι λένε, τι χρειάζονται και ποιο προϊόν ταιριάζει.</p>
+  <div class="mod-meta"><span>🧑‍💼 7 σενάρια</span><span>⏱ ~12 λεπτά</span></div>
+  <div class="mod-divider"></div>
+
+  <div class="scenario">
+    <div class="scenario-who">👩‍🎓 Σενάριο 1 — Ο/Η Φοιτητής/τρια</div>
+    <div class="scenario-quote">«Χρειάζομαι κάτι για σημειώσεις, εργασίες και Netflix. Έχω budget γύρω στα €1.000.»</div>
+    <div class="scenario-rec">✅ <strong>Σύσταση:</strong> MacBook Air 13" M5 — ιδανική ισορροπία, μπαταρία 18h, αθόρυβο, αξιόπιστο.</div>
+    <div class="scenario-rec">💰 <strong>Εναλλακτικά budget:</strong> MacBook Neo αν το €1.000 είναι αυστηρό όριο — αλλά εξήγησε τις διαφορές (χωρίς MagSafe/Thunderbolt).</div>
+    <div class="scenario-tip"><span>Tip:</span> «Η μπαταρία κρατάει ολόκληρη μέρα — δεν θα ψάχνεις πρίζα στη σχολή.»</div>
+  </div>
+
+  <div class="scenario or">
+    <div class="scenario-who">🎨 Σενάριο 2 — Ο Καλλιτέχνης / Graphic Designer</div>
+    <div class="scenario-quote">«Θέλω να σχεδιάζω ψηφιακά — illustration, photo editing. Ψάχνω κάτι για σκετσοβιβλίο και workstation.»</div>
+    <div class="scenario-rec">✅ <strong>Σύσταση:</strong> iPad Pro M5 13" + Apple Pencil Pro — η OLED οθόνη με ProMotion και χρωματική ακρίβεια P3 είναι ιδανική.</div>
+    <div class="scenario-rec">🎒 <strong>Αξεσουάρ:</strong> Apple Pencil Pro (απαραίτητο), Smart Folio ή Magic Keyboard for iPad Pro.</div>
+    <div class="scenario-tip"><span>Tip:</span> «Η Tandem OLED οθόνη έχει ακρίβεια χρωμάτων που δεν τη βρίσκεις σε κανένα άλλο tablet στην αγορά.»</div>
+  </div>
+
+  <div class="scenario gr">
+    <div class="scenario-who">👩‍💼 Σενάριο 3 — Ο Επαγγελματίας που ταξιδεύει</div>
+    <div class="scenario-quote">«Πολλά ταξίδια, video calls, email, Excel. Θέλω κάτι ελαφρύ που να κρατάει όλη μέρα.»</div>
+    <div class="scenario-rec">✅ <strong>Σύσταση:</strong> MacBook Air 15" M5 — μεγαλύτερη οθόνη για παραγωγικότητα, 18 ώρες μπαταρία, αθόρυβο.</div>
+    <div class="scenario-rec">🎒 <strong>Αξεσουάρ:</strong> AirPods Pro 3 (κορυφαία ποιότητα calls), USB-C hub.</div>
+    <div class="scenario-tip"><span>Tip:</span> «Τα AirPods Pro 3 έχουν εξαιρετική ποιότητα κλήσης με H3 chip — σε αεροπλάνο ακούγεσαι σαν να είσαι στο γραφείο.»</div>
+  </div>
+
+  <div class="scenario">
+    <div class="scenario-who">👨‍👩‍👧 Σενάριο 4 — Η Οικογένεια</div>
+    <div class="scenario-quote">«Για το σπίτι — εργασίες παιδιών, Netflix, Facetime. Κάτι απλό που να είναι πάντα εκεί.»</div>
+    <div class="scenario-rec">✅ <strong>Σύσταση:</strong> iMac M4 — 24" οθόνη 4.5K, all-in-one απλότητα, 7 χρώματα, περιλαμβάνει keyboard και mouse.</div>
+    <div class="scenario-tip"><span>Tip:</span> «Με το Screen Time μπορείς να ρυθμίσεις χρόνο χρήσης για τα παιδιά — built-in, δωρεάν, εύκολο.»</div>
+  </div>
+
+  <div class="scenario or">
+    <div class="scenario-who">🎬 Σενάριο 5 — Ο Video Editor</div>
+    <div class="scenario-quote">«Μοντάζ 4K για YouTube. Το laptop μου κάνει 2 ώρες export. Θέλω ταχύτητα.»</div>
+    <div class="scenario-rec">✅ <strong>Σύσταση:</strong> MacBook Pro 16" M5 Max — το Media Engine επεξεργάζεται ProRes 4K σε ελάχιστο χρόνο. Δύο ProRes encode engines.</div>
+    <div class="scenario-rec">🎒 <strong>Αξεσουάρ:</strong> Studio Display XDR (χρωματική ακρίβεια), LaCie external SSD για footage.</div>
+    <div class="scenario-tip"><span>Tip:</span> «Το M5 Max έχει δύο ProRes encode engines — επεξεργάζεται 8K ProRes σε realtime χωρίς rendering.»</div>
+  </div>
+
+  <div class="scenario gr">
+    <div class="scenario-who">👨‍⚕️ Σενάριο 6 — Ο Επαγγελματίας Υγείας</div>
+    <div class="scenario-quote">«Χρειάζομαι κάτι που να παίρνω μαζί μου, να κρατώ σημειώσεις και να χωράει στην τσέπη.»</div>
+    <div class="scenario-rec">✅ <strong>Σύσταση:</strong> iPad mini 7 (A17 Pro) + Apple Pencil Pro — χωράει στην τσέπη του σακακιού, άμεσο άνοιγμα, σημειώσεις με Pencil.</div>
+    <div class="scenario-tip"><span>Tip:</span> «Ο A17 Pro chip τρέχει οποιαδήποτε ιατρική εφαρμογή χωρίς καθυστέρηση — ίδιο chip με iPhone 15 Pro.»</div>
+  </div>
+
+  <div class="scenario pu">
+    <div class="scenario-who">💻 Σενάριο 7 — Ο Switcher από Windows</div>
+    <div class="scenario-quote">«Έχω iPhone αλλά πάντα χρησιμοποιούσα Windows. Τι μου δίνει το Mac που δεν έχω τώρα;»</div>
+    <div class="scenario-rec">✅ <strong>Σύσταση:</strong> MacBook Air 13" M5 — εύκολη μετάβαση, οικείο περιβάλλον για iPhone χρήστη.</div>
+    <div class="scenario-rec">🔑 <strong>Βασικά σημεία:</strong> AirDrop, Universal Clipboard, Continuity Camera, Handoff, iMessage — δεν υπάρχουν σε Windows.</div>
+    <div class="scenario-tip"><span>Tip:</span> «Επειδή έχεις iPhone, Mac και iPhone δουλεύουν σαν ένα. Αντιγράφεις στο iPhone, κάνεις paste στο Mac — αμέσως. Αυτό δεν το κάνει κανένας Windows PC.»</div>
+  </div>
+
+  <!-- MINI QUIZ -->
+  <div class="quiz-section">
+    <div class="quiz-header">❓ Mini Quiz — Σενάρια</div>
+    <div class="mini-quiz-card">
+      <div class="quiz-q">1. Ένας video editor θέλει γρήγορο 4K ProRes export. Ποιο Mac προτείνεις;</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" onclick="mq(this,false,'mq9')">MacBook Air M5 — fanless, αθόρυβο</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq9')">iMac M4 — μεγάλη οθόνη</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq9')">MacBook Pro 16" M5 Max — δύο ProRes encode engines</div>
+      </div>
+      <div class="quiz-feedback" id="mq9-fb"></div>
+    </div>
+    <div class="mini-quiz-card">
+      <div class="quiz-q">2. Οικογένεια για σπίτι, εργασίες παιδιών και Netflix. Τι προτείνεις;</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" onclick="mq(this,true,'mq10')">iMac M4 — all-in-one, 24", περιλαμβάνει keyboard και mouse</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq10')">MacBook Pro 14" — ισχυρό laptop</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq10')">Mac Studio — επαγγελματική χρήση</div>
+      </div>
+      <div class="quiz-feedback" id="mq10-fb"></div>
+    </div>
+    <div class="quiz-score" id="mqs4"></div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-secondary" onclick="prev()">← Αξεσουάρ</button>
+    <button class="btn btn-primary" onclick="next()">Τεχνικές Πωλήσεων →</button>
+  </div>
+</section>
+
+
+<!-- ══ MODULE 5 — SALES TECHNIQUES ══ -->
+<section class="module" id="m5">
+  <div class="mod-eyebrow">Ενότητα 6 από 8 · Πωλήσεις</div>
+  <h1 class="mod-title">Τεχνικές Πωλήσεων</h1>
+  <p class="mod-desc">Απλές, ειλικρινείς τεχνικές για να βοηθάς τον πελάτη να πάρει την καλύτερη απόφαση.</p>
+  <div class="mod-meta"><span>📈 6 τεχνικές + χειρισμός αντιρρήσεων</span><span>⏱ ~12 λεπτά</span></div>
+  <div class="mod-divider"></div>
+
+  <div class="technique">
+    <div class="technique-icon">🔍</div>
+    <div class="technique-body">
+      <h4>1. Ανακάλυψη αναγκών πρώτα</h4>
+      <p>Πριν πεις τίποτα για προϊόν, κάνε 2–3 ερωτήσεις. Η σωστή ερώτηση αξίζει περισσότερο από οποιαδήποτε παρουσίαση.</p>
+      <div class="example">«Τι θα κάνεις κυρίως με αυτό;» / «Πόσο σημαντικό είναι το βάρος;» / «Έχεις iPhone;»</div>
+    </div>
+  </div>
+
+  <div class="technique">
+    <div class="technique-icon">📊</div>
+    <div class="technique-body">
+      <h4>2. Κόστος ανά ημέρα</h4>
+      <p>Για πελάτη που διστάζει στην τιμή, χώρισέ τη σε ημερήσιο κόστος για 4–5 χρόνια ζωής του προϊόντος.</p>
+      <div class="example">«Το MacBook Air M5 κοστίζει €1.099. Σε 4 χρόνια, αυτό είναι λιγότερο από €0,75 τη μέρα — για εργαλείο που χρησιμοποιείς κάθε μέρα.»</div>
+    </div>
+  </div>
+
+  <div class="technique">
+    <div class="technique-icon">🔀</div>
+    <div class="technique-body">
+      <h4>3. Ένα βήμα πάνω με λόγο</h4>
+      <p>Αφού αποφασίσει ο πελάτης, πρότεινε το επόμενο μοντέλο με ένα λόγο που σχετίζεται με αυτό που σου είπε.</p>
+      <div class="example">«Είπες ότι κάνεις πολύ multitasking — το 15" Air σου δίνει σημαντικά περισσότερο χώρο στην οθόνη. Αξίζει τα €200 παραπάνω;»</div>
+    </div>
+  </div>
+
+  <div class="technique">
+    <div class="technique-icon">🎁</div>
+    <div class="technique-body">
+      <h4>4. Η πλήρης εμπειρία</h4>
+      <p>Αντί να πουλάς αξεσουάρ ένα-ένα, πρότεινέ τα ως σύνολο.</p>
+      <div class="example">«Οι περισσότεροι που αγοράζουν iPad Air παίρνουν και Magic Keyboard και Pencil Pro — μετατρέπουν το iPad σε laptop. Θες να δεις πώς νιώθει;»</div>
+    </div>
+  </div>
+
+  <div class="technique">
+    <div class="technique-icon">🔗</div>
+    <div class="technique-body">
+      <h4>5. Το ecosystem argument</h4>
+      <p>Για πελάτες με iPhone, τόνισε ότι Mac και iPad δουλεύουν μαζί με τρόπους που δεν υπάρχουν σε Windows.</p>
+      <div class="example">«Επειδή έχεις iPhone, το Mac σου κάνει πράγματα που κανένας Windows δεν μπορεί: AirDrop, Universal Clipboard, Continuity Camera — όλα ενσωματωμένα, δωρεάν.»</div>
+    </div>
+  </div>
+
+  <div class="technique">
+    <div class="technique-icon">🌱</div>
+    <div class="technique-body">
+      <h4>6. Future-proofing — RAM και Storage</h4>
+      <p>Η RAM στα Mac δεν αναβαθμίζεται αργότερα. Πρότεινε το upgrade τώρα.</p>
+      <div class="example">«Στα Mac της Apple δεν μπορείς να προσθέσεις RAM αργότερα — είναι μέσα στο chip. Αν σκέφτεσαι να το κρατήσεις 4–5 χρόνια, τα 24GB είναι ασφαλέστερη επιλογή.»</div>
+    </div>
+  </div>
+
+  <div class="section-title">💬 Χειρισμός Αντιρρήσεων</div>
+  <div class="card" style="padding:0; overflow:hidden;">
+    <table class="obj-table">
+      <thead><tr><th>Λέει ο πελάτης</th><th>Απαντάς</th></tr></thead>
+      <tbody>
+        <tr><td>«Είναι ακριβό»</td><td>Κόστος ανά ημέρα + διάρκεια ζωής + αξία μεταπώλησης Apple</td></tr>
+        <tr><td>«Τα άλλα είναι φθηνότερα»</td><td>Apple silicon, ποιότητα κατασκευής, ecosystem, δωρεάν software</td></tr>
+        <tr><td>«Θα το σκεφτώ»</td><td>Ρώτα τι τον κρατάει — αντιμετώπισε το συγκεκριμένο ζήτημα</td></tr>
+        <tr><td>«8GB RAM φτάνουν;»</td><td>M-series unified memory είναι πιο αποδοτικό από Windows RAM. Αλλά 16GB είναι πάντα καλύτερα για μακροπρόθεσμα.</td></tr>
+        <tr><td>«Δουλεύει με τα προγράμματά μου;»</td><td>Ναι — AutoCAD, Adobe Creative Suite, Microsoft Office 365, Final Cut Pro, Logic Pro — όλα τρέχουν native σε Apple Silicon</td></tr>
+        <tr><td>«Ποιο Pencil να πάρω;»</td><td>Εξαρτάται από το iPad — ελέγχεις πρώτα το μοντέλο του iPad</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MINI QUIZ -->
+  <div class="quiz-section">
+    <div class="quiz-header">❓ Mini Quiz — Τεχνικές Πωλήσεων</div>
+    <div class="mini-quiz-card">
+      <div class="quiz-q">1. Ο πελάτης λέει «Θα το σκεφτώ». Τι κάνεις;</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" onclick="mq(this,false,'mq11')">Τον αφήνεις να φύγει</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq11')">Ρωτάς τι τον κρατάει και αντιμετωπίζεις το συγκεκριμένο ζήτημα</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq11')">Του προσφέρεις έκπτωση</div>
+      </div>
+      <div class="quiz-feedback" id="mq11-fb"></div>
+    </div>
+    <div class="mini-quiz-card">
+      <div class="quiz-q">2. Γιατί πρέπει να προτείνεις upgrade RAM τώρα κι όχι αργότερα;</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" onclick="mq(this,false,'mq12')">Γιατί κερδίζουμε περισσότερο</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq12')">Γιατί η RAM στα Mac δεν αναβαθμίζεται αργότερα — είναι μέσα στο chip</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq12')">Γιατί η βασική RAM είναι αργή</div>
+      </div>
+      <div class="quiz-feedback" id="mq12-fb"></div>
+    </div>
+    <div class="quiz-score" id="mqs5"></div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-secondary" onclick="prev()">← Σενάρια</button>
+    <button class="btn btn-primary" onclick="next()">Setup & Λογισμικό →</button>
+  </div>
+</section>
+
+
+<!-- ══ MODULE 6 — SOFTWARE & SETUP ══ -->
+<section class="module" id="m6">
+  <div class="mod-eyebrow">Ενότητα 7 από 8 · Τεχνικές Γνώσεις</div>
+  <h1 class="mod-title">Setup & Λογισμικό</h1>
+  <p class="mod-desc">Βασικές γνώσεις που σε κάνουν πιο αξιόπιστο στον πελάτη — και τον βοηθάς πραγματικά μετά την αγορά.</p>
+  <div class="mod-meta"><span>🛠 Migration · iCloud · macOS & iPadOS</span><span>⏱ ~10 λεπτά</span></div>
+  <div class="mod-divider"></div>
+
+  <div class="section-title">🔄 Migration Assistant — Μεταφορά από παλιό Mac</div>
+  <div class="card">
+    <p style="font-size:14px; color:var(--gray); margin-bottom:16px;">Το Migration Assistant είναι η επίσημη μέθοδος Apple για μεταφορά δεδομένων από παλιό Mac σε νέο. Μεταφέρει εφαρμογές, αρχεία, λογαριασμούς και ρυθμίσεις.</p>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Σύνδεση — Wi-Fi ή Thunderbolt cable</h4>
+          <p>Ίδιο Wi-Fi network και τα δύο Mac. Ή καλώδιο Thunderbolt — 10× πιο γρήγορο για μεγάλες βιβλιοθήκες.</p>
+          <div class="tip">💡 Για πελάτες με πολλές φωτογραφίες/βίντεο: πρότεινε Thunderbolt cable</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Applications → Utilities → Migration Assistant</h4>
+          <p>Άνοιξε σε αμφότερα τα Mac. Το νέο Mac εντοπίζει αυτόματα το παλιό.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Επίλεξε τι μεταφέρεις και περίμενε</h4>
+          <p>Εφαρμογές, αρχεία, λογαριασμοί, ρυθμίσεις. Μικρές βιβλιοθήκες: 15–30'. Μεγάλες με Wi-Fi: έως 2 ώρες.</p>
+          <div class="tip">💡 Intel → Apple Silicon: οι εφαρμογές τρέχουν αυτόματα μέσω Rosetta 2 — δεν χρειάζεται κάτι από τον χρήστη</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">🪟 Μεταφορά από Windows</div>
+  <div class="card">
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Migration Assistant για Windows — από apple.com</h4>
+          <p>Μεταφέρει: έγγραφα, φωτογραφίες, μουσική, bookmarks.</p>
+          <div class="tip">⚠️ Εφαρμογές Windows ΔΕΝ μεταφέρονται. Ενημέρωσε τον πελάτη εκ των προτέρων.</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Ίδιο Wi-Fi — Mac εντοπίζει αυτόματα τον PC</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">☁️ iCloud — Τι να γνωρίζεις</div>
+  <div class="card">
+    <div class="product-grid" style="margin:0;">
+      <div style="background:var(--light); border-radius:12px; padding:14px;">
+        <div style="font-size:22px; margin-bottom:6px;">📸</div>
+        <strong style="font-size:13px;">iCloud Photos</strong>
+        <p style="font-size:12px; color:var(--gray); margin-top:4px;">Όλες οι φωτογραφίες σε όλες τις συσκευές αυτόματα.</p>
+      </div>
+      <div style="background:var(--light); border-radius:12px; padding:14px;">
+        <div style="font-size:22px; margin-bottom:6px;">📁</div>
+        <strong style="font-size:13px;">iCloud Drive</strong>
+        <p style="font-size:12px; color:var(--gray); margin-top:4px;">Αρχεία παντού — Mac, iPad, iPhone, Windows.</p>
+      </div>
+      <div style="background:var(--light); border-radius:12px; padding:14px;">
+        <div style="font-size:22px; margin-bottom:6px;">🔒</div>
+        <strong style="font-size:13px;">iCloud Keychain</strong>
+        <p style="font-size:12px; color:var(--gray); margin-top:4px;">Κωδικοί αυτόματα σε όλες τις συσκευές.</p>
+      </div>
+      <div style="background:var(--light); border-radius:12px; padding:14px;">
+        <div style="font-size:22px; margin-bottom:6px;">👨‍👩‍👧</div>
+        <strong style="font-size:13px;">Family Sharing</strong>
+        <p style="font-size:12px; color:var(--gray); margin-top:4px;">Μοιράζεσαι αποθήκευση και αγορές με έως 5 άτομα.</p>
+      </div>
+    </div>
+    <div class="callout callout-blue" style="margin-top:14px; margin-bottom:0;">
+      <span class="callout-icon">💾</span>
+      <div class="callout-body"><strong>iCloud Storage — τι να προτείνεις</strong>Δωρεάν: 5GB (δεν φτάνει σχεδόν για κανέναν) · 50GB: €0,99/μήνα · 200GB: €2,99/μήνα · 2TB: €9,99/μήνα. Οι περισσότεροι χρειάζονται τουλάχιστον 50GB.</div>
+    </div>
+  </div>
+
+  <div class="section-title">🔗 Continuity — Mac, iPad & iPhone μαζί</div>
+  <div class="card" style="padding:0; overflow:hidden;">
+    <table class="compat-table">
+      <thead><tr><th>Feature</th><th>Τι κάνει</th></tr></thead>
+      <tbody>
+        <tr><td><strong>AirDrop</strong></td><td>Μεταφορά αρχείων ασύρματα σε δευτερόλεπτα — χωρίς setup</td></tr>
+        <tr><td><strong>Universal Clipboard</strong></td><td>Αντιγραφή στο iPhone, επικόλληση στο Mac αμέσως</td></tr>
+        <tr><td><strong>Sidecar</strong></td><td>iPad ως δεύτερη οθόνη του Mac — ασύρματα, με Apple Pencil support</td></tr>
+        <tr><td><strong>Universal Control</strong></td><td>Ένα πληκτρολόγιο/mouse ελέγχει Mac + iPad ταυτόχρονα</td></tr>
+        <tr><td><strong>Continuity Camera</strong></td><td>iPhone ως webcam του Mac — αυτόματα, ασύρματα</td></tr>
+        <tr><td><strong>Handoff</strong></td><td>Ξεκίνα σε iPhone, συνέχισε στο Mac (Safari, Mail, Pages κ.α.)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-title">💡 macOS & iPadOS Tips</div>
+  <div class="card">
+    <ul class="spec-list" style="columns:2; gap:24px; line-height:1.9;">
+      <li><strong>Spotlight (⌘ Space)</strong> — Αναζήτηση, μαθηματικά, μετατροπές</li>
+      <li><strong>Screenshot (⌘⇧3/4/5)</strong> — Λήψη οθόνης / τμήματος / recording</li>
+      <li><strong>Stage Manager</strong> — Οργάνωση εφαρμογών σε Mac & iPad</li>
+      <li><strong>Split View</strong> — Δύο εφαρμογές δίπλα-δίπλα fullscreen</li>
+      <li><strong>Time Machine</strong> — Αυτόματα backup σε εξωτερικό δίσκο</li>
+      <li><strong>Focus Mode</strong> — Σίγαση notifications ανά περίσταση</li>
+    </ul>
+  </div>
+
+  <!-- MINI QUIZ -->
+  <div class="quiz-section">
+    <div class="quiz-header">❓ Mini Quiz — Setup & Λογισμικό</div>
+    <div class="mini-quiz-card">
+      <div class="quiz-q">1. Ποιος είναι ο καλύτερος τρόπος να μεταφέρεις δεδομένα από παλιό Mac σε νέο;</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" onclick="mq(this,false,'mq13')">Χειροκίνητη αντιγραφή με USB stick</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq13')">Migration Assistant — μέσω Thunderbolt cable ή Wi-Fi</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq13')">AirDrop αρχείο-αρχείο</div>
+      </div>
+      <div class="quiz-feedback" id="mq13-fb"></div>
+    </div>
+    <div class="mini-quiz-card">
+      <div class="quiz-q">2. Τι κάνει το Sidecar;</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" onclick="mq(this,false,'mq14')">Μεταφέρει αρχεία από Mac σε iPad</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq14')">Χρησιμοποιεί το iPad ως δεύτερη οθόνη του Mac, ασύρματα</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq14')">Συγχρονίζει επαφές μεταξύ συσκευών</div>
+      </div>
+      <div class="quiz-feedback" id="mq14-fb"></div>
+    </div>
+    <div class="quiz-score" id="mqs6"></div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-secondary" onclick="prev()">← Τεχνικές Πωλήσεων</button>
+    <button class="btn btn-primary" onclick="next()">Τελική Αξιολόγηση →</button>
+  </div>
+</section>
+
+
+<!-- ══ MODULE 7 — FINAL QUIZ ══ -->
+<section class="module" id="m7">
+  <div class="mod-eyebrow">Ενότητα 8 από 8 · Αξιολόγηση</div>
+  <h1 class="mod-title">Τελική Αξιολόγηση 🎯</h1>
+  <p class="mod-desc">10 ερωτήσεις που καλύπτουν όλες τις ενότητες. Απάντησε σε όλες για να δεις το αποτέλεσμά σου.</p>
+  <div class="mod-meta"><span>❓ 10 ερωτήσεις</span><span>⏱ ~5 λεπτά</span></div>
+  <div class="mod-divider"></div>
+
+  <div class="final-quiz-card">
+    <div class="quiz-q">1. Ποιο chip έχει το MacBook Neo;</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="fq(this,false,'fq1')">M5</div>
+      <div class="quiz-opt" onclick="fq(this,false,'fq1')">A16 Bionic</div>
+      <div class="quiz-opt" onclick="fq(this,true,'fq1')">A18 Pro</div>
+    </div>
+    <div class="quiz-feedback" id="fq1-fb"></div>
+  </div>
+
+  <div class="final-quiz-card">
+    <div class="quiz-q">2. Ποιο Mac είναι εντελώς αθόρυβο, ιδανικό για καθημερινή χρήση, με MagSafe και Thunderbolt;</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="fq(this,false,'fq2')">MacBook Neo</div>
+      <div class="quiz-opt" onclick="fq(this,true,'fq2')">MacBook Air M5</div>
+      <div class="quiz-opt" onclick="fq(this,false,'fq2')">MacBook Pro 14" M5</div>
+    </div>
+    <div class="quiz-feedback" id="fq2-fb"></div>
+  </div>
+
+  <div class="final-quiz-card">
+    <div class="quiz-q">3. Ποιο iPad ΔΕΝ υποστηρίζει Apple Pencil Pro;</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="fq(this,true,'fq3')">iPad 11η γενιά (A16)</div>
+      <div class="quiz-opt" onclick="fq(this,false,'fq3')">iPad mini 7η γενιά</div>
+      <div class="quiz-opt" onclick="fq(this,false,'fq3')">iPad Air M4</div>
+    </div>
+    <div class="quiz-feedback" id="fq3-fb"></div>
+  </div>
+
+  <div class="final-quiz-card">
+    <div class="quiz-q">4. Ποιο iPad έχει οθόνη OLED (Tandem OLED) και Face ID;</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="fq(this,false,'fq4')">iPad Air M4</div>
+      <div class="quiz-opt" onclick="fq(this,false,'fq4')">iPad mini 7η γενιά</div>
+      <div class="quiz-opt" onclick="fq(this,true,'fq4')">iPad Pro M5</div>
+    </div>
+    <div class="quiz-feedback" id="fq4-fb"></div>
+  </div>
+
+  <div class="final-quiz-card">
+    <div class="quiz-q">5. Ένας graphic designer αγοράζει iPad Air M4 για illustration. Ποιο Pencil του προτείνεις;</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="fq(this,false,'fq5')">Apple Pencil 2nd generation</div>
+      <div class="quiz-opt" onclick="fq(this,false,'fq5')">Apple Pencil USB-C</div>
+      <div class="quiz-opt" onclick="fq(this,true,'fq5')">Apple Pencil Pro</div>
+    </div>
+    <div class="quiz-feedback" id="fq5-fb"></div>
+  </div>
+
+  <div class="final-quiz-card">
+    <div class="quiz-q">6. Ένας πελάτης με iPhone αγοράζει Mac. Ποιο είναι το δυνατό επιχείρημα που δεν ισχύει για Windows;</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="fq(this,false,'fq6')">Το Mac τρέχει Office 365</div>
+      <div class="quiz-opt" onclick="fq(this,true,'fq6')">AirDrop, Universal Clipboard, Continuity Camera — iPhone και Mac δουλεύουν σαν ένα</div>
+      <div class="quiz-opt" onclick="fq(this,false,'fq6')">Το Mac έχει USB-C connectivity</div>
+    </div>
+    <div class="quiz-feedback" id="fq6-fb"></div>
+  </div>
+
+  <div class="final-quiz-card">
+    <div class="quiz-q">7. Γιατί να προτείνεις upgrade RAM τώρα και όχι αργότερα;</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="fq(this,false,'fq7')">Γιατί η βασική RAM είναι αργή</div>
+      <div class="quiz-opt" onclick="fq(this,true,'fq7')">Γιατί η RAM στα Mac ενσωματώνεται στο chip και δεν μπορεί να αναβαθμιστεί αργότερα</div>
+      <div class="quiz-opt" onclick="fq(this,false,'fq7')">Γιατί το upgrade κοστίζει λιγότερο τώρα</div>
+    </div>
+    <div class="quiz-feedback" id="fq7-fb"></div>
+  </div>
+
+  <div class="final-quiz-card">
+    <div class="quiz-q">8. Ένας video editor θέλει γρήγορο ProRes 4K export. Ποιο Mac προτείνεις;</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="fq(this,false,'fq8')">MacBook Air M5 — fanless και αθόρυβο</div>
+      <div class="quiz-opt" onclick="fq(this,false,'fq8')">iMac M4 — μεγάλη 24" οθόνη</div>
+      <div class="quiz-opt" onclick="fq(this,true,'fq8')">MacBook Pro 16" M5 Max — δύο ProRes encode engines</div>
+    </div>
+    <div class="quiz-feedback" id="fq8-fb"></div>
+  </div>
+
+  <div class="final-quiz-card">
+    <div class="quiz-q">9. Ποιο feature χρησιμοποιεί το iPad ως δεύτερη οθόνη του Mac;</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="fq(this,false,'fq9')">AirDrop</div>
+      <div class="quiz-opt" onclick="fq(this,true,'fq9')">Sidecar</div>
+      <div class="quiz-opt" onclick="fq(this,false,'fq9')">Handoff</div>
+    </div>
+    <div class="quiz-feedback" id="fq9-fb"></div>
+  </div>
+
+  <div class="final-quiz-card">
+    <div class="quiz-q">10. Οικογένεια για σπίτι — εργασίες και Netflix. Τι προτείνεις;</div>
+    <div class="quiz-opts">
+      <div class="quiz-opt" onclick="fq(this,true,'fq10')">iMac M4 — all-in-one, 24" 4.5K, περιλαμβάνει keyboard και mouse</div>
+      <div class="quiz-opt" onclick="fq(this,false,'fq10')">MacBook Pro 14" — πιο ισχυρό</div>
+      <div class="quiz-opt" onclick="fq(this,false,'fq10')">Mac Studio — επαγγελματική χρήση</div>
+    </div>
+    <div class="quiz-feedback" id="fq10-fb"></div>
+  </div>
+
+  <div class="final-result" id="finalResult">
+    <div class="result-emoji" id="rEmoji"></div>
+    <div class="result-title" id="rTitle"></div>
+    <div class="result-score" id="rScore"></div>
+    <div class="result-msg" id="rMsg"></div>
+    <button class="btn btn-secondary" style="margin-top:20px;" onclick="resetFinal()">Επανάληψη</button>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-secondary" onclick="prev()">← Setup</button>
+    <button class="btn btn-primary" id="finishBtn" onclick="showResult()" disabled>Ολοκλήρωση →</button>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+  let cur = 0;
+  const total = 8;
+  const visited = new Set([0]);
+
+  function go(i) {
+    document.getElementById('m' + cur).classList.remove('active');
+    document.querySelectorAll('.sb-item[data-i]').forEach(el => el.classList.remove('active'));
+    cur = i;
+    document.getElementById('m' + cur).classList.add('active');
+    document.querySelector('.sb-item[data-i="' + i + '"]').classList.add('active');
+    visited.add(i);
+    updateUI();
+    window.scrollTo(0, 0);
+  }
+  function next() { if (cur < total - 1) go(cur + 1); }
+  function prev() { if (cur > 0) go(cur - 1); }
+
+  function updateUI() {
+    const pct = Math.round((visited.size / total) * 100);
+    document.getElementById('pFill').style.width = pct + '%';
+    document.getElementById('pLabel').textContent = 'Ενότητα ' + (cur + 1) + ' από ' + total;
+    document.getElementById('pBadge').textContent = pct === 100 ? '🏆 Ολοκληρώθηκε!' : pct + '% ολοκληρώθηκε';
+    if (pct === 100) document.getElementById('pBadge').style.background = '#34c759';
+    document.querySelectorAll('.sb-item[data-i]').forEach(el => {
+      el.classList.toggle('done', visited.has(parseInt(el.dataset.i)));
+    });
+  }
+
+  // MINI QUIZ
+  const mqAnswers = {};
+  const mqGroups = {
+    mq1:1, mq2:1, mq3:1,
+    mq4:2, mq5:2, mq6:2,
+    mq7:3, mq8:3,
+    mq9:4, mq10:4,
+    mq11:5, mq12:5,
+    mq13:6, mq14:6
+  };
+
+  function mq(el, correct, id) {
+    if (mqAnswers[id] !== undefined) return;
+    mqAnswers[id] = correct;
+    el.parentElement.querySelectorAll('.quiz-opt').forEach(s => s.classList.add('disabled'));
+    el.classList.add(correct ? 'correct' : 'wrong');
+    if (!correct) {
+      // highlight correct answer
+      el.parentElement.querySelectorAll('.quiz-opt').forEach(s => {
+        if (s.__correct) s.classList.add('correct');
+      });
+    }
+    const fb = document.getElementById(id + '-fb');
+    fb.className = 'quiz-feedback show ' + (correct ? 'c' : 'w');
+    fb.textContent = correct ? '✅ Σωστά!' : '❌ Δεν πειράζει — δες την σωστή απάντηση στα πράσινα.';
+    // group score
+    const grp = mqGroups[id];
+    const grpKeys = Object.keys(mqGroups).filter(k => mqGroups[k] === grp);
+    if (grpKeys.every(k => mqAnswers[k] !== undefined)) {
+      const ct = grpKeys.filter(k => mqAnswers[k]).length;
+      const sc = document.getElementById('mqs' + grp);
+      if (sc) { sc.className = 'quiz-score show'; sc.textContent = '📊 Αποτέλεσμα: ' + ct + ' / ' + grpKeys.length + (ct === grpKeys.length ? ' — Άριστα! 🎉' : ' — Δες ξανά την ενότητα αν χρειαστεί.'); }
+    }
+  }
+
+  // Mark correct answers in DOM so we can highlight them
+  document.querySelectorAll('.quiz-opt').forEach(el => {
+    const handler = el.getAttribute('onclick');
+    if (handler && handler.includes('true')) el.__correct = true;
+  });
+
+  // FINAL QUIZ
+  const fqAnswers = {};
+  const fqTotal = 10;
+
+  function fq(el, correct, id) {
+    if (fqAnswers[id] !== undefined) return;
+    fqAnswers[id] = correct;
+    el.parentElement.querySelectorAll('.quiz-opt').forEach(s => s.classList.add('disabled'));
+    el.classList.add(correct ? 'correct' : 'wrong');
+    if (!correct) {
+      el.parentElement.querySelectorAll('.quiz-opt').forEach(s => { if (s.__correct) s.classList.add('correct'); });
+    }
+    const fb = document.getElementById(id + '-fb');
+    fb.className = 'quiz-feedback show ' + (correct ? 'c' : 'w');
+    fb.textContent = correct ? '✅ Σωστά!' : '❌ Δεν πειράζει — δες την σωστή απάντηση παραπάνω.';
+    if (Object.keys(fqAnswers).length === fqTotal) document.getElementById('finishBtn').disabled = false;
+  }
+
+  function showResult() {
+    const score = Object.values(fqAnswers).filter(Boolean).length;
+    const pct = Math.round((score / fqTotal) * 100);
+    const r = document.getElementById('finalResult');
+    r.className = 'final-result show';
+    r.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('rScore').textContent = score + ' / ' + fqTotal + ' (' + pct + '%)';
+    let emoji, title, msg;
+    if (pct === 100) { emoji='🏆'; title='Τέλειο!'; msg='Άριστο αποτέλεσμα. Είσαι έτοιμος/η για το floor.'; }
+    else if (pct >= 80) { emoji='🎉'; title='Πολύ καλά!'; msg='Καλή δουλειά. Δες τις ερωτήσεις που έχασες και θα είσαι έτοιμος/η.'; }
+    else if (pct >= 60) { emoji='📚'; title='Καλή προσπάθεια!'; msg='Επανέλαβε τις ενότητες που δυσκολεύτηκες και ξαναδοκίμασε.'; }
+    else { emoji='🔄'; title='Συνέχισε!'; msg='Ξανακοίτα τις ενότητες — η γνώση έρχεται με εξάσκηση.'; }
+    document.getElementById('rEmoji').textContent = emoji;
+    document.getElementById('rTitle').textContent = title;
+    document.getElementById('rMsg').textContent = msg;
+    visited.add(7);
+    updateUI();
+  }
+
+  function resetFinal() {
+    Object.keys(fqAnswers).forEach(k => delete fqAnswers[k]);
+    document.querySelectorAll('.final-quiz-card .quiz-opt').forEach(o => { o.className = 'quiz-opt'; });
+    document.querySelectorAll('.final-quiz-card .quiz-feedback').forEach(f => f.className = 'quiz-feedback');
+    document.getElementById('finalResult').className = 'final-result';
+    document.getElementById('finishBtn').disabled = true;
+    window.scrollTo(0, 0);
+  }
+
+  updateUI();
+</script>
+</body>
+</html>
