@@ -427,27 +427,27 @@
     <div class="quiz-card">
       <div class="quiz-q">1. Πελάτης κάνει 2 ώρες ProRes 4K export καθημερινά. Τι του προτείνεις και με ποιο real-world argument;</div>
       <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,true,'mq_p1')">MacBook Pro M5 Max — τα 2 ProRes encode engines μειώνουν το export από ~35 λεπτά σε ~8 λεπτά. Για κάποιον που κάνει αυτό καθημερινά, αυτό είναι ανάκτηση >1 ώρας τη μέρα.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq_p1')">MacBook Pro M5 Pro — έχει περισσότερη RAM</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq_p1')">Mac Studio — είναι πιο ισχυρό</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq_p1')">MacBook Pro M5 Max — έχει 2 ProRes encode engines αντί για 1, οπότε 1 ώρα footage εξάγεται σε ~8 λεπτά αντί ~35. Για daily ProRes work, αυτό είναι η πιο σημαντική πρακτική διαφορά.</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq_p1')">MacBook Pro M5 Pro — έχει μεγαλύτερο memory bandwidth από M5 και χειρίζεται multicam χωρίς proxy, οπότε είναι αρκετό για τα περισσότερα 4K workflows.</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq_p1')">Mac Studio M4 Max — για fixed studio setup δίνει υψηλότερη sustained απόδοση και περισσότερα ports, οπότε μπορεί να είναι καλύτερη επιλογή αν δεν ταξιδεύει.</div>
     </div>
       <div class="quiz-feedback" id="mq_p1-fb"></div>
     </div>
     <div class="quiz-card">
       <div class="quiz-q">2. Πελάτης θέλει iPad αλλά κάνει πολύ typing. Ρωτάει αν iPad mini κάνει. Τι του λες;</div>
       <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,false,'mq_p2')">«Πάρε iPad Pro»</div>
-        <div class="quiz-opt" onclick="mq(this,true,'mq_p2')">«Το iPad mini δεν έχει dedicated Magic Keyboard με trackpad. Αν γράφεις πολύ, το iPad Air με Magic Keyboard δίνει MacBook-like εμπειρία — trackpad, haptic feedback, proper keyboard layout.»</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq_p2')">«Ναι, υποστηρίζει Bluetooth keyboard»</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq_p2')">«Πάρε iPad Pro — έχει M5 chip, Face ID και OLED οθόνη, οπότε ακόμα και με Bluetooth keyboard θα έχει καλύτερη συνολική εμπειρία από το mini.»</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq_p2')">«Το iPad mini δεν έχει dedicated Magic Keyboard με trackpad — μόνο Bluetooth keyboards. Αν γράφεις πολύ, το iPad Air με Magic Keyboard δίνει trackpad, haptic feedback και proper layout, δηλαδή πολύ πιο κοντά σε laptop εμπειρία.»</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq_p2')">«Ναι, με ένα καλό Bluetooth keyboard το iPad mini λειτουργεί άνετα για typing — η οθόνη 8.3" είναι αρκετή για documents και email.»</div>
     </div>
       <div class="quiz-feedback" id="mq_p2-fb"></div>
     </div>
     <div class="quiz-card">
       <div class="quiz-q">3. Τι διαφορά κάνει στην πράξη το διπλάσιο memory bandwidth του M5 Pro (307 vs 153 GB/s) σε σχέση με M5;</div>
       <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,true,'mq_p3')">Σε sustained workloads (multicam editing, large compiles), η CPU/GPU τροφοδοτείται με δεδομένα 2× πιο γρήγορα — δεν κάθεται να περιμένει data. Αποτέλεσμα: δεν throttle υπό φόρτο, handles 8 streams 4K vs 3-4 του M5.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq_p3')">Επιτρέπει περισσότερη αποθήκευση</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq_p3')">Κάνει τη μπαταρία να κρατάει περισσότερο</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq_p3')">Σε sustained workloads (multicam 4K, μεγάλα Xcode compiles) η CPU/GPU τροφοδοτείται 2× πιο γρήγορα — ο M5 Pro δεν μειώνει απόδοση υπό παρατεταμένο φόρτο, ενώ ο M5 μπορεί. Χειρίζεται 8 streams 4K vs 3-4 του M5.</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq_p3')">Επιτρέπει μεγαλύτερη SSD χωρητικότητα — το M5 Pro ξεκινά από 1TB αντί 512GB του M5, οπότε υπάρχει περισσότερος χώρος για project files και footage χωρίς εξωτερικό δίσκο.</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq_p3')">Βελτιώνει σημαντικά την αυτονομία — ο M5 Pro είναι πιο αποδοτικός ανά watt, οπότε σε ίδια battery capacity κρατάει περισσότερο ακόμα και υπό φόρτο.</div>
     </div>
       <div class="quiz-feedback" id="mq_p3-fb"></div>
     </div>
@@ -529,18 +529,18 @@
     <div class="quiz-card">
       <div class="quiz-q">1. Ποιο είναι το πιο σημαντικό βήμα του GUEST framework και γιατί συχνά παραλείπεται;</div>
       <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,true,'mq1')">Understand — γιατί οι περισσότεροι πωλητές βιάζονται να προτείνουν πριν καταλάβουν τι χρειάζεται πραγματικά ο πελάτης</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq1')">Suggest — γιατί η σωστή σύσταση κλείνει τη συναλλαγή</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq1')">Greet — γιατί η πρώτη εντύπωση είναι κρίσιμη</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq1')">Understand — οι περισσότεροι πωλητές βιάζονται να προτείνουν αμέσως και παραλείπουν αυτό το βήμα, με αποτέλεσμα να προτείνουν κάτι που δεν ταιριάζει στις πραγματικές ανάγκες.</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq1')">Suggest — αν δεν φτάσεις ποτέ στο σημείο να κάνεις σαφή σύσταση, η συνομιλία δεν οδηγεί πουθενά και ο πελάτης φεύγει χωρίς απόφαση.</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq1')">Greet — στα πρώτα 3 δευτερόλεπτα ο πελάτης αποφασίζει αν θα εμπιστευτεί τον πωλητή, οπότε αν χαθεί αυτή η στιγμή δύσκολα ανακτάται η σχέση.</div>
     </div>
       <div class="quiz-feedback" id="mq1-fb"></div>
     </div>
     <div class="quiz-card">
       <div class="quiz-q">2. Πελάτης λέει «απλώς κοιτάω». Τι διαβάζει ο expert από αυτό;</div>
       <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,true,'mq2')">Ότι ενδιαφέρεται αλλά δεν θέλει να νιώσει πίεση — η σωστή κίνηση είναι να χαλαρώσεις την ατμόσφαιρα, όχι να αποχωρήσεις</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq2')">Ότι δεν θέλει βοήθεια και πρέπει να τον αφήσεις</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq2')">Ότι δεν έχει budget</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq2')">Ότι ενδιαφέρεται αλλά θέλει να εξερευνήσει χωρίς να νιώσει πίεση — η σωστή κίνηση είναι να χαλαρώσεις τη δυναμική, να μείνεις διαθέσιμος και να περιμένεις την κατάλληλη στιγμή.</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq2')">Ότι δεν έχει αποφασίσει ακόμα τι θέλει — καλύτερα να τον αφήσεις να εξερευνήσει μόνος του και να είσαι διαθέσιμος αν σε χρειαστεί.</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq2')">Ότι έχει ήδη κάνει έρευνα online και θέλει απλώς να επιβεβαιώσει αυτό που έχει ήδη αποφασίσει — οπότε δεν χρειάζεται πολλή πληροφορία.</div>
     </div>
       <div class="quiz-feedback" id="mq2-fb"></div>
     </div>
@@ -633,18 +633,18 @@
     <div class="quiz-card">
       <div class="quiz-q">1. Πελάτης λέει «το Android tablet που κοιτάω έχει πολύ υψηλότερα nits από το iPad». Πώς αντιδράς;</div>
       <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,false,'mq3')">«Ναι αλλά το iPad έχει καλύτερο chip»</div>
-        <div class="quiz-opt" onclick="mq(this,true,'mq3')">Αναγνωρίζεις το spec, εξηγείς ότι το iPad Pro Tandem OLED έχει 1000 nits full-screen / 1600 peak που είναι ήδη εξαιρετικό, και γυρίζεις στο ecosystem: «Χρησιμοποιείς iPhone ή Mac;»</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq3')">«Τα nits δεν έχουν σημασία στην πράξη»</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq3')">«Ναι, σε peak brightness το Android tablet υπερέχει — αλλά το iPad Pro Tandem OLED έχει καλύτερη χρωματική ακρίβεια P3 που είναι πιο σημαντική για creative work.»</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq3')">Αναγνωρίζεις ότι τα nits είναι πραγματικά υψηλότερα στο Android tablet, εξηγείς τη διαφορά Tandem OLED (1000 nits full-screen vs peak brightness) και γυρίζεις στην ουσία: «Χρησιμοποιείς ήδη iPhone ή Mac;»</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq3')">«Τα nits μετράνε κυρίως για outdoor χρήση — αν ο πελάτης δουλεύει κυρίως σε εσωτερικό χώρο, το iPad Pro Tandem OLED δίνει καλύτερα αποτελέσματα στην πράξη.»</div>
     </div>
       <div class="quiz-feedback" id="mq3-fb"></div>
     </div>
     <div class="quiz-card">
       <div class="quiz-q">2. Γιατί το Apple Intelligence είναι ισχυρότερο selling point για B2B αγοραστές vs Google Gemini;</div>
       <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,true,'mq4')">On-device processing και Private Cloud Compute — τα εταιρικά δεδομένα δεν φεύγουν στα server τρίτων. Κρίσιμο για GDPR compliance και εταιρική ασφάλεια.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq4')">Γιατί είναι πιο έξυπνο από το Gemini</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq4')">Γιατί είναι δωρεάν</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq4')">On-device processing και Private Cloud Compute — εταιρικά AI requests δεν φεύγουν σε third-party servers. Ακόμα και η Apple δεν μπορεί να δει τα δεδομένα, κάτι που είναι κρίσιμο για GDPR.</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq4')">Γιατί είναι πιο αξιόπιστο — το Gemini έχει documented cases hallucinations, ενώ το Apple Intelligence εστιάζει σε tasks που κάνει σωστά αντί να προσπαθεί να απαντήσει σε οτιδήποτε.</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq4')">Γιατί ενσωματώνεται σε όλες τις Apple εφαρμογές χωρίς extra subscription — για εταιρίες που ήδη πληρώνουν Microsoft 365 και Google Workspace, δεν χρειάζεται άλλη γραμμή κόστους.</div>
     </div>
       <div class="quiz-feedback" id="mq4-fb"></div>
     </div>
@@ -734,18 +734,18 @@
     <div class="quiz-card">
       <div class="quiz-q">1. IT Manager λέει «δεν χρειαζόμαστε AppleCare+, έχουμε εσωτερικό IT». Ποιο argument χρησιμοποιείς;</div>
       <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,true,'mq5')">Express Replacement — αν σπάσει συσκευή σε ταξίδι, η Apple στέλνει αντικατάσταση πριν επιστρέψεις την παλιά. Zero downtime. Το εσωτερικό IT δεν μπορεί να κάνει αυτό.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq5')">«Οι επισκευές είναι ακριβές»</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq5')">«Αλλά είναι φθηνό»</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq5')">Express Replacement — αν σπάσει συσκευή ενώ ο χρήστης είναι εκτός γραφείου, η Apple στέλνει αντικατάσταση πριν επιστρέψεις την παλιά. Ο εσωτερικός IT ακόμα και με spare devices δεν μπορεί να το κάνει on-the-road.</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq5')">«Μια επισκευή MacBook Pro display εκτός εγγύησης κοστίζει €600+, ενώ το AppleCare+ για 2 χρόνια κοστίζει ~€300 — ο υπολογισμός βγαίνει εύκολα υπέρ της κάλυψης.»</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq5')">«Το AppleCare+ for Business Essentials περιλαμβάνει 24/7 support και MDM — συνδυάζει ασφάλεια hardware με enterprise support σε ένα πακέτο, χωρίς να χρειαστεί ξεχωριστή MDM λύση.»</div>
     </div>
       <div class="quiz-feedback" id="mq5-fb"></div>
     </div>
     <div class="quiz-card">
       <div class="quiz-q">2. Πότε πρέπει να αναφέρεις το Trade In στη συνομιλία;</div>
       <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,true,'mq6')">Νωρίς, κατά τη φάση κατανόησης — «έχεις παλιά Apple συσκευή;» αλλάζει το pricing frame από την αρχή</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq6')">Μόνο αν ο πελάτης αναφέρει τιμή</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq6')">Στο τέλος, μετά την απόφαση αγοράς</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq6')">Νωρίς, στη φάση κατανόησης — ρωτώντας «έχεις παλιά Apple συσκευή;» ο πελάτης κάνει τους υπολογισμούς του με τη μειωμένη τιμή από την αρχή και δεν βλέπει ποτέ την πλήρη τιμή σαν αντίρρηση.</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq6')">Μόνο αν ο πελάτης φέρει μόνος του το θέμα της παλιάς συσκευής — δεν θέλεις να φαίνεται ότι ψάχνεις πράγματα να αγοράσεις, γιατί μπορεί να ερμηνευτεί σαν πίεση.</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq6')">Στο τέλος, σαν τελευταίο βήμα — αφού ο πελάτης έχει ήδη πειστεί για την αξία, το Trade In λειτουργεί σαν bonus που κάνει τη συναλλαγή ακόμα πιο ελκυστική.</div>
     </div>
       <div class="quiz-feedback" id="mq6-fb"></div>
     </div>
@@ -830,18 +830,18 @@
     <div class="quiz-card">
       <div class="quiz-q">1. Πελάτης επιστρέφει iPad μετά 4 μέρες, λέει «δεν με βολεύει». Τι κάνεις πρώτα;</div>
       <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,true,'mq7')">Ρωτάς «τι ακριβώς δεν λειτούργησε όπως περίμενες;» — συχνά η αιτία είναι learning curve που λύνεται με 15 λεπτά demo</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq7')">Επεξεργάζεσαι την επιστροφή αμέσως</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq7')">Προτείνεις διαφορετικό μοντέλο</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq7')">Ρωτάς «τι ακριβώς δεν λειτούργησε όπως περίμενες;» πριν κάνεις οτιδήποτε — συχνά δεν είναι θέμα προϊόντος αλλά setup ή learning curve που λύνεται με ένα σύντομο demo.</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq7')">Επεξεργάζεσαι την επιστροφή αμέσως και χωρίς ερωτήσεις — ο πελάτης έχει το δικαίωμα επιστροφής και δεν πρέπει να νιώθει ότι τον κρατάς πίσω ή τον πιέζεις.</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq7')">Προτείνεις αμέσως διαφορετικό μοντέλο που ίσως ταιριάζει καλύτερα — αν έκανε λάθος επιλογή, καλύτερα να λυθεί τώρα παρά να φύγει με κάτι που δεν τον εξυπηρετεί.</div>
     </div>
       <div class="quiz-feedback" id="mq7-fb"></div>
     </div>
     <div class="quiz-card">
       <div class="quiz-q">2. Πελάτης «γνώστης» σε ρωτάει κάτι πολύ τεχνικό που δεν ξέρεις. Τι κάνεις;</div>
       <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,false,'mq8')">Δίνεις μια προσεγγιστική απάντηση για να δείξεις ότι ξέρεις</div>
-        <div class="quiz-opt" onclick="mq(this,true,'mq8')">«Δεν είμαι σίγουρος για αυτό — ας το ελέγξω τώρα μαζί σου.» Η ειλικρίνεια χτίζει εμπιστοσύνη, η λανθασμένη απάντηση τη καταστρέφει.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq8')">Αλλάζεις θέμα</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq8')">Δίνεις μια γενική απάντηση που καλύπτει την ερώτηση χωρίς να μπεις σε λεπτομέρειες που δεν είσαι σίγουρος — διατηρείς την εμπιστοσύνη χωρίς να παραδεχτείς άγνοια.</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq8')">«Δεν είμαι σίγουρος για αυτό συγκεκριμένα — ας το ελέγξουμε μαζί τώρα.» Ο πελάτης που ξέρει πολλά εκτιμά την ειλικρίνεια πολύ περισσότερο από μια λανθασμένη σίγουρη απάντηση.</div>
+        <div class="quiz-opt" onclick="mq(this,false,'mq8')">Αλλάζεις θέμα προς κάτι που ξέρεις καλά — στρέφεις τη συζήτηση στα πλεονεκτήματα που γνωρίζεις σίγουρα και αφήνεις την τεχνική ερώτηση αναπάντητη.</div>
     </div>
       <div class="quiz-feedback" id="mq8-fb"></div>
     </div>
@@ -1013,7 +1013,7 @@
       <div class="quiz-q">1. Πελάτης λέει «το Google Gemini είναι πολύ πιο έξυπνο από το Siri». Πώς αντιδράς;</div>
       <div class="quiz-opts">
         <div class="quiz-opt" onclick="mq(this,false,'mq10')">«Δεν είναι αλήθεια»</div>
-        <div class="quiz-opt" onclick="mq(this,true,'mq10')">Αναγνωρίζεις: «Σε ορισμένες tasks, ναι — το Gemini είναι ισχυρό. Αλλά λειτουργεί στα server της Google με τα δεδομένα σου. Το Apple Intelligence επεξεργάζεται on-device ή σε Private Cloud που ακόμα και η Apple δεν μπορεί να δει. Ανάλογα τι σου είναι σημαντικό.»</div>
+        <div class="quiz-opt" onclick="mq(this,true,'mq10')">Αναγνωρίζεις ότι το Gemini είναι ισχυρό σε web-based tasks, αλλά επισημαίνεις ότι λειτουργεί cloud-first — τα δεδομένα φεύγουν στα Google servers. Το Apple Intelligence επεξεργάζεται on-device ή σε Private Cloud, ακόμα και η Apple δεν έχει πρόσβαση.</div>
         <div class="quiz-opt" onclick="mq(this,false,'mq10')">«Το Siri βελτιώνεται συνέχεια»</div>
     </div>
       <div class="quiz-feedback" id="mq10-fb"></div>
