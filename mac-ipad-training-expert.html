@@ -6,1169 +6,913 @@
 <title>Mac & iPad Expert Training</title>
 <style>
   :root {
-    --gold: #ffd60a;
-    --gold-dim: rgba(255,214,10,0.15);
-    --dark: #1d1d1f;
-    --darker: #0a0a0a;
-    --mid: #2a2a2e;
-    --gray: #6e6e73;
-    --light-gray: rgba(255,255,255,0.06);
-    --white: #fff;
-    --green: #34c759;
-    --blue: #0071e3;
-    --orange: #ff9f0a;
-    --red: #ff3b30;
-    --purple: #af52de;
-    --border: rgba(255,255,255,0.08);
-    --sidebar: 270px;
-    --header: 60px;
+    --bg:#0a0a0a;--card:#1c1c1e;--border:rgba(255,255,255,0.07);
+    --gold:#ffd60a;--gold-dim:rgba(255,214,10,0.12);
+    --blue:#0a84ff;--green:#30d158;--red:#ff453a;--orange:#ff9f0a;--purple:#bf5af2;
+    --white:#fff;--gray:rgba(255,255,255,0.45);--light:rgba(255,255,255,0.06);
+    --sidebar:270px;--header:60px;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif; background: var(--darker); color: rgba(255,255,255,0.88); font-size: 15px; line-height: 1.65; }
-
-  /* HEADER */
-  .header {
-    position: sticky; top: 0; z-index: 100;
-    height: var(--header);
-    background: rgba(10,10,10,0.92);
-    backdrop-filter: blur(24px);
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; padding: 0 24px; gap: 16px;
-  }
-  .header-icon { font-size: 18px; }
-  .header-title { font-size: 15px; font-weight: 700; letter-spacing: -0.3px; color: white; }
-  .header-sub { font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 0.3px; }
-  .progress-wrap { flex: 1; max-width: 160px; margin-left: auto; }
-  .progress-lbl { font-size: 10px; color: rgba(255,255,255,0.3); margin-bottom: 5px; letter-spacing: 0.3px; }
-  .progress-bg { background: rgba(255,255,255,0.1); border-radius: 3px; height: 3px; }
-  .progress-fill { background: linear-gradient(90deg, var(--gold), #ff9f0a); height: 3px; border-radius: 3px; width: 0%; transition: width 0.4s; }
-  .header-badge { font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px; background: var(--gold); color: var(--darker); white-space: nowrap; letter-spacing: 0.5px; text-transform: uppercase; }
-
-  /* LAYOUT */
-  .layout { display: flex; min-height: calc(100vh - var(--header)); }
-
-  /* SIDEBAR */
-  .sidebar {
-    width: var(--sidebar); flex-shrink: 0;
-    background: #0d0d0f;
-    border-right: 1px solid var(--border);
-    position: sticky; top: var(--header);
-    height: calc(100vh - var(--header));
-    overflow-y: auto; padding: 20px 0;
-  }
-  .sb-label { font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.2); text-transform: uppercase; letter-spacing: 1.5px; padding: 10px 20px 4px; }
-  .sb-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 9px 20px; cursor: pointer; font-size: 13px;
-    color: rgba(255,255,255,0.4); border-left: 2px solid transparent;
-    transition: all 0.15s; user-select: none;
-  }
-  .sb-item:hover { background: var(--light-gray); color: rgba(255,255,255,0.75); }
-  .sb-item.active { background: var(--gold-dim); border-left-color: var(--gold); color: var(--gold); font-weight: 600; }
-  .sb-item .sb-icon { font-size: 14px; width: 18px; text-align: center; opacity: 0.7; }
-  .sb-item.active .sb-icon { opacity: 1; }
-  .sb-item .sb-check { margin-left: auto; color: var(--green); font-size: 11px; opacity: 0; transition: opacity 0.2s; }
-  .sb-item.done .sb-check { opacity: 0.7; }
-
-  /* MAIN */
-  .main { flex: 1; padding: 40px 48px; max-width: 920px; }
-  .module { display: none; animation: fadeUp 0.3s ease; }
-  .module.active { display: block; }
-  @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-
-  /* MODULE HEADER */
-  .mod-eyebrow { font-size: 10px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; opacity: 0.8; }
-  .mod-title { font-size: 32px; font-weight: 700; letter-spacing: -0.8px; line-height: 1.1; margin-bottom: 10px; color: white; }
-  .mod-desc { font-size: 16px; color: rgba(255,255,255,0.45); line-height: 1.55; margin-bottom: 8px; }
-  .mod-meta { display: flex; gap: 16px; margin: 14px 0 26px; flex-wrap: wrap; }
-  .mod-meta span { font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 0.3px; }
-  .mod-divider { height: 1px; background: var(--border); margin-bottom: 28px; }
-
-  /* CARDS */
-  .card { background: var(--mid); border-radius: 14px; padding: 22px 24px; margin-bottom: 16px; border: 1px solid var(--border); }
-  .card-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: white; display: flex; align-items: center; gap: 8px; }
-
-  /* EXPERT CARDS */
-  .expert-card {
-    background: var(--mid); border-radius: 14px; padding: 22px 24px;
-    margin-bottom: 14px; border: 1px solid var(--border);
-    border-left: 3px solid var(--gold);
-  }
-  .expert-card.blue { border-left-color: var(--blue); }
-  .expert-card.green { border-left-color: var(--green); }
-  .expert-card.purple { border-left-color: var(--purple); }
-  .expert-card.red { border-left-color: var(--red); }
-  .expert-card.orange { border-left-color: var(--orange); }
-  .expert-card h3 { font-size: 16px; font-weight: 700; color: white; margin-bottom: 8px; }
-  .expert-card p { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; }
-
-  /* SPEC LIST */
-  .spec-list { list-style: none; }
-  .spec-list li { font-size: 13px; color: rgba(255,255,255,0.6); padding: 3px 0; display: flex; gap: 8px; align-items: flex-start; line-height: 1.5; }
-  .spec-list li::before { content: '·'; color: var(--gold); font-weight: 700; flex-shrink: 0; opacity: 0.7; }
-  .spec-list li strong { color: rgba(255,255,255,0.85); }
-
-  /* CALLOUT */
-  .callout { border-radius: 12px; padding: 14px 18px; margin: 14px 0; display: flex; gap: 12px; align-items: flex-start; font-size: 14px; }
-  .callout-gold { background: var(--gold-dim); border: 1px solid rgba(255,214,10,0.2); }
-  .callout-blue { background: rgba(0,113,227,0.1); border: 1px solid rgba(0,113,227,0.2); }
-  .callout-green { background: rgba(52,199,89,0.1); border: 1px solid rgba(52,199,89,0.2); }
-  .callout-red { background: rgba(255,59,48,0.1); border: 1px solid rgba(255,59,48,0.2); }
-  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-  .callout-body { line-height: 1.55; color: rgba(255,255,255,0.7); }
-  .callout-body strong { display: block; font-size: 14px; margin-bottom: 3px; color: white; }
-
-  /* DIALOGUE CARDS — for coaching scripts */
-  .dialogue { background: #111113; border-radius: 12px; padding: 18px 20px; margin: 14px 0; border: 1px solid var(--border); }
-  .dialogue-role { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 5px; }
-  .dialogue-role.customer { color: rgba(255,255,255,0.3); }
-  .dialogue-role.expert { color: var(--gold); }
-  .dialogue-line { font-size: 14px; line-height: 1.55; font-style: italic; }
-  .dialogue-line.customer { color: rgba(255,255,255,0.45); }
-  .dialogue-line.expert { color: rgba(255,255,255,0.85); }
-  .dialogue-note { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 8px; font-style: normal; padding-top: 8px; border-top: 1px solid var(--border); }
-
-  /* SCENARIO */
-  .scenario { background: var(--mid); border-radius: 14px; padding: 20px 22px; margin-bottom: 14px; border: 1px solid var(--border); }
-  .scenario-who { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.3); margin-bottom: 6px; }
-  .scenario-context { font-size: 13px; color: rgba(255,255,255,0.35); margin-bottom: 10px; padding: 8px 12px; background: rgba(255,255,255,0.03); border-radius: 8px; }
-  .scenario-challenge { font-size: 12px; font-weight: 700; color: var(--orange); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .scenario-rec { font-size: 14px; color: rgba(255,255,255,0.65); margin-bottom: 8px; }
-  .scenario-rec strong { color: rgba(255,255,255,0.9); }
-  .scenario-insight { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
-  .scenario-insight span { color: var(--green); font-weight: 600; }
-
-  /* COMPARE TABLE */
-  .compare-wrap { overflow-x: auto; border-radius: 10px; margin: 14px 0; border: 1px solid var(--border); }
-  .compare-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  .compare-table th { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.5); padding: 10px 12px; text-align: center; font-size: 11px; font-weight: 600; letter-spacing: 0.3px; }
-  .compare-table th:first-child { text-align: left; }
-  .compare-table td { padding: 9px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); text-align: center; color: rgba(255,255,255,0.55); }
-  .compare-table td:first-child { text-align: left; color: rgba(255,255,255,0.75); font-weight: 500; }
-  .compare-table tr:last-child td { border-bottom: none; }
-  .compare-table .hl { color: var(--gold) !important; font-weight: 700; }
-  .compare-table .good { color: var(--green) !important; font-weight: 600; }
-
-  /* SECTION TITLE */
-  .section-title { font-size: 18px; font-weight: 700; color: white; letter-spacing: -0.3px; margin: 28px 0 12px; }
-
-  /* STEPS */
-  .step-list { margin: 12px 0; }
-  .step-item { display: flex; gap: 14px; margin-bottom: 16px; align-items: flex-start; }
-  .step-num { width: 26px; height: 26px; border-radius: 50%; background: var(--gold); color: var(--darker); font-size: 12px; font-weight: 800; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-  .step-body h4 { font-size: 14px; font-weight: 600; color: white; margin-bottom: 3px; }
-  .step-body p { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.5; }
-  .step-body .note { margin-top: 5px; font-size: 12px; background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.4); padding: 5px 10px; border-radius: 6px; border-left: 2px solid var(--gold); }
-
-  /* QUIZ */
-  .quiz-section { background: #0d0d0f; border-radius: 14px; padding: 24px; margin: 28px 0 0; border: 1px solid var(--border); }
-  .quiz-header { font-size: 11px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 18px; opacity: 0.8; }
-  .quiz-card { background: var(--light-gray); border-radius: 12px; padding: 18px; margin-bottom: 12px; border: 1px solid var(--border); }
-  .quiz-card:last-of-type { margin-bottom: 0; }
-  .quiz-q { font-size: 14px; font-weight: 600; margin-bottom: 12px; color: white; line-height: 1.4; }
-  .quiz-opts { display: flex; flex-direction: column; gap: 7px; }
-  .quiz-opt { padding: 10px 14px; border-radius: 9px; border: 1px solid rgba(255,255,255,0.08); cursor: pointer; font-size: 13px; background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.6); transition: all 0.15s; user-select: none; line-height: 1.4; }
-  .quiz-opt:hover { border-color: var(--gold); background: var(--gold-dim); color: white; }
-  .quiz-opt.correct { border-color: var(--green); background: rgba(52,199,89,0.12); color: #6eda8a; font-weight: 600; }
-  .quiz-opt.wrong { border-color: var(--red); background: rgba(255,59,48,0.1); color: #ff6b6b; }
-  .quiz-opt.disabled { pointer-events: none; }
-  .quiz-feedback { margin-top: 10px; font-size: 12px; padding: 8px 12px; border-radius: 7px; display: none; }
-  .quiz-feedback.show { display: block; }
-  .quiz-feedback.c { background: rgba(52,199,89,0.12); color: #6eda8a; }
-  .quiz-feedback.w { background: rgba(255,59,48,0.1); color: #ff6b6b; }
-  .quiz-score { margin-top: 14px; padding: 10px 14px; border-radius: 9px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.7); display: none; }
-  .quiz-score.show { display: block; }
-
-  /* FINAL QUIZ */
-  .fquiz-card { background: var(--mid); border-radius: 14px; padding: 22px; margin-bottom: 14px; border: 1px solid var(--border); }
-  .fquiz-q { font-size: 14px; font-weight: 600; margin-bottom: 12px; color: white; line-height: 1.4; }
-  .fquiz-opts { display: flex; flex-direction: column; gap: 7px; }
-  .fquiz-opt { padding: 10px 14px; border-radius: 9px; border: 1px solid rgba(255,255,255,0.08); cursor: pointer; font-size: 13px; background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.6); transition: all 0.15s; user-select: none; line-height: 1.4; }
-  .fquiz-opt:hover { border-color: var(--gold); background: var(--gold-dim); color: white; }
-  .fquiz-opt.correct { border-color: var(--green); background: rgba(52,199,89,0.12); color: #6eda8a; font-weight: 600; }
-  .fquiz-opt.wrong { border-color: var(--red); background: rgba(255,59,48,0.1); color: #ff6b6b; }
-  .fquiz-opt.disabled { pointer-events: none; }
-  .fquiz-feedback { margin-top: 10px; font-size: 12px; padding: 8px 12px; border-radius: 7px; display: none; }
-  .fquiz-feedback.show { display: block; }
-  .fquiz-feedback.c { background: rgba(52,199,89,0.12); color: #6eda8a; }
-  .fquiz-feedback.w { background: rgba(255,59,48,0.1); color: #ff6b6b; }
-
-  .final-result { background: var(--mid); border-radius: 14px; padding: 36px; text-align: center; display: none; margin-top: 20px; border: 1px solid rgba(255,214,10,0.2); }
-  .final-result.show { display: block; }
-  .result-emoji { font-size: 52px; margin-bottom: 12px; }
-  .result-title { font-size: 24px; font-weight: 700; color: white; margin-bottom: 8px; }
-  .result-score { font-size: 40px; font-weight: 800; color: var(--gold); margin: 12px 0 6px; letter-spacing: -1.5px; }
-  .result-msg { font-size: 15px; color: rgba(255,255,255,0.4); }
-
-  /* NAV BUTTONS */
-  .nav-btns { display: flex; justify-content: space-between; gap: 12px; margin-top: 36px; padding-top: 22px; border-top: 1px solid var(--border); }
-  .btn { padding: 11px 22px; border-radius: 10px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; }
-  .btn-primary { background: var(--gold); color: var(--darker); }
-  .btn-primary:hover { background: #e6c200; transform: translateY(-1px); }
-  .btn-secondary { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.6); }
-  .btn-secondary:hover { background: rgba(255,255,255,0.1); color: white; }
-  .btn:disabled { opacity: 0.25; cursor: not-allowed; transform: none !important; }
-
-  @media (max-width: 700px) {
-    .sidebar { display: none; }
-    .main { padding: 24px 18px; }
-  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;background:var(--bg);color:var(--white);min-height:100vh;font-size:15px;line-height:1.65;}
+  .header{position:sticky;top:0;z-index:100;height:var(--header);background:rgba(10,10,10,0.94);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:16px;}
+  .header-title{font-size:15px;font-weight:700;color:white;}
+  .header-sub{font-size:11px;color:rgba(255,255,255,0.3);}
+  .progress-wrap{flex:1;max-width:160px;margin-left:auto;}
+  .progress-lbl{font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:5px;}
+  .progress-bg{background:rgba(255,255,255,0.1);border-radius:3px;height:3px;}
+  .progress-fill{background:linear-gradient(90deg,var(--gold),#ff9f0a);height:3px;border-radius:3px;width:0%;transition:width 0.4s;}
+  .header-badge{font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;background:var(--gold);color:var(--bg);white-space:nowrap;text-transform:uppercase;}
+  .layout{display:flex;min-height:calc(100vh - var(--header));}
+  .sidebar{width:var(--sidebar);flex-shrink:0;background:#0d0d0f;border-right:1px solid var(--border);position:sticky;top:var(--header);height:calc(100vh - var(--header));overflow-y:auto;padding:20px 0;}
+  .sb-label{font-size:9px;font-weight:700;color:rgba(255,255,255,0.2);text-transform:uppercase;letter-spacing:1.5px;padding:10px 20px 4px;}
+  .sb-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;font-size:13px;color:rgba(255,255,255,0.4);border-left:2px solid transparent;transition:all 0.15s;user-select:none;}
+  .sb-item:hover{background:var(--light);color:rgba(255,255,255,0.75);}
+  .sb-item.active{background:var(--gold-dim);border-left-color:var(--gold);color:var(--gold);font-weight:600;}
+  .sb-item .sb-icon{font-size:14px;width:18px;text-align:center;}
+  .sb-item .sb-check{margin-left:auto;color:var(--green);font-size:11px;opacity:0;transition:opacity 0.2s;}
+  .sb-item.done .sb-check{opacity:0.7;}
+  .main{flex:1;padding:40px 48px;max-width:920px;}
+  .module{display:none;animation:fadeUp 0.3s ease;}
+  .module.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  .mod-eyebrow{font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;opacity:0.8;}
+  .mod-title{font-size:30px;font-weight:700;letter-spacing:-0.8px;line-height:1.1;margin-bottom:10px;color:white;}
+  .mod-desc{font-size:15px;color:var(--gray);line-height:1.6;margin-bottom:8px;}
+  .mod-meta{display:flex;gap:16px;margin:12px 0 24px;flex-wrap:wrap;}
+  .mod-meta span{font-size:11px;color:rgba(255,255,255,0.3);}
+  .mod-divider{height:1px;background:var(--border);margin-bottom:28px;}
+  .section-title{font-size:18px;font-weight:700;color:white;letter-spacing:-0.3px;margin:28px 0 12px;}
+  .card{background:var(--card);border-radius:14px;padding:22px 24px;margin-bottom:14px;border:1px solid var(--border);}
+  .card-title{font-size:16px;font-weight:700;margin-bottom:12px;color:white;}
+  .ec{background:var(--card);border-radius:14px;padding:20px 22px;margin-bottom:14px;border:1px solid var(--border);border-left:3px solid var(--gold);}
+  .ec.bl{border-left-color:var(--blue);}.ec.gr{border-left-color:var(--green);}
+  .ec.pu{border-left-color:var(--purple);}.ec.re{border-left-color:var(--red);}.ec.or{border-left-color:var(--orange);}
+  .ec h3{font-size:15px;font-weight:700;color:white;margin-bottom:10px;}
+  .ec p{font-size:14px;color:var(--gray);line-height:1.6;}
+  .fn-table{width:100%;border-collapse:collapse;font-size:13px;}
+  .fn-table th{background:rgba(255,255,255,0.05);color:var(--gold);padding:10px 14px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+  .fn-table td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:top;color:rgba(255,255,255,0.7);}
+  .fn-table td:first-child{color:rgba(255,255,255,0.9);font-weight:600;width:28%;}
+  .fn-table td:nth-child(2){color:var(--blue);font-size:12px;width:20%;}
+  .fn-table tr:last-child td{border-bottom:none;}
+  .chip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin:14px 0;}
+  .chip-card{background:var(--card);border-radius:12px;padding:18px 20px;border:1px solid var(--border);}
+  .chip-name{font-size:14px;font-weight:800;letter-spacing:0.5px;margin-bottom:4px;}
+  .chip-device{font-size:11px;color:var(--gray);margin-bottom:12px;}
+  .chip-card ul{list-style:none;}
+  .chip-card li{font-size:12px;color:rgba(255,255,255,0.6);padding:3px 0;display:flex;gap:6px;}
+  .chip-card li::before{content:'·';color:var(--gold);opacity:0.6;flex-shrink:0;}
+  .chip-card li strong{color:rgba(255,255,255,0.85);}
+  .pb-item{margin-bottom:20px;}
+  .pb-label{font-size:13px;font-weight:600;color:white;margin-bottom:6px;display:flex;justify-content:space-between;}
+  .pb-label span{font-size:11px;color:var(--gray);font-weight:400;}
+  .pb-rows{display:flex;flex-direction:column;gap:5px;}
+  .pb-row{display:flex;align-items:center;gap:10px;}
+  .pb-lbl{font-size:11px;color:var(--gray);min-width:90px;}
+  .pb-bg{flex:1;background:rgba(255,255,255,0.08);border-radius:4px;height:8px;}
+  .pb-fill{height:8px;border-radius:4px;}
+  .pb-val{font-size:11px;color:rgba(255,255,255,0.6);min-width:40px;text-align:right;}
+  .sl{list-style:none;}
+  .sl li{font-size:13px;color:rgba(255,255,255,0.6);padding:3px 0;display:flex;gap:8px;align-items:flex-start;line-height:1.5;}
+  .sl li::before{content:'·';color:var(--gold);opacity:0.6;flex-shrink:0;}
+  .sl li strong{color:rgba(255,255,255,0.85);}
+  .cl{border-radius:12px;padding:14px 18px;margin:14px 0;display:flex;gap:12px;align-items:flex-start;font-size:14px;}
+  .cl-go{background:var(--gold-dim);border:1px solid rgba(255,214,10,0.2);}
+  .cl-bl{background:rgba(10,132,255,0.1);border:1px solid rgba(10,132,255,0.2);}
+  .cl-gr{background:rgba(48,209,88,0.1);border:1px solid rgba(48,209,88,0.2);}
+  .cl-re{background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.2);}
+  .cl-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+  .cl-body{line-height:1.55;color:rgba(255,255,255,0.7);}
+  .cl-body strong{display:block;font-size:14px;margin-bottom:3px;color:white;}
+  .sc{background:var(--card);border-radius:14px;padding:20px 22px;margin-bottom:14px;border:1px solid var(--border);}
+  .sc.go{border-left:3px solid var(--gold);}.sc.bl{border-left:3px solid var(--blue);}
+  .sc.gr{border-left:3px solid var(--green);}.sc.pu{border-left:3px solid var(--purple);}
+  .sc.or{border-left:3px solid var(--orange);}.sc.re{border-left:3px solid var(--red);}
+  .sc-who{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.3);margin-bottom:6px;}
+  .sc-ctx{font-size:13px;color:rgba(255,255,255,0.35);margin-bottom:10px;padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:8px;line-height:1.5;}
+  .sc-q{font-size:15px;font-style:italic;color:rgba(255,255,255,0.75);margin-bottom:12px;border-left:2px solid rgba(255,214,10,0.3);padding-left:10px;}
+  .sc-rec{font-size:14px;color:rgba(255,255,255,0.65);margin-bottom:8px;line-height:1.5;}
+  .sc-rec strong{color:rgba(255,255,255,0.9);}
+  .sc-feat{background:rgba(255,255,255,0.03);border-radius:8px;padding:10px 14px;margin:10px 0;border-left:2px solid var(--blue);}
+  .sc-feat .lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--blue);margin-bottom:5px;}
+  .sc-feat .txt{font-size:13px;color:rgba(255,255,255,0.65);line-height:1.5;}
+  .sc-up{background:rgba(255,214,10,0.06);border-radius:8px;padding:10px 14px;margin:10px 0;border-left:2px solid rgba(255,214,10,0.3);}
+  .sc-up .lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin-bottom:5px;}
+  .sc-up .txt{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.5;font-style:italic;}
+  .ct{overflow-x:auto;border-radius:10px;margin:14px 0;border:1px solid var(--border);}
+  .ct table{width:100%;border-collapse:collapse;font-size:12px;}
+  .ct table th{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.5);padding:10px 12px;text-align:center;font-size:11px;font-weight:600;}
+  .ct table th:first-child{text-align:left;}
+  .ct table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,0.04);text-align:center;color:rgba(255,255,255,0.55);}
+  .ct table td:first-child{text-align:left;color:rgba(255,255,255,0.8);font-weight:500;}
+  .ct table tr:last-child td{border-bottom:none;}
+  .hl{color:var(--gold)!important;font-weight:700;}.gd{color:var(--green)!important;font-weight:600;}
+  .cn{color:rgba(255,255,255,0.15)!important;}
+  .qs{background:#0d0d0f;border-radius:14px;padding:24px;margin:28px 0 0;border:1px solid var(--border);}
+  .qh{font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:18px;opacity:0.8;}
+  .qc{background:var(--light);border-radius:12px;padding:18px;margin-bottom:12px;border:1px solid var(--border);}
+  .qc:last-of-type{margin-bottom:0;}
+  .qq{font-size:14px;font-weight:600;margin-bottom:12px;color:white;line-height:1.4;}
+  .qo-wrap{display:flex;flex-direction:column;gap:7px;}
+  .qo{padding:11px 14px;border-radius:9px;border:1px solid rgba(255,255,255,0.08);cursor:pointer;font-size:13px;background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.65);transition:all 0.15s;user-select:none;line-height:1.45;}
+  .qo:hover{border-color:var(--gold);background:var(--gold-dim);color:white;}
+  .qo.correct{border-color:var(--green);background:rgba(48,209,88,0.1);color:#6eda8a;font-weight:600;pointer-events:none;}
+  .qo.wrong{border-color:var(--red);background:rgba(255,69,58,0.08);color:#ff6b6b;pointer-events:none;}
+  .qo.disabled{pointer-events:none;opacity:0.5;}
+  .qf{margin-top:10px;font-size:12px;padding:8px 12px;border-radius:7px;display:none;}
+  .qf.show{display:block;}.qf.c{background:rgba(48,209,88,0.1);color:#6eda8a;}.qf.w{background:rgba(255,69,58,0.08);color:#ff6b6b;}
+  .qs-score{margin-top:14px;padding:10px 14px;border-radius:9px;background:rgba(255,255,255,0.04);border:1px solid var(--border);font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);display:none;}
+  .qs-score.show{display:block;}
+  .fqc{background:var(--card);border-radius:14px;padding:20px 22px;margin-bottom:14px;border:1px solid var(--border);}
+  .fqq{font-size:14px;font-weight:600;margin-bottom:12px;color:white;line-height:1.4;}
+  .fqo-wrap{display:flex;flex-direction:column;gap:7px;}
+  .fqo{padding:11px 14px;border-radius:9px;border:1px solid rgba(255,255,255,0.08);cursor:pointer;font-size:13px;background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.65);transition:all 0.15s;user-select:none;line-height:1.45;}
+  .fqo:hover{border-color:var(--gold);background:var(--gold-dim);color:white;}
+  .fqo.correct{border-color:var(--green);background:rgba(48,209,88,0.1);color:#6eda8a;font-weight:600;pointer-events:none;}
+  .fqo.wrong{border-color:var(--red);background:rgba(255,69,58,0.08);color:#ff6b6b;pointer-events:none;}
+  .fqo.disabled{pointer-events:none;opacity:0.5;}
+  .fqf{margin-top:10px;font-size:12px;padding:8px 12px;border-radius:7px;display:none;}
+  .fqf.show{display:block;}.fqf.c{background:rgba(48,209,88,0.1);color:#6eda8a;}.fqf.w{background:rgba(255,69,58,0.08);color:#ff6b6b;}
+  .fr{background:var(--card);border-radius:14px;padding:36px;text-align:center;display:none;margin-top:20px;border:1px solid rgba(255,214,10,0.2);}
+  .fr.show{display:block;}.fr-emoji{font-size:52px;margin-bottom:12px;}.fr-title{font-size:24px;font-weight:700;color:white;margin-bottom:8px;}
+  .fr-score{font-size:40px;font-weight:800;color:var(--gold);margin:12px 0 6px;letter-spacing:-1.5px;}.fr-msg{font-size:15px;color:var(--gray);}
+  .nav-btns{display:flex;justify-content:space-between;gap:12px;margin-top:36px;padding-top:22px;border-top:1px solid var(--border);}
+  .btn{padding:11px 22px;border-radius:10px;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:all 0.2s;}
+  .btn-p{background:var(--gold);color:var(--bg);}.btn-p:hover{background:#e6c200;transform:translateY(-1px);}
+  .btn-s{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.6);}.btn-s:hover{background:rgba(255,255,255,0.1);color:white;}
+  .btn:disabled{opacity:0.25;cursor:not-allowed;transform:none!important;}
+  @media(max-width:700px){.sidebar{display:none;}.main{padding:24px 18px;}}
 </style>
 </head>
 <body>
-
 <header class="header">
-  <span class="header-icon">💎</span>
-  <div>
-    <div class="header-title">Expert Sales Training</div>
-    <div class="header-sub">Για έμπειρους πωλητές Apple · Master Level</div>
-  </div>
+  <div><div class="header-title">💎 Expert Sales Training</div><div class="header-sub">Feature-to-Need · Lineup 2025–2026</div></div>
   <div class="progress-wrap">
-    <div class="progress-lbl" id="pLabel">ΕΝΟΤΗΤΑ 1 ΑΠΟ 9</div>
+    <div class="progress-lbl" id="pLabel">ΕΝΟΤΗΤΑ 1 ΑΠΟ 10</div>
     <div class="progress-bg"><div class="progress-fill" id="pFill"></div></div>
   </div>
   <div class="header-badge" id="pBadge">Expert</div>
 </header>
-
 <div class="layout">
 <nav class="sidebar">
   <div class="sb-label">Expert Modules</div>
   <div class="sb-item active" onclick="go(0)" data-i="0"><span class="sb-icon">💎</span>Εισαγωγή<span class="sb-check">✓</span></div>
-  <div class="sb-item" onclick="go(1)" data-i="1"><span class="sb-icon">📦</span>Προϊόντα & Chips<span class="sb-check">✓</span></div>
-  <div class="sb-item" onclick="go(2)" data-i="2"><span class="sb-icon">🧬</span>Apple Sales DNA<span class="sb-check">✓</span></div>
-  <div class="sb-item" onclick="go(3)" data-i="3"><span class="sb-icon">⚔️</span>Competitive Intelligence<span class="sb-check">✓</span></div>
-  <div class="sb-item" onclick="go(4)" data-i="4"><span class="sb-icon">🏢</span>Enterprise & B2B Mastery<span class="sb-check">✓</span></div>
-  <div class="sb-item" onclick="go(5)" data-i="5"><span class="sb-icon">🎭</span>Expert Σενάρια<span class="sb-check">✓</span></div>
-  <div class="sb-item" onclick="go(6)" data-i="6"><span class="sb-icon">🧑‍🏫</span>Coaching Junior Staff<span class="sb-check">✓</span></div>
-  <div class="sb-item" onclick="go(7)" data-i="7"><span class="sb-icon">🔮</span>Apple Intelligence & Future<span class="sb-check">✓</span></div>
-  <div class="sb-item" onclick="go(8)" data-i="8"><span class="sb-icon">🏆</span>Expert Αξιολόγηση<span class="sb-check">✓</span></div>
+  <div class="sb-item" onclick="go(1)" data-i="1"><span class="sb-icon">🔗</span>Feature → Need<span class="sb-check">✓</span></div>
+  <div class="sb-item" onclick="go(2)" data-i="2"><span class="sb-icon">💻</span>Mac: Specs & Νόημα<span class="sb-check">✓</span></div>
+  <div class="sb-item" onclick="go(3)" data-i="3"><span class="sb-icon">📱</span>iPad: Specs & Νόημα<span class="sb-check">✓</span></div>
+  <div class="sb-item" onclick="go(4)" data-i="4"><span class="sb-icon">🧬</span>Chip Differences<span class="sb-check">✓</span></div>
+  <div class="sb-item" onclick="go(5)" data-i="5"><span class="sb-icon">⚡</span>Real-World Performance<span class="sb-check">✓</span></div>
+  <div class="sb-item" onclick="go(6)" data-i="6"><span class="sb-icon">📈</span>Upsell μέσω Features<span class="sb-check">✓</span></div>
+  <div class="sb-item" onclick="go(7)" data-i="7"><span class="sb-icon">🎒</span>Αξεσουάρ ως Extension<span class="sb-check">✓</span></div>
+  <div class="sb-item" onclick="go(8)" data-i="8"><span class="sb-icon">🎭</span>Advanced Scenarios<span class="sb-check">✓</span></div>
+  <div class="sb-item" onclick="go(9)" data-i="9"><span class="sb-icon">🏆</span>Αξιολόγηση<span class="sb-check">✓</span></div>
 </nav>
-
 <main class="main">
 
-
-<!-- ══ MODULE 0 — INTRO ══ -->
+<!-- M0 INTRO -->
 <section class="module active" id="m0">
-  <div class="mod-eyebrow">Expert · Ενότητα 1 από 9</div>
-  <h1 class="mod-title">Το επόμενο επίπεδο</h1>
-  <p class="mod-desc">Αυτό το training δεν διδάσκει specs. Διδάσκει πώς σκέφτεται ένας expert — και πώς μεταφέρει αυτή τη σκέψη στους γύρω του.</p>
-  <div class="mod-meta"><span>💎 9 ενότητες</span><span>⏱ ~135 λεπτά</span><span>🎯 Master level</span></div>
+  <div class="mod-eyebrow">Expert · Ενότητα 1 από 10</div>
+  <h1 class="mod-title">Από specs σε ανάγκες</h1>
+  <p class="mod-desc">Ξέρεις ήδη τα specs. Αυτό το training σε μαθαίνει να τα μετατρέπεις σε λόγους αγοράς — και να βρίσκεις το σωστό feature για κάθε πελάτη.</p>
+  <div class="mod-meta"><span>💎 10 ενότητες</span><span>⏱ ~120 λεπτά</span><span>🎯 Feature-to-Need framework</span></div>
   <div class="mod-divider"></div>
-
   <div class="card">
-    <div class="card-title">💎 Τι σε κάνει Expert</div>
-    <ul class="spec-list">
-      <li>Δεν χρειάζεσαι πλέον script — ξέρεις ποια ερώτηση να κάνεις σε κάθε στιγμή</li>
-      <li>Μπορείς να εκπαιδεύσεις άλλους με τον ίδιο τρόπο που σε εκπαίδευσαν εσένα</li>
-      <li>Γνωρίζεις πώς τοποθετείται η Apple έναντι του ανταγωνισμού — και πότε να το αναφέρεις</li>
-      <li>Χειρίζεσαι enterprise deals, fleet purchases και σύνθετες B2B διαπραγματεύσεις</li>
-      <li>Καταλαβαίνεις πού πάει η Apple με το AI και πώς αυτό επηρεάζει τις πωλήσεις τώρα</li>
-      <li>Μετατρέπεις δύσκολες ή χαμένες συναντήσεις σε μελλοντικές ευκαιρίες</li>
+    <div class="card-title">Τι είναι διαφορετικό εδώ</div>
+    <ul class="sl">
+      <li>Δεν επαναλαμβάνουμε specs — τα βάζουμε σε context</li>
+      <li>Κάθε feature συνδέεται με συγκεκριμένο τύπο ανάγκης και τύπο πελάτη</li>
+      <li>Upsell μέσω features: «επειδή μου είπες Χ, αυτό το feature λύνει ακριβώς αυτό»</li>
+      <li>Chip differences σε βάθος — πότε κάνει πραγματική διαφορά</li>
+      <li>Real-world numbers — μιλάς με αριθμούς αντί για abstractions</li>
+      <li>Advanced scenarios — σύνθετοι πελάτες με αντικρουόμενες ανάγκες</li>
     </ul>
   </div>
-
-  <div class="callout callout-gold">
-    <span class="callout-icon">💡</span>
-    <div class="callout-body"><strong>Η διαφορά μεταξύ Advanced και Expert</strong>Ο Advanced πωλητής ξέρει τι να πει. Ο Expert ξέρει τι να ΜΗΝ πει — και γιατί. Ξέρει πότε να αφήσει τον πελάτη να βγάλει μόνος του το συμπέρασμα. Ξέρει πότε η σιωπή είναι το πιο δυνατό εργαλείο.</div>
-  </div>
-
-  <div class="callout callout-blue">
-    <span class="callout-icon">🎯</span>
-    <div class="callout-body"><strong>Πώς να χρησιμοποιήσεις αυτό το training</strong>Δεν είναι για να απομνημονεύσεις — είναι για να αναγνωρίσεις patterns. Κάθε ενότητα έχει dialogues, scenarios και frameworks που έχεις ήδη βιώσει στο floor. Εδώ τους βάζουμε σε δομή.</div>
-  </div>
-
+  <div class="cl cl-go"><span class="cl-icon">💡</span><div class="cl-body"><strong>Η βασική αρχή</strong>«M5 Pro με 307 GB/s memory bandwidth» δεν σημαίνει τίποτα. «Μπορείς να κάνεις 8 streams 4K ταυτόχρονα χωρίς το laptop να καθυστερεί» — αυτό σημαίνει.</div></div>
   <div class="nav-btns">
-    <button class="btn btn-secondary" disabled>← Πίσω</button>
-    <button class="btn btn-primary" onclick="next()">Προϊόντα & Chips →</button>
+    <button class="btn btn-s" disabled>← Πίσω</button>
+    <button class="btn btn-p" onclick="next()">Feature → Need →</button>
   </div>
 </section>
 
-
-<!-- ══ MODULE 1 — PRODUCTS & CHIPS ══ -->
+<!-- M1 FEATURE TO NEED -->
 <section class="module" id="m1">
-  <div class="mod-eyebrow">Expert · Ενότητα 2 από 9</div>
-  <h1 class="mod-title">Προϊόντα, Chips & Real-World Performance</h1>
-  <p class="mod-desc">Τα βασικά που ένας expert δεν σταματά ποτέ να ξέρει — σε βάθος. Chip differences, usage scenarios και πώς να εξηγείς απόδοση με πραγματικά παραδείγματα.</p>
-  <div class="mod-meta"><span>📦 Mac · iPad · Chips · Usage Scenarios</span><span>⏱ ~20 λεπτά</span></div>
+  <div class="mod-eyebrow">Expert · Ενότητα 2 από 10</div>
+  <h1 class="mod-title">Feature → Need</h1>
+  <p class="mod-desc">Το κύριο framework: κάθε feature έχει ένα «και τι σημαίνει αυτό για σένα;» — αυτό πείθει.</p>
+  <div class="mod-meta"><span>🔗 F→N→C: Feature · Need · Connection</span><span>⏱ ~12 λεπτά</span></div>
   <div class="mod-divider"></div>
-
-  <div class="section-title">🧬 Το Chip Hierarchy — Τι σημαίνει στην πράξη</div>
-
-  <div class="expert-card gold">
-    <h3>A18 Pro (MacBook Neo) — Ο iPhone chip στο Mac</h3>
-    <p style="margin-bottom:10px;">Ο A18 Pro προέρχεται από τη σειρά iPhone 16 Pro. Είναι εξαιρετικά αποδοτικός αλλά έχει θεμελιώδεις διαφορές από τον M5.</p>
-    <ul class="spec-list">
-      <li>6-core CPU, 5-core GPU — αρκεί για browsing, email, documents, 4K streaming</li>
-      <li>Μέγιστη RAM: 8GB — δεν επεκτείνεται. Αν ο πελάτης τρέχει πολλά apps ταυτόχρονα, αυτό φαίνεται.</li>
-      <li>Δεν υποστηρίζει Thunderbolt — μόνο USB 3.1 Gen 2 (10Gbps). Σε εξωτερικό SSD: ~1GB/s αντί για ~3GB/s του TB4.</li>
-      <li>Δεν υποστηρίζει Rosetta 2 — Intel apps δεν τρέχουν. Σπάνιο θέμα, αλλά πρέπει να το ξέρεις.</li>
-      <li>Real-world: ιδανικό για φοιτητή, casual χρήστη, πρώτο Mac. Όχι για professional workflows.</li>
-    </ul>
-    <div class="callout callout-gold" style="margin-top:12px; margin-bottom:0;">
-      <span class="callout-icon">💬</span>
-      <div class="callout-body">«Το Neo είναι το Mac που τρέχει το καλύτερο mobile chip στον κόσμο. Αλλά είναι mobile chip — δεν είναι Mac chip. Αν ο πελάτης τρέχει Parallels, Final Cut ή Xcode, χρειάζεται M5.»</div>
+  <div class="cl cl-go"><span class="cl-icon">🎯</span><div class="cl-body"><strong>Το μοντέλο F→N→C</strong><strong>Feature</strong> (τι έχει) → <strong>Need</strong> (τι λύνει) → <strong>Connection</strong> (γιατί αφορά αυτόν). Ποτέ feature χωρίς need. Ποτέ need χωρίς connection στη συνομιλία που μόλις έγινε.</div></div>
+  <div class="section-title">Mac Features → Ανάγκες</div>
+  <div class="ct"><table class="fn-table">
+    <thead><tr><th>Feature</th><th>Need</th><th>Πώς το συνδέεις</th></tr></thead>
+    <tbody>
+      <tr><td>Fanless design (Air)</td><td>Σιωπή & αξιοπιστία</td><td>«Είπες ότι δουλεύεις σε ανοιχτό γραφείο — εντελώς αθόρυβο, δεν ακούγεται ποτέ.»</td></tr>
+      <tr><td>18h μπαταρία</td><td>Ανεξαρτησία</td><td>«Ταξιδεύεις συχνά — δεν θα ψάχνεις πρίζα σε αεροδρόμιο ή ξένο γραφείο.»</td></tr>
+      <tr><td>MagSafe</td><td>Ασφάλεια + ευκολία</td><td>«Αν σκοντάψει κάποιος στο καλώδιο, αποσυνδέεται αντί να πέσει το laptop.»</td></tr>
+      <tr><td>Thunderbolt 5 (Pro)</td><td>Ταχύτητα & επεκτασιμότητα</td><td>«External SSD για footage — με TB5 μεταφέρεις 1TB σε λιγότερο από 2 λεπτά.»</td></tr>
+      <tr><td>Unified Memory</td><td>Smooth multitasking</td><td>«Lightroom, 20 tabs, Slack — τίποτα δεν κολλάει, η μνήμη είναι κοινή για CPU και GPU.»</td></tr>
+      <tr><td>2× ProRes Media Engine (M5 Max)</td><td>Ταχύτητα export</td><td>«4K editing καθημερινά — αντί 35 λεπτά export, κάνεις 8. Αυτό είναι ώρα πίσω κάθε μέρα.»</td></tr>
+    </tbody>
+  </table></div>
+  <div class="section-title">iPad Features → Ανάγκες</div>
+  <div class="ct"><table class="fn-table">
+    <thead><tr><th>Feature</th><th>Need</th><th>Πώς το συνδέεις</th></tr></thead>
+    <tbody>
+      <tr><td>Tandem OLED (Pro)</td><td>Χρωματική ακρίβεια</td><td>«Κάνεις illustration — η OLED έχει P3 colors και αντίθεση calibrated monitor. Δείχνεις ακριβώς αυτό που θα τυπωθεί.»</td></tr>
+      <tr><td>Pencil Pro — Barrel Roll</td><td>Φυσικό σχέδιο</td><td>«Ζωγραφίζεις ψηφιακά — η βούρτσα αποκρίνεται στη γωνία του Pencil, σαν πραγματικό πινέλο.»</td></tr>
+      <tr><td>Pencil Pro — Hover</td><td>Ακρίβεια & preview</td><td>«Βλέπεις ακριβώς πού θα πέσει η γραμμή πριν αγγίξεις — σε λεπτομερές σχέδιο αυτό αλλάζει τα πάντα.»</td></tr>
+      <tr><td>Magic Keyboard + trackpad</td><td>Laptop replacement</td><td>«Δουλεύεις σε email, documents — με Magic Keyboard το iPad λειτουργεί σαν laptop, έχεις trackpad και shortcuts.»</td></tr>
+      <tr><td>Face ID (Pro)</td><td>Ταχύτητα σε landscape</td><td>«Το χρησιμοποιείς με Magic Keyboard — ξεκλειδώνει αυτόματα, δεν σηκώνεις το χέρι ποτέ.»</td></tr>
+      <tr><td>8.3" / τσεπάτο (mini)</td><td>Φορητότητα εν κινήσει</td><td>«Θες κάτι για την τσέπη του σακακιού — χωράει, δεν νιώθεις ότι κουβαλάς τίποτα.»</td></tr>
+    </tbody>
+  </table></div>
+  <div class="cl cl-bl"><span class="cl-icon">⚠️</span><div class="cl-body"><strong>Το πιο συνηθισμένο λάθος</strong>Να λες το feature χωρίς να το συνδέσεις με αυτό που σου είπε ο πελάτης. «Έχει TB5» ≠ τίποτα. «Επειδή δουλεύεις με εξωτερικό SSD για footage — TB5 σημαίνει ότι δεν κάθεσαι να περιμένεις» = πείθει.</div></div>
+  <div class="qs">
+    <div class="qh">❓ Quiz — Feature → Need</div>
+    <div class="qc">
+      <div class="qq">1. Πελάτης: «δουλεύω πολύ σε καφέ και open space γραφεία». Ποιο Mac feature συνδέεις άμεσα;</div>
+      <div class="qo-wrap">
+        <div class="qo" onclick="mq(this,false,'q1a')">Thunderbolt 4 — μπορεί να συνδέσει εξωτερική οθόνη στο γραφείο</div>
+        <div class="qo" onclick="mq(this,true,'q1a')">Fanless design του MacBook Air — εντελώς αθόρυβο ακόμα και υπό φόρτο, ποτέ δεν ακούγεται σε ήσυχο περιβάλλον</div>
+        <div class="qo" onclick="mq(this,false,'q1a')">18 ώρες μπαταρία — γιατί τα καφέ δεν έχουν πάντα διαθέσιμες πρίζες</div>
+      </div>
+      <div class="qf" id="q1a-fb"></div>
     </div>
+    <div class="qc">
+      <div class="qq">2. Illustrator: «θέλω το πιο φυσικό αίσθημα στο ψηφιακό σχέδιο». Ποιο Pencil Pro feature εξηγείς πρώτα;</div>
+      <div class="qo-wrap">
+        <div class="qo" onclick="mq(this,false,'q1b')">Find My — δεν θα χάσει το Pencil ποτέ</div>
+        <div class="qo" onclick="mq(this,true,'q1b')">Barrel Roll — αναγνωρίζει τη στροφή του Pencil, η ψηφιακή βούρτσα αποκρίνεται σαν πραγματικό πινέλο. Αυτό είναι το «φυσικό αίσθημα» που ζήτησε.</div>
+        <div class="qo" onclick="mq(this,false,'q1b')">Ασύρματη φόρτιση — πάντα έτοιμο, δεν χρειάζεται καλώδιο</div>
+      </div>
+      <div class="qf" id="q1b-fb"></div>
+    </div>
+    <div class="qs-score" id="qs1"></div>
   </div>
-
-  <div class="expert-card">
-    <h3>M5 — Το base Mac chip</h3>
-    <p style="margin-bottom:10px;">10-core CPU, 10-core GPU, 153GB/s bandwidth. Αυτό είναι το chip που κάνει το MacBook Air το πιο δημοφιλές laptop στον κόσμο.</p>
-    <ul class="spec-list">
-      <li>Real-world Xcode build: ~40% πιο γρήγορο από M3, ~2.5× από Intel MacBook Pro</li>
-      <li>4K H.264 export σε Final Cut: ~3 λεπτά για 10 λεπτά footage — με fanless design</li>
-      <li>Lightroom AI masking (subject selection): κάτω από 1 δευτερόλεπτο ανά φωτογραφία</li>
-      <li>Gaming: Baldur's Gate 3, Resident Evil Village τρέχουν smooth σε medium settings</li>
-      <li>Rosetta 2: Intel apps τρέχουν συχνά πιο γρήγορα από native σε παλιό Intel Mac</li>
-    </ul>
-  </div>
-
-  <div class="expert-card blue">
-    <h3>M5 Pro — Πότε κάνει πραγματική διαφορά</h3>
-    <p style="margin-bottom:10px;">Έως 18-core CPU, 20-core GPU, 307GB/s bandwidth — διπλάσιο memory bandwidth από M5. Αυτό είναι το chip για sustained professional workloads.</p>
-    <ul class="spec-list">
-      <li><strong>Sustained performance:</strong> σε παρατεταμένη χρήση (render, compile), ο M5 Pro δεν throttle — ο M5 μπορεί να σταθεροποιήσει χαμηλότερα σε prolonged tasks</li>
-      <li><strong>DaVinci Resolve 4K multicam:</strong> M5 Pro χειρίζεται 8 streams 4K χωρίς proxy. M5: 3-4 streams.</li>
-      <li><strong>RAM ceiling:</strong> M5 Pro φτάνει 64GB — σημαντικό για large Xcode projects, complex VMs, ML training</li>
-      <li><strong>Real-world:</strong> Video editor, architect με Revit/Parallels, developer με Docker + Simulator ταυτόχρονα</li>
-    </ul>
-    <div class="callout callout-blue" style="margin-top:12px; margin-bottom:0;">
-      <span class="callout-icon">💬</span>
-      <div class="callout-body">«Αν ο πελάτης λέει "το laptop μου θερμαίνεται όταν κάνω render" — αυτός χρειάζεται M5 Pro. Το πρόβλημα δεν είναι η απόδοση, είναι η διατήρησή της υπό φόρτο.»</div>
-    </div>
-  </div>
-
-  <div class="expert-card purple">
-    <h3>M5 Max — Τα 2 Media Engines που αλλάζουν τα πάντα</h3>
-    <p style="margin-bottom:10px;">40-core GPU, 614GB/s bandwidth, έως 128GB RAM. Αλλά το πιο σημαντικό: 2 ProRes encode/decode engines.</p>
-    <ul class="spec-list">
-      <li><strong>ProRes RAW 8K:</strong> playback σε realtime χωρίς transcoding. Κανένα άλλο laptop δεν κάνει αυτό.</li>
-      <li><strong>Simultaneous export:</strong> export 4K ProRes ενώ ταυτόχρονα κάνεις render άλλο project — χωρίς slowdown</li>
-      <li><strong>Real-world χρόνος:</strong> 1 ώρα 4K ProRes footage → export σε ~8 λεπτά με M5 Max. Με M5: ~35 λεπτά. Με Windows i9: ~55 λεπτά.</li>
-      <li><strong>ML workloads:</strong> Core ML model training που παίρνει ώρες αλλού, παίρνει λεπτά</li>
-    </ul>
-    <div class="callout callout-gold" style="margin-top:12px; margin-bottom:0;">
-      <span class="callout-icon">💬</span>
-      <div class="callout-body">«Για τον πελάτη που λέει "ξοδεύω ώρες κάθε μέρα σε exports" — το M5 Max δεν είναι upgrade. Είναι ανάκτηση χρόνου. Αν κάνει 2 ώρες export τη μέρα και το M5 Max το κάνει σε 20 λεπτά, αυτό είναι 1.5 ώρα κάθε μέρα της ζωής του.»</div>
-    </div>
-  </div>
-
-  <div class="section-title">📱 iPad Lineup — Usage Scenarios σε βάθος</div>
-
-  <div class="expert-card">
-    <h3>iPad (A16) — Τι κάνει καλά, τι δεν κάνει</h3>
-    <ul class="spec-list">
-      <li><strong>Ιδανικό για:</strong> Netflix, YouTube, browsing, email, σημειώσεις με Pencil USB-C, FaceTime, παιδιά</li>
-      <li><strong>Δεν είναι για:</strong> heavy creative work, laptop replacement, pro apps</li>
-      <li><strong>Killer feature για το κοινό του:</strong> Magic Keyboard Folio — μοναδικό keyboard με trackpad για iPad στην τιμή αυτή</li>
-      <li><strong>Πότε να το προτείνεις αντί Air:</strong> πελάτης θέλει iPad για κατανάλωση περιεχομένου και basic tasks, δεν χρειάζεται Apple Intelligence, budget-sensitive</li>
-    </ul>
-  </div>
-
-  <div class="expert-card blue">
-    <h3>iPad mini (A17 Pro) — Ο τσεπάτος powerhouse</h3>
-    <ul class="spec-list">
-      <li><strong>A17 Pro = iPhone 15 Pro chip:</strong> τρέχει όλες τις pro apps, Apple Intelligence πλήρως</li>
-      <li><strong>Usage scenario #1 — Field professionals:</strong> γιατρός που βλέπει αρχεία ασθενών, μηχανικός που ελέγχει blueprints, τεχνικός με documentation — χωράει στη μία χούφτα</li>
-      <li><strong>Usage scenario #2 — Δευτερεύουσα οθόνη:</strong> Sidecar με Mac, second screen για email ενώ δουλεύεις στο MacBook</li>
-      <li><strong>Usage scenario #3 — Αναγνώστης/Σημειώσεις:</strong> το καλύτερο e-reader με annotation capabilities — Pencil Pro, GoodNotes, Notability</li>
-      <li><strong>Limitation:</strong> δεν υποστηρίζει Magic Keyboard — μόνο Bluetooth keyboards. Για typing-heavy χρήση, iPad Air είναι καλύτερο.</li>
-    </ul>
-  </div>
-
-  <div class="expert-card green">
-    <h3>iPad Air (M4) — Ο sweet spot που πρέπει να ξέρεις να πουλάς</h3>
-    <ul class="spec-list">
-      <li><strong>M4 chip, 12GB RAM:</strong> ίδιο chip με MacBook Pro 14" M4 — αυτό είναι το argument για «πάρε το Air αντί για iPad»</li>
-      <li><strong>Usage scenario #1 — Student:</strong> Magic Keyboard + Pencil Pro = σημειώσεις, εργασίες, presentations, ένα device για όλα</li>
-      <li><strong>Usage scenario #2 — Creative on-the-go:</strong> Procreate, Lightroom, Affinity Designer — με Pencil Pro η εμπειρία είναι professional</li>
-      <li><strong>Usage scenario #3 — Laptop replacement (light):</strong> Email, Slack, Office 365, video calls, browsing — με Magic Keyboard δεν χάνεις τίποτα από ένα MacBook Air για αυτά</li>
-      <li><strong>13" vs 11":</strong> 13" για όσους κάνουν split-screen ή βλέπουν documents. 11" για φορητότητα. Ρώτα πόσο ταξιδεύει.</li>
-    </ul>
-  </div>
-
-  <div class="expert-card purple">
-    <h3>iPad Pro (M5) — Πότε αντικαθιστά laptop και πότε όχι</h3>
-    <ul class="spec-list">
-      <li><strong>Αντικαθιστά laptop για:</strong> illustration, photography editing, music production (GarageBand/Logic for iPad), presentations, document management, field work</li>
-      <li><strong>ΔΕΝ αντικαθιστά laptop για:</strong> Xcode, full Final Cut Pro, AutoCAD desktop, complex Excel macros, software development</li>
-      <li><strong>Tandem OLED real-world:</strong> σε Procreate, η διαφορά από Liquid Retina είναι αμέσως ορατή — τα μαύρα είναι απόλυτα, τα χρώματα πιο βαθιά. Για graphic designers: show, don't tell.</li>
-      <li><strong>M5 vs M4 (Air) για iPad:</strong> στην πράξη για τους περισσότερους users η διαφορά στην απόδοση είναι ελάχιστη. Το iPad Pro κυρίως αξίζει για την OLED οθόνη, Thunderbolt 4 και Face ID.</li>
-      <li><strong>Face ID on iPad:</strong> μοναδικό στα iPad — ξεκλειδώνει σε landscape. Σημαντικό για χρήστες που το έχουν πάντα σε Magic Keyboard.</li>
-    </ul>
-    <div class="callout callout-gold" style="margin-top:12px; margin-bottom:0;">
-      <span class="callout-icon">🎯</span>
-      <div class="callout-body"><strong>Expert decision framework για iPad:</strong> «Χρησιμοποιείς desktop apps που δεν υπάρχουν σε iPad;» → ΝΑΙ: Mac. ΟΧΙ: «Χρειάζεσαι Pencil;» → ΝΑΙ: Air ή Pro. ΟΧΙ: «Κυρίως κατανάλωση;» → iPad ή mini.</div>
-    </div>
-  </div>
-
-  <div class="section-title">⚡ Key Reminders — Βασικά που δεν ξεχνάμε</div>
-
-  <div class="expert-card orange">
-    <h3>Τα specs που κάνουν τη διαφορά στη συνομιλία</h3>
-    <div class="compare-wrap" style="margin-top:10px;">
-      <table class="compare-table">
-        <thead><tr><th>Σημείο</th><th>Γιατί έχει σημασία στην πώληση</th></tr></thead>
-        <tbody>
-          <tr><td><strong>RAM δεν αναβαθμίζεται</strong></td><td>Ο πιο ισχυρός λόγος για upgrade τώρα. Ποτέ μην το αφήνεις ασχολίαστο.</td></tr>
-          <tr><td><strong>MacBook Neo: μέγιστο 8GB</strong></td><td>Αν ο πελάτης αναφέρει multitasking ή pro apps → Air αυτόματα</td></tr>
-          <tr><td><strong>iPad Air: 12GB RAM (όχι 8)</strong></td><td>Διπλάσιο από iPad mini — σημαντικό για multitasking και Apple Intelligence</td></tr>
-          <tr><td><strong>iPad (A16): Pencil USB-C μόνο</strong></td><td>Αν θέλει Pencil Pro → Air ή Pro. Ελέγχεις πάντα πριν.</td></tr>
-          <tr><td><strong>MacBook Air: fanless</strong></td><td>Σε παρατεταμένη χρήση υπό φόρτο μπορεί να μειώσει απόδοση. Για editors: Pro.</td></tr>
-          <tr><td><strong>Thunderbolt 5 (MacBook Pro)</strong></td><td>Studio Display XDR + εξωτερικά SSD NVMe → μόνο με MacBook Pro</td></tr>
-          <tr><td><strong>iPad mini: δεν έχει Magic Keyboard</strong></td><td>Για typing-heavy χρήση → Air. Πάντα ρώτα πόσο γράφει.</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- QUIZ -->
-  <div class="quiz-section">
-    <div class="quiz-header">❓ Expert Quiz — Προϊόντα & Chips</div>
-    <div class="quiz-card">
-      <div class="quiz-q">1. Πελάτης κάνει 2 ώρες ProRes 4K export καθημερινά. Τι του προτείνεις και με ποιο real-world argument;</div>
-      <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,true,'mq_p1')">MacBook Pro M5 Max — έχει 2 ProRes encode engines αντί για 1, οπότε 1 ώρα footage εξάγεται σε ~8 λεπτά αντί ~35. Για daily ProRes work, αυτό είναι η πιο σημαντική πρακτική διαφορά.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq_p1')">MacBook Pro M5 Pro — έχει μεγαλύτερο memory bandwidth από M5 και χειρίζεται multicam χωρίς proxy, οπότε είναι αρκετό για τα περισσότερα 4K workflows.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq_p1')">Mac Studio M4 Max — για fixed studio setup δίνει υψηλότερη sustained απόδοση και περισσότερα ports, οπότε μπορεί να είναι καλύτερη επιλογή αν δεν ταξιδεύει.</div>
-    </div>
-      <div class="quiz-feedback" id="mq_p1-fb"></div>
-    </div>
-    <div class="quiz-card">
-      <div class="quiz-q">2. Πελάτης θέλει iPad αλλά κάνει πολύ typing. Ρωτάει αν iPad mini κάνει. Τι του λες;</div>
-      <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,false,'mq_p2')">«Πάρε iPad Pro — έχει M5 chip, Face ID και OLED οθόνη, οπότε ακόμα και με Bluetooth keyboard θα έχει καλύτερη συνολική εμπειρία από το mini.»</div>
-        <div class="quiz-opt" onclick="mq(this,true,'mq_p2')">«Το iPad mini δεν έχει dedicated Magic Keyboard με trackpad — μόνο Bluetooth keyboards. Αν γράφεις πολύ, το iPad Air με Magic Keyboard δίνει trackpad, haptic feedback και proper layout, δηλαδή πολύ πιο κοντά σε laptop εμπειρία.»</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq_p2')">«Ναι, με ένα καλό Bluetooth keyboard το iPad mini λειτουργεί άνετα για typing — η οθόνη 8.3" είναι αρκετή για documents και email.»</div>
-    </div>
-      <div class="quiz-feedback" id="mq_p2-fb"></div>
-    </div>
-    <div class="quiz-card">
-      <div class="quiz-q">3. Τι διαφορά κάνει στην πράξη το διπλάσιο memory bandwidth του M5 Pro (307 vs 153 GB/s) σε σχέση με M5;</div>
-      <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,true,'mq_p3')">Σε sustained workloads (multicam 4K, μεγάλα Xcode compiles) η CPU/GPU τροφοδοτείται 2× πιο γρήγορα — ο M5 Pro δεν μειώνει απόδοση υπό παρατεταμένο φόρτο, ενώ ο M5 μπορεί. Χειρίζεται 8 streams 4K vs 3-4 του M5.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq_p3')">Επιτρέπει μεγαλύτερη SSD χωρητικότητα — το M5 Pro ξεκινά από 1TB αντί 512GB του M5, οπότε υπάρχει περισσότερος χώρος για project files και footage χωρίς εξωτερικό δίσκο.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq_p3')">Βελτιώνει σημαντικά την αυτονομία — ο M5 Pro είναι πιο αποδοτικός ανά watt, οπότε σε ίδια battery capacity κρατάει περισσότερο ακόμα και υπό φόρτο.</div>
-    </div>
-      <div class="quiz-feedback" id="mq_p3-fb"></div>
-    </div>
-    <div class="quiz-score" id="mqs_p"></div>
-  </div>
-
   <div class="nav-btns">
-    <button class="btn btn-secondary" onclick="prev()">← Εισαγωγή</button>
-    <button class="btn btn-primary" onclick="next()">Apple Sales DNA →</button>
+    <button class="btn btn-s" onclick="prev()">← Εισαγωγή</button>
+    <button class="btn btn-p" onclick="next()">Mac: Specs & Νόημα →</button>
   </div>
 </section>
 
-
-<!-- ══ MODULE 2 — APPLE SALES DNA ══ -->
+<!-- M2 MAC SPECS -->
 <section class="module" id="m2">
-  <div class="mod-eyebrow">Expert · Ενότητα 3 από 9</div>
-  <h1 class="mod-title">Apple Sales DNA</h1>
-  <p class="mod-desc">Η βαθύτερη κατανόηση της φιλοσοφίας πίσω από κάθε αλληλεπίδραση με τον πελάτη — και πώς τη μεταφέρεις στην ομάδα σου.</p>
-  <div class="mod-meta"><span>🧬 GUEST framework · Empathy selling · Trust architecture</span><span>⏱ ~15 λεπτά</span></div>
+  <div class="mod-eyebrow">Expert · Ενότητα 3 από 10</div>
+  <h1 class="mod-title">Mac: Specs & Τι Σημαίνουν</h1>
+  <p class="mod-desc">Κάθε Mac spec με το «και τι σημαίνει αυτό;» — για να εξηγείς με τρόπο που ο πελάτης καταλαβαίνει.</p>
+  <div class="mod-meta"><span>💻 Neo · Air · Pro · iMac · Mac mini · Mac Studio</span><span>⏱ ~18 λεπτά</span></div>
   <div class="mod-divider"></div>
-
-  <div class="section-title">🧬 Το GUEST Framework σε βάθος</div>
-
-  <div class="expert-card">
-    <h3>Πέρα από τα αρχικά — τι σημαίνει στην πράξη</h3>
-    <p style="margin-bottom:14px;">Το GUEST (Greet, Understand, Explore, Suggest, Thank) δεν είναι checklist. Είναι rhythm. Ο expert πωλητής το τρέχει φυσικά, χωρίς να σκέφτεται τα βήματα.</p>
-    <ul class="spec-list">
-      <li><strong>Greet:</strong> Δεν είναι «γεια σου». Είναι η πρώτη 3 δευτερόλεπτα που ο πελάτης αποφασίζει αν θα σε εμπιστευτεί. Eye contact, χαλαρή στάση, καμία πίεση.</li>
-      <li><strong>Understand:</strong> Το πιο σημαντικό βήμα — και το πιο παραμελημένο. Ο πελάτης που νιώθει ότι τον καταλαβαίνεις αγοράζει. Κάνε ερωτήσεις που δείχνουν ότι σκέφτεσαι για αυτόν, όχι για τη συναλλαγή.</li>
-      <li><strong>Explore:</strong> Δείξε, μην πεις. Βάλε τη συσκευή στα χέρια του. Η εμπειρία πουλάει περισσότερο από κάθε spec.</li>
-      <li><strong>Suggest:</strong> Μία σύσταση, συγκεκριμένη, με λόγο που σχετίζεται με αυτό που σου είπε — όχι λίστα επιλογών.</li>
-      <li><strong>Thank:</strong> Δεν είναι τυπικό. Είναι η στιγμή που σφραγίζεις τη σχέση. «Θα χαρώ να σε βλέπω ξανά» σημαίνει κάτι.</li>
+  <div class="section-title">MacBook Neo — Τι είναι και τι δεν είναι</div>
+  <div class="ec re">
+    <h3>A18 Pro · 8GB RAM · 256GB SSD · Fanless · από $599</h3>
+    <ul class="sl" style="margin-bottom:12px;">
+      <li><strong>A18 Pro (iPhone chip):</strong> δεν τρέχει Rosetta 2 (Intel apps), δεν έχει Thunderbolt. Για βασική χρήση μόνο.</li>
+      <li><strong>8GB μόνο, δεν επεκτείνεται:</strong> Browsing, email, Netflix, documents — αρκεί. Parallels, Xcode, Photoshop — όχι.</li>
+      <li><strong>Χωρίς MagSafe, χωρίς Thunderbolt:</strong> external SSD στα ~1GB/s αντί 3+GB/s του TB4.</li>
     </ul>
+    <div class="cl cl-re" style="margin-bottom:0;"><span class="cl-icon">🎯</span><div class="cl-body"><strong>Πότε ΝΑΙ:</strong> Πρώτο Mac, budget-sensitive, μόνο βασικά tasks. <strong>Πότε ΟΧΙ:</strong> Pro apps, Parallels, εξωτερική 5K οθόνη, 4+ χρόνια κράτηση.</div></div>
   </div>
-
-  <div class="section-title">🫀 Empathy Selling — Η τέχνη του να ακούς</div>
-
-  <div class="expert-card blue">
-    <h3>Η διαφορά μεταξύ ακούω και ακούω για να απαντήσω</h3>
-    <p style="margin-bottom:12px;">Οι περισσότεροι πωλητές ακούν για να βρουν άνοιγμα να μιλήσουν. Ο expert ακούει για να καταλάβει.</p>
-    <ul class="spec-list">
-      <li>Άφησε τον πελάτη να τελειώσει πάντα — ακόμα κι αν ξέρεις ήδη την απάντηση</li>
-      <li>Επανέλαβε αυτό που είπε με δικά σου λόγια: «Αν καταλαβαίνω σωστά, θέλεις...» — επιβεβαιώνει ότι άκουσες</li>
-      <li>Ρώτα «γιατί» μία φορά παραπάνω από ό,τι νομίζεις ότι πρέπει — συχνά η πραγματική ανάγκη κρύβεται πίσω από την πρώτη απάντηση</li>
-      <li>Σημείωσε τι ΔΕΝ λέει — ο διστακτικός πελάτης που «απλώς κοιτάει» συχνά θέλει άδεια να αγοράσει</li>
+  <div class="section-title">MacBook Air M5 — Το «σωστό για τους περισσότερους»</div>
+  <div class="ec">
+    <h3>M5 · από 16GB · από 512GB · Fanless · MagSafe · TB4×2 · 18h</h3>
+    <ul class="sl" style="margin-bottom:12px;">
+      <li><strong>Fanless + M5:</strong> αθόρυβο ακόμα και υπό φόρτο. Για open space και καφέ.</li>
+      <li><strong>18 ώρες:</strong> ολόκληρη μέρα. Αθήνα→Νέα Υόρκη χωρίς φορτιστή.</li>
+      <li><strong>16GB Unified Memory:</strong> ισοδύναμο ~32GB Windows laptop — CPU, GPU, Neural Engine μοιράζονται το ίδιο pool.</li>
+      <li><strong>TB4:</strong> αρκεί για Studio Display 5K, external SSD, hub.</li>
+      <li><strong>MagSafe:</strong> αποσυνδέεται αντί να πέσει το laptop. Τα 2 USB-C μένουν ελεύθερα.</li>
     </ul>
+    <div class="cl cl-gr" style="margin-bottom:0;"><span class="cl-icon">🎯</span><div class="cl-body"><strong>Ιδανικό για:</strong> Φοιτητές, ταξιδιώτες, Lightroom/Procreate/GarageBand, developers. Αν δεν ξέρει τι θέλει — αυτό.</div></div>
   </div>
-
-  <div class="section-title">🏗 Trust Architecture — Πώς χτίζεις εμπιστοσύνη γρήγορα</div>
-
-  <div class="expert-card green">
-    <h3>Τα 4 επίπεδα εμπιστοσύνης στην πώληση</h3>
-    <ul class="spec-list">
-      <li><strong>Επίπεδο 1 — Competence:</strong> «Ξέρει αυτό που λέει» — κερδίζεται με ακρίβεια, όχι με ποσότητα πληροφορίας</li>
-      <li><strong>Επίπεδο 2 — Honesty:</strong> «Μου λέει την αλήθεια» — κερδίζεται όταν παραδέχεσαι ένα limitation ή προτείνεις κάτι φθηνότερο αν αρμόζει</li>
-      <li><strong>Επίπεδο 3 — Alignment:</strong> «Ενδιαφέρεται για εμένα» — κερδίζεται όταν η σύσταση σου είναι προσωπική, όχι γενική</li>
-      <li><strong>Επίπεδο 4 — Reliability:</strong> «Θα είναι εκεί αν κάτι πάει στραβά» — κερδίζεται με το follow-up, με το να θυμάσαι τον πελάτη</li>
+  <div class="section-title">MacBook Pro M5 / M5 Pro / M5 Max</div>
+  <div class="ec bl">
+    <h3>M5 από $1.599 · M5 Pro από $1.999 · M5 Max από $2.499 · Liquid Retina XDR · ProMotion · TB5</h3>
+    <ul class="sl" style="margin-bottom:12px;">
+      <li><strong>Liquid Retina XDR 120Hz:</strong> 1000 nits, variable refresh — για content creators που θέλουν να βλέπουν ακριβώς τι επεξεργάζονται.</li>
+      <li><strong>TB5 (120 Gbps):</strong> Studio Display XDR, NVMe SSD, multi-display. Air ΔΕΝ έχει TB5.</li>
+      <li><strong>Active cooling:</strong> διατηρεί peak performance ώρες. Σε sustained rendering ο Air μπορεί να μειώσει απόδοση.</li>
+      <li><strong>M5 base ($1.599):</strong> ίδιο chip με Air αλλά Pro display + TB5 + active cooling.</li>
+      <li><strong>M5 Pro:</strong> sustained professional workloads — video, development, 3D.</li>
+      <li><strong>M5 Max:</strong> 2 ProRes Media Engines — για daily ProRes/8K.</li>
     </ul>
-    <div class="callout callout-gold" style="margin-top:12px; margin-bottom:0;">
-      <span class="callout-icon">💡</span>
-      <div class="callout-body">Ένας πελάτης που φτάνει επίπεδο 4 δεν χρειάζεται να του ξαναπουλήσεις — σε ψάχνει ο ίδιος. Και φέρνει κόσμο.</div>
-    </div>
+    <div class="cl cl-go" style="margin-bottom:0;"><span class="cl-icon">🎯</span><div class="cl-body"><strong>Η κρίσιμη ερώτηση:</strong> «Δουλεύεις με heavy workloads για ώρες ή σποραδικά;» Σποραδικά → Air. Sustained καθημερινά → Pro.</div></div>
   </div>
-
-  <div class="section-title">🔄 Πότε να αφήσεις τον πελάτη να φύγει</div>
-  <div class="expert-card orange">
-    <h3>Η πιο δύσκολη απόφαση — και η πιο σωστή</h3>
-    <p style="margin-bottom:12px;">Ο expert ξέρει ότι η πώληση που δεν έγινε σήμερα μπορεί να γίνει αύριο — αν ο πελάτης φύγει νιώθοντας καλά, όχι πιεσμένος.</p>
-    <ul class="spec-list">
-      <li>Αν ο πελάτης δεν είναι έτοιμος, πες: «Δεν βιάζεσαι — πάρε τον χρόνο σου. Θα είμαι εδώ αν έχεις ερωτήσεις.» Αυτό είναι πιο δυνατό από κάθε closing technique.</li>
-      <li>Δώσε του κάτι συγκεκριμένο να σκεφτεί — όχι «σκέψου το», αλλά «κοίτα αν η δουλειά σου χρειάζεται Thunderbolt 5 για εξωτερικές οθόνες — αυτό θα σου λύσει το ερώτημα».</li>
-      <li>Ο πελάτης που φεύγει χωρίς να αγοράσει αλλά νιώθει ότι τον σεβάστηκες, επιστρέφει στο 70% των περιπτώσεων.</li>
-    </ul>
+  <div class="section-title">Desktop Mac</div>
+  <div class="ct"><table>
+    <thead><tr><th>Μοντέλο</th><th>Chip</th><th>Display</th><th>Ιδανικό για</th><th>ΔΕΝ για</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Mac mini</strong></td><td>M4 / M4 Pro</td><td>BYOD</td><td>Οικονομικό desktop, switchers που έχουν οθόνη</td><td>Όσους θέλουν all-in-one</td></tr>
+      <tr><td><strong>iMac</strong></td><td>M4</td><td>24" 4.5K built-in</td><td>Σπίτι, γραφείο, απλότητα all-in-one</td><td>Heavy pro workloads</td></tr>
+      <tr><td><strong>Mac Studio</strong></td><td>M4 Max / M3 Ultra</td><td>BYOD</td><td>Fixed creative studio — 3D, video, music</td><td>Φορητότητα</td></tr>
+    </tbody>
+  </table></div>
+  <div class="qs">
+    <div class="qh">❓ Quiz — Mac Specs</div>
+    <div class="qc">
+      <div class="qq">1. Πελάτης: «δουλεύω από καφέ, ταξιδεύω 3 φορές το μήνα, χρειάζομαι κάτι που να κρατάει όλη μέρα». Ποιο Mac και ποια 3 features;</div>
+      <div class="qo-wrap">
+        <div class="qo" onclick="mq(this,false,'q2a')">MacBook Pro M5 Pro — active cooling και μεγαλύτερη απόδοση για απαιτητικά tasks</div>
+        <div class="qo" onclick="mq(this,true,'q2a')">MacBook Air M5 — fanless (αθόρυβο στο καφέ), 18 ώρες μπαταρία (ολόκληρη μέρα), MagSafe (ευκολία σύνδεσης). Τα 3 features λύνουν ακριβώς αυτά που είπε.</div>
+        <div class="qo" onclick="mq(this,false,'q2a')">MacBook Air M5 — το πιο φθηνό φορητό Mac, αρκεί για τα περισσότερα tasks</div>
+      </div>
+      <div class="qf" id="q2a-fb"></div>
+    </div>
+    <div class="qc">
+      <div class="qq">2. Πελάτης έχει 27" οθόνη και θέλει οικονομικό desktop Mac. Τι προτείνεις και γιατί ΟΧΙ iMac;</div>
+      <div class="qo-wrap">
+        <div class="qo" onclick="mq(this,false,'q2b')">iMac — η 24" οθόνη είναι νέα και 4.5K Retina, καλύτερη από την παλιά</div>
+        <div class="qo" onclick="mq(this,true,'q2b')">Mac mini M4 — BYOD, χρησιμοποιεί την οθόνη που έχει. Το iMac έχει built-in οθόνη που πληρώνει επιπλέον χωρίς να τη χρειάζεται.</div>
+        <div class="qo" onclick="mq(this,false,'q2b')">Mac Studio — πιο ισχυρό desktop, θα κρατήσει περισσότερα χρόνια</div>
+      </div>
+      <div class="qf" id="q2b-fb"></div>
+    </div>
+    <div class="qs-score" id="qs2"></div>
   </div>
-
-  <!-- QUIZ -->
-  <div class="quiz-section">
-    <div class="quiz-header">❓ Expert Quiz — Apple Sales DNA</div>
-    <div class="quiz-card">
-      <div class="quiz-q">1. Ποιο είναι το πιο σημαντικό βήμα του GUEST framework και γιατί συχνά παραλείπεται;</div>
-      <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,true,'mq1')">Understand — οι περισσότεροι πωλητές βιάζονται να προτείνουν αμέσως και παραλείπουν αυτό το βήμα, με αποτέλεσμα να προτείνουν κάτι που δεν ταιριάζει στις πραγματικές ανάγκες.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq1')">Suggest — αν δεν φτάσεις ποτέ στο σημείο να κάνεις σαφή σύσταση, η συνομιλία δεν οδηγεί πουθενά και ο πελάτης φεύγει χωρίς απόφαση.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq1')">Greet — στα πρώτα 3 δευτερόλεπτα ο πελάτης αποφασίζει αν θα εμπιστευτεί τον πωλητή, οπότε αν χαθεί αυτή η στιγμή δύσκολα ανακτάται η σχέση.</div>
-    </div>
-      <div class="quiz-feedback" id="mq1-fb"></div>
-    </div>
-    <div class="quiz-card">
-      <div class="quiz-q">2. Πελάτης λέει «απλώς κοιτάω». Τι διαβάζει ο expert από αυτό;</div>
-      <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,true,'mq2')">Ότι ενδιαφέρεται αλλά θέλει να εξερευνήσει χωρίς να νιώσει πίεση — η σωστή κίνηση είναι να χαλαρώσεις τη δυναμική, να μείνεις διαθέσιμος και να περιμένεις την κατάλληλη στιγμή.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq2')">Ότι δεν έχει αποφασίσει ακόμα τι θέλει — καλύτερα να τον αφήσεις να εξερευνήσει μόνος του και να είσαι διαθέσιμος αν σε χρειαστεί.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq2')">Ότι έχει ήδη κάνει έρευνα online και θέλει απλώς να επιβεβαιώσει αυτό που έχει ήδη αποφασίσει — οπότε δεν χρειάζεται πολλή πληροφορία.</div>
-    </div>
-      <div class="quiz-feedback" id="mq2-fb"></div>
-    </div>
-    <div class="quiz-score" id="mqs1"></div>
-  </div>
-
   <div class="nav-btns">
-    <button class="btn btn-secondary" onclick="prev()">← Εισαγωγή</button>
-    <button class="btn btn-primary" onclick="next()">Competitive Intelligence →</button>
+    <button class="btn btn-s" onclick="prev()">← Feature→Need</button>
+    <button class="btn btn-p" onclick="next()">iPad: Specs & Νόημα →</button>
   </div>
 </section>
 
-
-<!-- ══ MODULE 2 — COMPETITIVE INTELLIGENCE ══ -->
+<!-- M3 IPAD SPECS -->
 <section class="module" id="m3">
-  <div class="mod-eyebrow">Expert · Ενότητα 4 από 9</div>
-  <h1 class="mod-title">Competitive Intelligence</h1>
-  <p class="mod-desc">Γνώση του ανταγωνισμού σε βάθος — όχι για να τον επιτεθείς, αλλά για να απαντάς με αυτοπεποίθηση όταν ο πελάτης τον φέρνει στη συζήτηση.</p>
-  <div class="mod-meta"><span>⚔️ Windows · Android · Google</span><span>⏱ ~14 λεπτά</span></div>
+  <div class="mod-eyebrow">Expert · Ενότητα 4 από 10</div>
+  <h1 class="mod-title">iPad: Specs & Τι Σημαίνουν</h1>
+  <p class="mod-desc">Τέσσερα iPad, εντελώς διαφορετικά use cases — επιλέγεις με βάση αυτό που λέει ο πελάτης.</p>
+  <div class="mod-meta"><span>📱 iPad · mini · Air · Pro — features που μετράνε</span><span>⏱ ~15 λεπτά</span></div>
   <div class="mod-divider"></div>
-
-  <div class="callout callout-gold">
-    <span class="callout-icon">⚠️</span>
-    <div class="callout-body"><strong>Κανόνας #1: Δεν επιτίθεσαι ποτέ στον ανταγωνισμό</strong>Ο πελάτης που αγόρασε Windows ή Android στο παρελθόν έκανε αυτό που ήταν λογικό γι' αυτόν τότε. Κάθε επίθεση στον ανταγωνισμό αισθάνεται σαν επίθεση στην απόφασή του. Αντίθετα: αναγνωρίζεις, συγκρίνεις ουδέτερα, τονίζεις αξία.</div>
-  </div>
-
-  <div class="section-title">💻 Apple Silicon vs Intel/AMD — Τι λέει ο expert</div>
-
-  <div class="expert-card">
-    <h3>Όταν ο πελάτης λέει «τα Windows laptops είναι πιο ισχυρά»</h3>
-    <ul class="spec-list">
-      <li>Η σύγκριση GHz και cores είναι παραπλανητική — το M5 έχει dedicated engines για video, ML και display που δεν έχει κανένας Intel/AMD chip</li>
-      <li>Benchmark vs real-world: σε DaVinci Resolve, Lightroom, Xcode — Mac κερδίζει σχεδόν πάντα χρόνο export και rendering</li>
-      <li>Efficiency: ένα MacBook Air κάνει tasks που απαιτούν desktop-class Windows PC — με fanless design και 18 ώρες μπαταρία</li>
-      <li>Το «ισχυρότερο» εξαρτάται από το task — για gaming, Windows έχει πλεονέκτημα. Για creative work, Mac.</li>
+  <div class="ec">
+    <h3>iPad 11η γενιά (A16) — Η βάση</h3>
+    <ul class="sl" style="margin-bottom:12px;">
+      <li><strong>Pencil USB-C ΜΟΝΟ — κρίσιμο:</strong> δεν υποστηρίζει Pencil Pro. Αν θέλει Barrel Roll/Hover → Air ή Pro.</li>
+      <li><strong>Magic Keyboard Folio:</strong> μοναδικό σε αυτό — trackpad + function row. Laptop experience σε χαμηλότερη τιμή.</li>
+      <li><strong>Wi-Fi 6:</strong> αρκεί για καθημερινή χρήση, όχι για AV setups.</li>
+      <li><strong>Δεν έχει Apple Intelligence πλήρως:</strong> αν χρειάζεται → Air.</li>
     </ul>
-    <div class="dialogue" style="margin-top:14px;">
-      <div class="dialogue-role customer">Πελάτης</div>
-      <div class="dialogue-line customer">«Αλλά το Dell XPS έχει Intel Core Ultra 9 — δεν είναι πιο ισχυρό;»</div>
-      <div class="dialogue-role expert" style="margin-top:10px;">Expert</div>
-      <div class="dialogue-line expert">«Εξαρτάται τι κάνεις. Σε gaming, ναι. Σε video editing ή coding — το M5 έχει dedicated media engine και Neural Engine που ο Core Ultra δεν έχει με τον ίδιο τρόπο. Τι κάνεις κυρίως;»</div>
-      <div class="dialogue-note">↳ Γύρισε πάντα στις ανάγκες του — δεν παίζεις το spec game, παίζεις το "τι χρειάζεσαι εσύ" game.</div>
-    </div>
+    <div class="cl cl-go" style="margin-bottom:0;"><span class="cl-icon">🎯</span><div class="cl-body"><strong>Για:</strong> Πρώτο iPad, παιδιά, casual χρήστες, ανάγνωση. <strong>ΟΧΙ αν:</strong> θέλει Pencil Pro ή Apple Intelligence πλήρως.</div></div>
   </div>
-
-  <div class="section-title">📱 iPad vs Android Tablets — Τα πραγματικά σημεία σύγκρισης</div>
-
-  <div class="expert-card blue">
-    <h3>Όταν ο πελάτης αναφέρει Android tablet</h3>
-    <div class="compare-wrap" style="margin-top:10px;">
-      <table class="compare-table">
-        <thead><tr><th>Κριτήριο</th><th>iPad Pro M5</th><th>Android Tablet (top tier)</th></tr></thead>
-        <tbody>
-          <tr><td>Chip</td><td class="hl">M5 — desktop-class</td><td>Snapdragon / Dimensity</td></tr>
-          <tr><td>Οθόνη</td><td class="hl">Tandem OLED · P3 · 1000 nits full-screen</td><td>AMOLED · υψηλή peak brightness</td></tr>
-          <tr><td>Ecosystem</td><td class="hl">Seamless με Mac/iPhone</td><td>Περιορισμένη ενσωμάτωση</td></tr>
-          <tr><td>App quality</td><td class="hl">Procreate, Final Cut, Logic — native</td><td>Android ports (περιορισμένα)</td></tr>
-          <tr><td>Stylus</td><td class="hl">Pencil Pro: Barrel Roll, Hover, Squeeze</td><td>Βασική λειτουργικότητα</td></tr>
-          <tr><td>Λογισμικό updates</td><td class="hl">5–6 χρόνια guaranteed</td><td>3–4 χρόνια συνήθως</td></tr>
-          <tr><td>Gaming</td><td>Καλό</td><td class="good">Περισσότερα Android games</td></tr>
-          <tr><td>Τιμή entry</td><td>Υψηλότερη</td><td class="good">Χαμηλότερη</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="callout callout-blue" style="margin-top:12px; margin-bottom:0;">
-      <span class="callout-icon">💬</span>
-      <div class="callout-body">«Τα Android tablets έχουν βελτιωθεί πολύ. Αν όμως έχεις iPhone ή Mac, το iPad αξιοποιεί αυτό που ήδη έχεις — Universal Control, Sidecar, AirDrop. Αυτή η σύνδεση δεν υπάρχει με Android.»</div>
-    </div>
-  </div>
-
-  <div class="section-title">🤖 Apple Intelligence vs Google Gemini / Microsoft Copilot</div>
-
-  <div class="expert-card purple">
-    <h3>Το μεγαλύτερο differentiator για τα επόμενα χρόνια</h3>
-    <ul class="spec-list">
-      <li><strong>Privacy by design:</strong> Apple Intelligence επεξεργάζεται on-device όταν είναι δυνατόν — τα δεδομένα δεν φεύγουν από τη συσκευή. Google/Microsoft AI είναι cloud-first.</li>
-      <li><strong>Private Cloud Compute:</strong> όταν χρειάζεται cloud, Apple χρησιμοποιεί isolated servers που ακόμα και η Apple δεν μπορεί να δει τα δεδομένα σου.</li>
-      <li><strong>Ενσωμάτωση:</strong> Apple Intelligence είναι στο σύστημα, όχι app — λειτουργεί σε Mail, Messages, Photos, Safari, Notes χωρίς extra steps.</li>
-      <li><strong>Siri + ChatGPT:</strong> opt-in ChatGPT integration για ερωτήσεις που χρειάζονται web knowledge — χωρίς να δίνεις account.</li>
+  <div class="ec bl">
+    <h3>iPad mini 7η γενιά (A17 Pro) — Τσεπάτος powerhouse</h3>
+    <ul class="sl" style="margin-bottom:12px;">
+      <li><strong>A17 Pro = iPhone 15 Pro chip:</strong> πλήρες Apple Intelligence, τρέχει pro apps.</li>
+      <li><strong>8.3" — χωράει στην τσέπη σακακιού:</strong> μοναδικό iPad που το κάνει αυτό.</li>
+      <li><strong>Pencil Pro:</strong> Barrel Roll, Hover, Squeeze — πλήρες creative experience.</li>
+      <li><strong>ΔΕΝ έχει Magic Keyboard:</strong> μόνο Bluetooth. Για heavy typing → Air.</li>
     </ul>
-    <div class="callout callout-gold" style="margin-top:12px; margin-bottom:0;">
-      <span class="callout-icon">💬</span>
-      <div class="callout-body">«Το Copilot τρέχει στα server της Microsoft — τα emails σου φεύγουν εκεί. Το Apple Intelligence επεξεργάζεται στη συσκευή σου. Για εταιρίες με GDPR ευαισθησίες, αυτή η διαφορά είναι κρίσιμη.»</div>
-    </div>
+    <div class="cl cl-go" style="margin-bottom:0;"><span class="cl-icon">🎯</span><div class="cl-body"><strong>Για:</strong> Field workers (γιατροί, μηχανικοί), σημειώσεις pocket, annotation, second screen μέσω Sidecar.</div></div>
   </div>
-
-  <!-- QUIZ -->
-  <div class="quiz-section">
-    <div class="quiz-header">❓ Expert Quiz — Competitive Intelligence</div>
-    <div class="quiz-card">
-      <div class="quiz-q">1. Πελάτης λέει «το Android tablet που κοιτάω έχει πολύ υψηλότερα nits από το iPad». Πώς αντιδράς;</div>
-      <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,false,'mq3')">«Ναι, σε peak brightness το Android tablet υπερέχει — αλλά το iPad Pro Tandem OLED έχει καλύτερη χρωματική ακρίβεια P3 που είναι πιο σημαντική για creative work.»</div>
-        <div class="quiz-opt" onclick="mq(this,true,'mq3')">Αναγνωρίζεις ότι τα nits είναι πραγματικά υψηλότερα στο Android tablet, εξηγείς τη διαφορά Tandem OLED (1000 nits full-screen vs peak brightness) και γυρίζεις στην ουσία: «Χρησιμοποιείς ήδη iPhone ή Mac;»</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq3')">«Τα nits μετράνε κυρίως για outdoor χρήση — αν ο πελάτης δουλεύει κυρίως σε εσωτερικό χώρο, το iPad Pro Tandem OLED δίνει καλύτερα αποτελέσματα στην πράξη.»</div>
-    </div>
-      <div class="quiz-feedback" id="mq3-fb"></div>
-    </div>
-    <div class="quiz-card">
-      <div class="quiz-q">2. Γιατί το Apple Intelligence είναι ισχυρότερο selling point για B2B αγοραστές vs Google Gemini;</div>
-      <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,true,'mq4')">On-device processing και Private Cloud Compute — εταιρικά AI requests δεν φεύγουν σε third-party servers. Ακόμα και η Apple δεν μπορεί να δει τα δεδομένα, κάτι που είναι κρίσιμο για GDPR.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq4')">Γιατί είναι πιο αξιόπιστο — το Gemini έχει documented cases hallucinations, ενώ το Apple Intelligence εστιάζει σε tasks που κάνει σωστά αντί να προσπαθεί να απαντήσει σε οτιδήποτε.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq4')">Γιατί ενσωματώνεται σε όλες τις Apple εφαρμογές χωρίς extra subscription — για εταιρίες που ήδη πληρώνουν Microsoft 365 και Google Workspace, δεν χρειάζεται άλλη γραμμή κόστους.</div>
-    </div>
-      <div class="quiz-feedback" id="mq4-fb"></div>
-    </div>
-    <div class="quiz-score" id="mqs2"></div>
+  <div class="ec gr">
+    <h3>iPad Air M4 (11" & 13") — Το sweet spot</h3>
+    <ul class="sl" style="margin-bottom:12px;">
+      <li><strong>M4 chip, 12GB RAM:</strong> ίδιο chip με MacBook Pro M4 — Lightroom, Procreate, video editing άνετα.</li>
+      <li><strong>Wi-Fi 7:</strong> έως 2.4Gbps — για AV streaming, file transfers, video calls χωρίς lag.</li>
+      <li><strong>Magic Keyboard for iPad Air + Pencil Pro:</strong> laptop-like experience.</li>
+      <li><strong>11" vs 13":</strong> 11" για φορητότητα, 13" για split-screen και documents.</li>
+    </ul>
+    <div class="cl cl-go" style="margin-bottom:0;"><span class="cl-icon">🎯</span><div class="cl-body"><strong>Για:</strong> Φοιτητές, επαγγελματίες που θέλουν laptop replacement, ταξιδιώτες. Το πιο versatile iPad.</div></div>
   </div>
-
+  <div class="ec pu">
+    <h3>iPad Pro M5 (11" & 13") — Όταν δεν αρκεί τίποτα άλλο</h3>
+    <ul class="sl" style="margin-bottom:12px;">
+      <li><strong>Tandem OLED XDR:</strong> 1000 nits full-screen, P3, απόλυτα μαύρα — color-critical work.</li>
+      <li><strong>Thunderbolt 4:</strong> μοναδικό iPad με TB — συνδέεται σε Studio Display.</li>
+      <li><strong>Face ID σε landscape:</strong> σημαντικό για Magic Keyboard χρήστες.</li>
+      <li><strong>ProRes video recording.</strong></li>
+    </ul>
+    <div class="cl cl-go" style="margin-bottom:0;"><span class="cl-icon">🎯</span><div class="cl-body"><strong>Για:</strong> Illustrators, photographers, video professionals. <strong>ΔΕΝ αντικαθιστά laptop αν χρειάζεται:</strong> Xcode, full Final Cut, AutoCAD desktop, complex macros.</div></div>
+  </div>
+  <div class="qs">
+    <div class="qh">❓ Quiz — iPad Specs</div>
+    <div class="qc">
+      <div class="qq">1. Πελάτης θέλει iPad για illustration με Procreate, ταξιδεύει πολύ, έχει iPhone. Ποιο iPad και ποια features;</div>
+      <div class="qo-wrap">
+        <div class="qo" onclick="mq(this,false,'q3a')">iPad Air 11" M4 — compact για ταξίδια, M4 αρκεί για Procreate</div>
+        <div class="qo" onclick="mq(this,true,'q3a')">iPad Pro 13" M5 + Pencil Pro — Tandem OLED για χρωματική ακρίβεια, Barrel Roll για φυσικό σχέδιο, 13" για μεγάλο canvas. Με iPhone: AirDrop + Sidecar built-in.</div>
+        <div class="qo" onclick="mq(this,false,'q3a')">iPad Pro 11" M5 — πιο ισχυρό iPad, αρκεί για Procreate</div>
+      </div>
+      <div class="qf" id="q3a-fb"></div>
+    </div>
+    <div class="qc">
+      <div class="qq">2. Νοσηλευτής θέλει tablet για αρχεία ασθενών. «Να χωράει στη ρόμπα μου». Τι προτείνεις;</div>
+      <div class="qo-wrap">
+        <div class="qo" onclick="mq(this,false,'q3b')">iPad Air 11" — καλό chip και compact για healthcare apps</div>
+        <div class="qo" onclick="mq(this,true,'q3b')">iPad mini 7 (A17 Pro) — το μόνο iPad που χωράει στην τσέπη ρόμπας, A17 Pro για Apple Intelligence και healthcare apps, Pencil Pro για annotation σε αρχεία</div>
+        <div class="qo" onclick="mq(this,false,'q3b')">iPad Pro 11" — πιο ισχυρό για professional χρήση</div>
+      </div>
+      <div class="qf" id="q3b-fb"></div>
+    </div>
+    <div class="qs-score" id="qs3"></div>
+  </div>
   <div class="nav-btns">
-    <button class="btn btn-secondary" onclick="prev()">← Apple Sales DNA</button>
-    <button class="btn btn-primary" onclick="next()">Enterprise & B2B →</button>
+    <button class="btn btn-s" onclick="prev()">← Mac</button>
+    <button class="btn btn-p" onclick="next()">Chip Differences →</button>
   </div>
 </section>
 
-
-<!-- ══ MODULE 3 — ENTERPRISE & B2B MASTERY ══ -->
+<!-- M4 CHIP DIFFERENCES -->
 <section class="module" id="m4">
-  <div class="mod-eyebrow">Expert · Ενότητα 5 από 9</div>
-  <h1 class="mod-title">Enterprise & B2B Mastery</h1>
-  <p class="mod-desc">Μεγάλες εταιρικές αγορές, fleet deals, AppleCare+ στρατηγική και Trade-in programs — το επίπεδο πωλήσεων που ελάχιστοι φτάνουν.</p>
-  <div class="mod-meta"><span>🏢 Fleet deals · AppleCare+ · Trade-in · MDM</span><span>⏱ ~16 λεπτά</span></div>
+  <div class="mod-eyebrow">Expert · Ενότητα 5 από 10</div>
+  <h1 class="mod-title">Chip Differences</h1>
+  <p class="mod-desc">Τι σημαίνει κάθε chip — και πότε η διαφορά είναι ουσιαστική για τον πελάτη.</p>
+  <div class="mod-meta"><span>🧬 A18 Pro · M5 · M5 Pro · M5 Max · M4 · A17 Pro</span><span>⏱ ~15 λεπτά</span></div>
   <div class="mod-divider"></div>
-
-  <div class="section-title">🏢 Fleet Deals — Πώς δουλεύουν</div>
-
-  <div class="expert-card">
-    <h3>Anatomy of a Fleet Purchase</h3>
-    <p style="margin-bottom:12px;">Μια εταιρεία που αγοράζει 20+ Mac δεν είναι 20 ξεχωριστές πωλήσεις. Είναι ένα deal με διαφορετική δυναμική, διαφορετικούς decision-makers και διαφορετικά κριτήρια.</p>
-    <ul class="spec-list">
-      <li><strong>Ο πραγματικός decision-maker</strong> συχνά δεν είναι αυτός που μπαίνει στο κατάστημα — μπορεί να είναι CFO ή IT director που δεν έχεις δει. Μάθε ποιος υπογράφει.</li>
-      <li><strong>Procurement απαιτεί documentation:</strong> spec sheet, pricing breakdown, lead time, warranty terms. Έχε τα έτοιμα.</li>
-      <li><strong>Volume pricing:</strong> Apple προσφέρει εκπτώσεις μέσω επίσημων B2B channels — γνώρισε τη διαδικασία και προτείνέ την ενεργά.</li>
-      <li><strong>Ο χρόνος είναι διαφορετικός:</strong> μια fleet αγορά μπορεί να πάρει εβδομάδες. Κρατήσου σε επαφή χωρίς πίεση.</li>
+  <div class="section-title">Η ιεραρχία των chips</div>
+  <div class="chip-grid">
+    <div class="chip-card"><div class="chip-name" style="color:#30d158;">A18 Pro</div><div class="chip-device">MacBook Neo</div><ul>
+      <li><strong>CPU:</strong> 6-core (iPhone chip)</li><li><strong>GPU:</strong> 5-core</li>
+      <li><strong>RAM max:</strong> 8GB μόνο</li><li><strong>Rosetta 2:</strong> ΟΧΙ</li>
+      <li><strong>Thunderbolt:</strong> ΟΧΙ</li><li><strong>Για:</strong> Βασική χρήση μόνο</li></ul></div>
+    <div class="chip-card"><div class="chip-name" style="color:#0a84ff;">M5</div><div class="chip-device">MacBook Air · MBP base · iPad Pro</div><ul>
+      <li><strong>CPU:</strong> 10-core</li><li><strong>GPU:</strong> 10-core</li>
+      <li><strong>RAM:</strong> 16–32GB (Mac) / 12-16GB (iPad)</li>
+      <li><strong>Bandwidth:</strong> 153 GB/s</li>
+      <li><strong>Media Engine:</strong> 1× ProRes</li>
+      <li><strong>Για:</strong> Καθημερινή επαγγελματική χρήση</li></ul></div>
+    <div class="chip-card"><div class="chip-name" style="color:#ff9f0a;">M5 Pro</div><div class="chip-device">MacBook Pro 14" / 16"</div><ul>
+      <li><strong>CPU:</strong> έως 18-core</li><li><strong>GPU:</strong> έως 20-core</li>
+      <li><strong>RAM:</strong> έως 64GB</li>
+      <li><strong>Bandwidth:</strong> 307 GB/s (2×)</li>
+      <li><strong>Media Engine:</strong> 1× ProRes</li>
+      <li><strong>Για:</strong> Sustained pro workloads</li></ul></div>
+    <div class="chip-card"><div class="chip-name" style="color:#bf5af2;">M5 Max</div><div class="chip-device">MacBook Pro 14" / 16" high-end</div><ul>
+      <li><strong>CPU:</strong> 18-core</li><li><strong>GPU:</strong> έως 40-core</li>
+      <li><strong>RAM:</strong> έως 128GB</li>
+      <li><strong>Bandwidth:</strong> 614 GB/s (4×)</li>
+      <li><strong>Media Engine:</strong> 2× ProRes</li>
+      <li><strong>Για:</strong> 8K video, ML, 3D rendering</li></ul></div>
+    <div class="chip-card"><div class="chip-name" style="color:#ffd60a;">A17 Pro</div><div class="chip-device">iPad mini 7η γενιά</div><ul>
+      <li><strong>CPU:</strong> 6-core</li><li><strong>GPU:</strong> 6-core</li>
+      <li><strong>Apple Intelligence:</strong> Πλήρες</li>
+      <li><strong>Neural Engine:</strong> 16-core</li>
+      <li><strong>Για:</strong> Full-featured pocket device</li></ul></div>
+    <div class="chip-card"><div class="chip-name" style="color:#30d158;">M4</div><div class="chip-device">iMac · Mac mini · iPad Air</div><ul>
+      <li><strong>CPU:</strong> 10-core</li><li><strong>GPU:</strong> 10-core</li>
+      <li><strong>RAM:</strong> έως 32GB (Mac) / 12GB (iPad)</li>
+      <li><strong>Bandwidth:</strong> 120 GB/s</li>
+      <li><strong>Για:</strong> Επαγγελματική & creative χρήση</li></ul></div>
+  </div>
+  <div class="section-title">M5 vs M5 Pro — Η πραγματική διαφορά</div>
+  <div class="ec" style="border-left-color:var(--gold);">
+    <h3>Πότε η διαφορά αλλάζει την απόφαση</h3>
+    <ul class="sl">
+      <li><strong>Memory bandwidth (153 vs 307 GB/s):</strong> Σε sustained workloads, ο M5 Pro τροφοδοτεί CPU/GPU 2× πιο γρήγορα. Ο M5 μπορεί να μειώσει απόδοση μετά από λεπτά εντατικής χρήσης, ο M5 Pro όχι.</li>
+      <li><strong>RAM ceiling:</strong> M5 max 32GB, M5 Pro max 64GB. Για VMs, ML training, complex 3D scenes.</li>
+      <li><strong>Πότε M5 αρκεί:</strong> Photography editing, coding projects, casual video editing, document work.</li>
+      <li><strong>Πότε χρειάζεσαι M5 Pro:</strong> Daily video export, Parallels + native apps ταυτόχρονα, μεγάλα Xcode projects, 3D rendering.</li>
     </ul>
   </div>
-
-  <div class="section-title">🛡 AppleCare+ — Στρατηγική, όχι upsell</div>
-
-  <div class="expert-card green">
-    <h3>Πότε και πώς να το παρουσιάζεις</h3>
-    <p style="margin-bottom:12px;">Το λάθος: «Θέλεις και AppleCare+;» στο τέλος της πώλησης. Το σωστό: ενσωματώνεις στη λύση από την αρχή.</p>
-    <ul class="spec-list">
-      <li><strong>Για B2B:</strong> AppleCare+ for Business Essentials — MDM, 24/7 support, onsite repair. Μειώνει IT overhead δραματικά. Αυτό δεν είναι insurance, είναι operational cost reduction.</li>
-      <li><strong>ROI argument:</strong> Μία επισκευή MacBook Pro display (out of warranty) κοστίζει €600+. Το AppleCare+ για MacBook Pro κοστίζει ~€300/2 χρόνια. Ο υπολογισμός είναι αυτονόητος.</li>
-      <li><strong>Για mobile workers:</strong> Accidental Damage coverage — laptop που πέφτει, iPad που σπάει οθόνη. Για κάποιον που ταξιδεύει συνέχεια, αυτό είναι peace of mind.</li>
-      <li><strong>Express Replacement:</strong> στέλνουν αντικατάσταση πριν επιστρέψεις τη χαλασμένη συσκευή — zero downtime για επαγγελματίες.</li>
+  <div class="ec pu">
+    <h3>M5 Pro vs M5 Max — Μόνο για συγκεκριμένη ανάγκη</h3>
+    <ul class="sl">
+      <li><strong>2 ProRes Media Engines:</strong> Ο M5 Max κάνει 2 ProRes streams ταυτόχρονα — για daily 4K/8K ProRes export.</li>
+      <li><strong>Πότε M5 Pro αρκεί:</strong> Οτιδήποτε εκτός daily ProRes/8K workflows.</li>
+      <li><strong>Πότε χρειάζεσαι M5 Max:</strong> Daily ProRes 4K/8K export, simultaneous render jobs, ML training.</li>
     </ul>
-    <div class="dialogue" style="margin-top:14px;">
-      <div class="dialogue-role customer">IT Manager</div>
-      <div class="dialogue-line customer">«Δεν χρειαζόμαστε AppleCare+ — τα συντηρούμε εσωτερικά.»</div>
-      <div class="dialogue-role expert" style="margin-top:10px;">Expert</div>
-      <div class="dialogue-line expert">«Καταλαβαίνω. Το AppleCare+ for Business Essentials δεν αντικαθιστά τον IT σας — τον συμπληρώνει με 24/7 direct Apple support για hardware failures. Αν σπάσει μία οθόνη MacBook Pro ενώ ο χρήστης είναι σε ταξίδι, πόσο κοστίζει ο downtime; Αυτό λύνει το Express Replacement.»</div>
-      <div class="dialogue-note">↳ Εστιάζεις στο specific pain point τους (downtime), όχι στο γενικό "είναι χρήσιμο".</div>
-    </div>
+    <div class="cl cl-go" style="margin-top:12px;margin-bottom:0;"><span class="cl-icon">💬</span><div class="cl-body">«Αν κάνεις 4K ProRes export 2 ώρες κάθε μέρα — το M5 Max σε κάνει να περιμένεις 8 λεπτά αντί 35. Σε ένα χρόνο αυτό είναι πάνω από 150 ώρες ζωής πίσω.»</div></div>
   </div>
-
-  <div class="section-title">♻️ Apple Trade In — Ως Sales Tool</div>
-
-  <div class="expert-card orange">
-    <h3>Trade In δεν είναι μόνο για εκπτώσεις — είναι objection killer</h3>
-    <ul class="spec-list">
-      <li><strong>Μειώνει την ψυχολογική αντίσταση:</strong> «€1.500 για MacBook» γίνεται «€900 αφού μετρήσουμε τον παλιό σου Mac» — ίδιο κόστος, διαφορετική ψυχολογία</li>
-      <li><strong>Για B2B fleet refresh:</strong> εταιρίες που ανανεώνουν 20+ Mac παίρνουν σημαντικό Trade In credit — μειώνει net cost δραματικά</li>
-      <li><strong>Ανέφερέ το νωρίς:</strong> όχι στο τέλος σαν bonus — ρώτα «έχεις παλιά Apple συσκευή;» στη φάση της κατανόησης</li>
-      <li><strong>Sustainability angle:</strong> Apple Trade In — responsible recycling. Για εταιρίες με ESG targets, αυτό έχει αξία πέρα από τα χρήματα</li>
-    </ul>
+  <div class="qs">
+    <div class="qh">❓ Quiz — Chip Differences</div>
+    <div class="qc">
+      <div class="qq">1. Developer: «τρέχω Xcode, Docker containers και iOS Simulator ταυτόχρονα, το laptop επιβραδύνεται». Ποιο chip χρειάζεται;</div>
+      <div class="qo-wrap">
+        <div class="qo" onclick="mq(this,false,'q4a')">M5 στο MacBook Air — ισχυρός chip, και fanless οπότε αθόρυβο για development</div>
+        <div class="qo" onclick="mq(this,true,'q4a')">M5 Pro στο MacBook Pro — 307 GB/s bandwidth για παράλληλα environments, έως 64GB RAM για multiple VMs, active cooling για να μην επιβραδύνεται σε sustained load</div>
+        <div class="qo" onclick="mq(this,false,'q4a')">M5 Max — μέγιστη απόδοση, εγγυάται ότι τίποτα δεν επιβραδύνεται ποτέ</div>
+      </div>
+      <div class="qf" id="q4a-fb"></div>
+    </div>
+    <div class="qc">
+      <div class="qq">2. Video editor κάνει daily ProRes 4K export. Τώρα παίρνει 40+ λεπτά. Τι του εξηγείς για M5 Max;</div>
+      <div class="qo-wrap">
+        <div class="qo" onclick="mq(this,false,'q4b')">Ο M5 Max έχει 40-core GPU που κάνει rendering πολύ πιο γρήγορα σε όλα</div>
+        <div class="qo" onclick="mq(this,true,'q4b')">Ο M5 Max έχει 2 ProRes encode engines — 1 ώρα ProRes footage σε ~8 αντί ~40 λεπτά. Για daily workflow: 30+ λεπτά κερδισμένου χρόνου κάθε μέρα.</div>
+        <div class="qo" onclick="mq(this,false,'q4b')">Ο M5 Max έχει 128GB RAM που επιτρέπει μεγαλύτερα projects χωρίς proxy</div>
+      </div>
+      <div class="qf" id="q4b-fb"></div>
+    </div>
+    <div class="qs-score" id="qs4"></div>
   </div>
-
-  <div class="section-title">📋 Apple Business Manager + MDM — Τι πρέπει να ξέρεις</div>
-  <div class="expert-card blue">
-    <h3>Το ecosystem των εργαλείων</h3>
-    <div class="compare-wrap" style="margin-top:10px;">
-      <table class="compare-table">
-        <thead><tr><th>Εργαλείο</th><th>Τι κάνει</th><th>Κατάλληλο για</th></tr></thead>
-        <tbody>
-          <tr><td><strong>Apple Business Manager</strong></td><td>Zero-touch deployment, App Store volume, user management</td><td>Όλες οι εταιρίες</td></tr>
-          <tr><td><strong>Jamf Pro</strong></td><td>Πλήρες MDM — policies, remote wipe, compliance</td><td>Enterprise 50+ devices</td></tr>
-          <tr><td><strong>Microsoft Intune</strong></td><td>MDM για mixed Windows/Mac environments</td><td>Εταιρίες με Microsoft 365</td></tr>
-          <tr><td><strong>Apple Business Essentials</strong></td><td>Built-in MDM + iCloud + AppleCare+ subscription</td><td>SMB 5–500 devices</td></tr>
-          <tr><td><strong>Kandji / Mosyle</strong></td><td>Simplified MDM, Apple-first</td><td>Mac-heavy SMB</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- QUIZ -->
-  <div class="quiz-section">
-    <div class="quiz-header">❓ Expert Quiz — Enterprise & B2B</div>
-    <div class="quiz-card">
-      <div class="quiz-q">1. IT Manager λέει «δεν χρειαζόμαστε AppleCare+, έχουμε εσωτερικό IT». Ποιο argument χρησιμοποιείς;</div>
-      <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,true,'mq5')">Express Replacement — αν σπάσει συσκευή ενώ ο χρήστης είναι εκτός γραφείου, η Apple στέλνει αντικατάσταση πριν επιστρέψεις την παλιά. Ο εσωτερικός IT ακόμα και με spare devices δεν μπορεί να το κάνει on-the-road.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq5')">«Μια επισκευή MacBook Pro display εκτός εγγύησης κοστίζει €600+, ενώ το AppleCare+ για 2 χρόνια κοστίζει ~€300 — ο υπολογισμός βγαίνει εύκολα υπέρ της κάλυψης.»</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq5')">«Το AppleCare+ for Business Essentials περιλαμβάνει 24/7 support και MDM — συνδυάζει ασφάλεια hardware με enterprise support σε ένα πακέτο, χωρίς να χρειαστεί ξεχωριστή MDM λύση.»</div>
-    </div>
-      <div class="quiz-feedback" id="mq5-fb"></div>
-    </div>
-    <div class="quiz-card">
-      <div class="quiz-q">2. Πότε πρέπει να αναφέρεις το Trade In στη συνομιλία;</div>
-      <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,true,'mq6')">Νωρίς, στη φάση κατανόησης — ρωτώντας «έχεις παλιά Apple συσκευή;» ο πελάτης κάνει τους υπολογισμούς του με τη μειωμένη τιμή από την αρχή και δεν βλέπει ποτέ την πλήρη τιμή σαν αντίρρηση.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq6')">Μόνο αν ο πελάτης φέρει μόνος του το θέμα της παλιάς συσκευής — δεν θέλεις να φαίνεται ότι ψάχνεις πράγματα να αγοράσεις, γιατί μπορεί να ερμηνευτεί σαν πίεση.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq6')">Στο τέλος, σαν τελευταίο βήμα — αφού ο πελάτης έχει ήδη πειστεί για την αξία, το Trade In λειτουργεί σαν bonus που κάνει τη συναλλαγή ακόμα πιο ελκυστική.</div>
-    </div>
-      <div class="quiz-feedback" id="mq6-fb"></div>
-    </div>
-    <div class="quiz-score" id="mqs3"></div>
-  </div>
-
   <div class="nav-btns">
-    <button class="btn btn-secondary" onclick="prev()">← Competitive</button>
-    <button class="btn btn-primary" onclick="next()">Expert Σενάρια →</button>
+    <button class="btn btn-s" onclick="prev()">← iPad</button>
+    <button class="btn btn-p" onclick="next()">Real-World Performance →</button>
   </div>
 </section>
 
-
-<!-- ══ MODULE 4 — EXPERT SCENARIOS ══ -->
+<!-- M5 REAL WORLD PERFORMANCE -->
 <section class="module" id="m5">
-  <div class="mod-eyebrow">Expert · Ενότητα 6 από 9</div>
-  <h1 class="mod-title">Expert Σενάρια</h1>
-  <p class="mod-desc">Τα σενάρια που δεν υπάρχουν σε κανένα training manual — edge cases, πολύ δύσκολοι πελάτες και καταστάσεις που απαιτούν judgment, όχι script.</p>
-  <div class="mod-meta"><span>🎭 6 expert scenarios</span><span>⏱ ~16 λεπτά</span></div>
+  <div class="mod-eyebrow">Expert · Ενότητα 6 από 10</div>
+  <h1 class="mod-title">Real-World Performance</h1>
+  <p class="mod-desc">Πραγματικοί χρόνοι, πραγματικά tasks — μιλάς με αριθμούς αντί για abstractions.</p>
+  <div class="mod-meta"><span>⚡ Συγκεκριμένα παραδείγματα που πείθουν</span><span>⏱ ~12 λεπτά</span></div>
   <div class="mod-divider"></div>
-
-  <div class="scenario">
-    <div class="scenario-who">💀 Σενάριο 1 — Ο Γνώστης που θέλει να σε «πιάσει»</div>
-    <div class="scenario-context">Μπαίνει με σιγουριά, κάνει πολύ τεχνικές ερωτήσεις, φαίνεται ότι ψάχνει λάθος στις απαντήσεις σου. Συχνά είναι tech enthusiast ή IT professional.</div>
-    <div class="scenario-challenge">⚡ Expert challenge: Να μην μπεις σε defensive mode ή spec battle.</div>
-    <div class="scenario-rec">✅ <strong>Προσέγγιση:</strong> Αναγνώρισε τη γνώση του ειλικρινά. «Φαίνεται ότι ξέρεις καλά τον χώρο.» Μετά ρώτα τι συγκεκριμένα αξιολογεί — συχνά έχει ήδη πάρει απόφαση και ψάχνει επιβεβαίωση.</div>
-    <div class="scenario-rec">🔑 <strong>Αν δεν ξέρεις κάτι:</strong> «Δεν είμαι σίγουρος για αυτό το spec — ας το ελέγξω τώρα.» Η ειλικρίνεια χτίζει περισσότερη εμπιστοσύνη από μια λανθασμένη απάντηση.</div>
-    <div class="scenario-insight"><span>Expert insight:</span> Ο πελάτης που κάνει πολλές τεχνικές ερωτήσεις συνήθως θέλει να αισθανθεί ότι αγοράζει με πλήρη πληροφόρηση — δεν θέλει να τον πουλήσεις, θέλει να επιβεβαιώσεις την απόφασή του.</div>
-  </div>
-
-  <div class="scenario">
-    <div class="scenario-who">😤 Σενάριο 2 — Ο Δυσαρεστημένος Πελάτης</div>
-    <div class="scenario-context">Επιστρέφει με πρόβλημα — η συσκευή δεν κάνει αυτό που περίμενε, ή έχει technical issue. Είναι εκνευρισμένος.</div>
-    <div class="scenario-challenge">⚡ Expert challenge: Να μην γίνεις αμυντικός και να μην υποσχεθείς κάτι που δεν μπορείς να τηρήσεις.</div>
-    <div class="scenario-rec">✅ <strong>Βήμα 1:</strong> Άκου χωρίς να διακόψεις. Ο εκνευρισμένος πελάτης θέλει πρώτα να ακουστεί.</div>
-    <div class="scenario-rec">✅ <strong>Βήμα 2:</strong> Επανάλαβε το πρόβλημα: «Αν καταλαβαίνω σωστά, το θέμα είναι...» — επιβεβαιώνει ότι άκουσες.</div>
-    <div class="scenario-rec">✅ <strong>Βήμα 3:</strong> Ξεκαθάρισε τι μπορείς να κάνεις τώρα, τι χρειάζεται χρόνο, και τι δεν είναι στα χέρια σου.</div>
-    <div class="scenario-insight"><span>Expert insight:</span> Ένας δυσαρεστημένος πελάτης που αντιμετωπίζεται σωστά γίνεται ο πιο πιστός πελάτης. Η εμπιστοσύνη χτίζεται στα δύσκολα, όχι στα εύκολα.</div>
-  </div>
-
-  <div class="scenario">
-    <div class="scenario-who">🤑 Σενάριο 3 — Ο Πελάτης που Διαπραγματεύεται τα Πάντα</div>
-    <div class="scenario-context">Θέλει έκπτωση σε ό,τι και να του προτείνεις. «Αλλού είδα φθηνότερα.» «Μπορείτε να κάνετε κάτι για την τιμή;»</div>
-    <div class="scenario-challenge">⚡ Expert challenge: Να μην χάσεις την εμπιστοσύνη σου και να μην υποτιμήσεις τα προϊόντα.</div>
-    <div class="scenario-rec">✅ <strong>Αντί για έκπτωση:</strong> Πρόσθεσε αξία — Trade In, AppleCare+, setup assistance, ή bundle που κάνει τη συνολική λύση να φαίνεται πιο αξιόλογη.</div>
-    <div class="scenario-rec">✅ <strong>Αν επιμένει:</strong> «Η τιμή της Apple είναι σταθερή — δεν μπορώ να την αλλάξω. Αλλά μπορώ να σε βοηθήσω να βρεις τη λύση που σου δίνει τη μέγιστη αξία για αυτό που θέλεις να ξοδέψεις.»</div>
-    <div class="scenario-insight"><span>Expert insight:</span> Ο πελάτης που διαπραγματεύεται δεν θέλει πάντα φθηνότερο — θέλει να νιώσει ότι πήρε καλή συμφωνία. Δώσε του αυτό χωρίς να αλλάξεις τιμή.</div>
-  </div>
-
-  <div class="scenario">
-    <div class="scenario-who">👵 Σενάριο 4 — Ο Μεγαλύτερης Ηλικίας Πελάτης</div>
-    <div class="scenario-context">Αγοράζει για πρώτη φορά Mac ή iPad, μεγάλης ηλικίας, νιώθει ανασφαλής με την τεχνολογία. Μπορεί να έχει μαζί παιδί/εγγόνι που «ξέρει».</div>
-    <div class="scenario-challenge">⚡ Expert challenge: Να απευθυνθείς στον ίδιο τον πελάτη, όχι στο συνοδό του.</div>
-    <div class="scenario-rec">✅ <strong>Κανόνας:</strong> Ο πελάτης είναι αυτός που αγοράζει — μίλα πάντα σε αυτόν, όχι στον «τεχνικό» συνοδό. Κάνε τον να νιώσει ότι μπορεί να το χειριστεί.</div>
-    <div class="scenario-rec">✅ <strong>Language:</strong> Αποφύγε jargon. «Φορτίζεις εδώ, πατάς αυτό για να πάρεις φωτογραφία» — συγκεκριμένο, πρακτικό.</div>
-    <div class="scenario-rec">✅ <strong>iMac advantage:</strong> All-in-one, μεγάλη οθόνη, λιγότερα καλώδια — «βάζεις ένα καλώδιο και δουλεύει» είναι ισχυρότατο argument.</div>
-    <div class="scenario-insight"><span>Expert insight:</span> Ο μεγαλύτερης ηλικίας πελάτης που αισθανθεί ότι τον σεβάστηκες και τον βοήθησες — θα σε προτείνει σε όλη την οικογένειά του.</div>
-  </div>
-
-  <div class="scenario">
-    <div class="scenario-who">🔁 Σενάριο 5 — Πελάτης που Επιστρέφει Συσκευή</div>
-    <div class="scenario-context">Αγόρασε πριν 5 μέρες, θέλει επιστροφή. Δεν δίνει σαφή λόγο — «δεν με βολεύει».</div>
-    <div class="scenario-challenge">⚡ Expert challenge: Να μην πάρεις την επιστροφή αμέσως χωρίς να καταλάβεις τι πήγε στραβά.</div>
-    <div class="scenario-rec">✅ <strong>Ρώτα πρώτα:</strong> «Τι ακριβώς δεν λειτούργησε όπως περίμενες;» — Συχνά η επιστροφή κρύβει ένα πρόβλημα που μπορεί να λυθεί: δεν ξέρει πώς να το χρησιμοποιήσει, ή κάτι δεν έχει ρυθμιστεί σωστά.</div>
-    <div class="scenario-rec">✅ <strong>Αν είναι learning curve:</strong> 15 λεπτά hands-on demo μπορεί να γυρίσει μια επιστροφή σε ικανοποιημένο πελάτη.</div>
-    <div class="scenario-rec">✅ <strong>Αν επιμένει:</strong> Επεξεργάσου την επιστροφή gracefully — αυτός ο πελάτης μπορεί να επιστρέψει αργότερα με διαφορετικές ανάγκες.</div>
-    <div class="scenario-insight"><span>Expert insight:</span> Μια καλά χειρισμένη επιστροφή είναι ευκαιρία, όχι αποτυχία.</div>
-  </div>
-
-  <div class="scenario">
-    <div class="scenario-who">🌐 Σενάριο 6 — Ο Πελάτης που Αγόρασε Online Φθηνότερα</div>
-    <div class="scenario-context">«Το βρήκα €150 φθηνότερο στο [online retailer]. Γιατί να το αγοράσω εδώ;»</div>
-    <div class="scenario-challenge">⚡ Expert challenge: Να δικαιολογήσεις την αξία της φυσικής παρουσίας χωρίς να μιλήσεις κακά για άλλα κανάλια.</div>
-    <div class="scenario-rec">✅ <strong>Η αξία του store:</strong> Setup, migration assistance, hands-on demo, Genius Bar, in-store AppleCare+ activation, ανθρώπινη υποστήριξη αν κάτι πάει στραβά.</div>
-    <div class="scenario-rec">✅ <strong>Trade In offset:</strong> «Αν έχεις παλιά συσκευή, το Trade In εδώ μπορεί να μειώσει αυτή τη διαφορά ή και να την καλύψει.»</div>
-    <div class="scenario-insight"><span>Expert insight:</span> Μερικοί πελάτες θα αγοράσουν online ό,τι και να πεις. Μην το παίρνεις προσωπικά — ήταν ήδη αποφασισμένοι.</div>
-  </div>
-
-  <!-- QUIZ -->
-  <div class="quiz-section">
-    <div class="quiz-header">❓ Expert Quiz — Σενάρια</div>
-    <div class="quiz-card">
-      <div class="quiz-q">1. Πελάτης επιστρέφει iPad μετά 4 μέρες, λέει «δεν με βολεύει». Τι κάνεις πρώτα;</div>
-      <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,true,'mq7')">Ρωτάς «τι ακριβώς δεν λειτούργησε όπως περίμενες;» πριν κάνεις οτιδήποτε — συχνά δεν είναι θέμα προϊόντος αλλά setup ή learning curve που λύνεται με ένα σύντομο demo.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq7')">Επεξεργάζεσαι την επιστροφή αμέσως και χωρίς ερωτήσεις — ο πελάτης έχει το δικαίωμα επιστροφής και δεν πρέπει να νιώθει ότι τον κρατάς πίσω ή τον πιέζεις.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq7')">Προτείνεις αμέσως διαφορετικό μοντέλο που ίσως ταιριάζει καλύτερα — αν έκανε λάθος επιλογή, καλύτερα να λυθεί τώρα παρά να φύγει με κάτι που δεν τον εξυπηρετεί.</div>
+  <div class="section-title">⏱ Export Times — 1 ώρα 4K ProRes footage</div>
+  <div class="card">
+    <div class="pb-item">
+      <div class="pb-rows">
+        <div class="pb-row"><div class="pb-lbl">M5 Max</div><div class="pb-bg"><div class="pb-fill" style="width:100%;background:var(--purple);"></div></div><div class="pb-val">~8'</div></div>
+        <div class="pb-row"><div class="pb-lbl">M5 Pro</div><div class="pb-bg"><div class="pb-fill" style="width:55%;background:var(--orange);"></div></div><div class="pb-val">~18'</div></div>
+        <div class="pb-row"><div class="pb-lbl">M5</div><div class="pb-bg"><div class="pb-fill" style="width:33%;background:var(--blue);"></div></div><div class="pb-val">~35'</div></div>
+        <div class="pb-row"><div class="pb-lbl">Windows i9</div><div class="pb-bg"><div class="pb-fill" style="width:25%;background:var(--gray);"></div></div><div class="pb-val">~55'</div></div>
+      </div>
     </div>
-      <div class="quiz-feedback" id="mq7-fb"></div>
-    </div>
-    <div class="quiz-card">
-      <div class="quiz-q">2. Πελάτης «γνώστης» σε ρωτάει κάτι πολύ τεχνικό που δεν ξέρεις. Τι κάνεις;</div>
-      <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,false,'mq8')">Δίνεις μια γενική απάντηση που καλύπτει την ερώτηση χωρίς να μπεις σε λεπτομέρειες που δεν είσαι σίγουρος — διατηρείς την εμπιστοσύνη χωρίς να παραδεχτείς άγνοια.</div>
-        <div class="quiz-opt" onclick="mq(this,true,'mq8')">«Δεν είμαι σίγουρος για αυτό συγκεκριμένα — ας το ελέγξουμε μαζί τώρα.» Ο πελάτης που ξέρει πολλά εκτιμά την ειλικρίνεια πολύ περισσότερο από μια λανθασμένη σίγουρη απάντηση.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq8')">Αλλάζεις θέμα προς κάτι που ξέρεις καλά — στρέφεις τη συζήτηση στα πλεονεκτήματα που γνωρίζεις σίγουρα και αφήνεις την τεχνική ερώτηση αναπάντητη.</div>
-    </div>
-      <div class="quiz-feedback" id="mq8-fb"></div>
-    </div>
-    <div class="quiz-score" id="mqs4"></div>
   </div>
-
+  <div class="section-title">Xcode Full Build (μεγάλο project)</div>
+  <div class="card">
+    <div class="pb-item">
+      <div class="pb-rows">
+        <div class="pb-row"><div class="pb-lbl">M5 Pro</div><div class="pb-bg"><div class="pb-fill" style="width:100%;background:var(--orange);"></div></div><div class="pb-val">~45''</div></div>
+        <div class="pb-row"><div class="pb-lbl">M5</div><div class="pb-bg"><div class="pb-fill" style="width:72%;background:var(--blue);"></div></div><div class="pb-val">~75''</div></div>
+        <div class="pb-row"><div class="pb-lbl">M3</div><div class="pb-bg"><div class="pb-fill" style="width:55%;background:rgba(255,255,255,0.3);"></div></div><div class="pb-val">~110''</div></div>
+        <div class="pb-row"><div class="pb-lbl">Intel MBP</div><div class="pb-bg"><div class="pb-fill" style="width:28%;background:var(--gray);"></div></div><div class="pb-val">~195''</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="section-title">Lightroom AI Subject Masking (1 φωτογραφία)</div>
+  <div class="card">
+    <div class="pb-item">
+      <div class="pb-rows">
+        <div class="pb-row"><div class="pb-lbl">M5 / M5 Pro</div><div class="pb-bg"><div class="pb-fill" style="width:100%;background:var(--blue);"></div></div><div class="pb-val">&lt;1''</div></div>
+        <div class="pb-row"><div class="pb-lbl">M3</div><div class="pb-bg"><div class="pb-fill" style="width:60%;background:rgba(255,255,255,0.3);"></div></div><div class="pb-val">~2''</div></div>
+        <div class="pb-row"><div class="pb-lbl">Windows i7</div><div class="pb-bg"><div class="pb-fill" style="width:25%;background:var(--gray);"></div></div><div class="pb-val">~8''</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="section-title">Multicam 4K Streams — DaVinci Resolve</div>
+  <div class="ct"><table>
+    <thead><tr><th>Chip</th><th>4K H.264</th><th>4K ProRes</th><th>8K ProRes RAW</th></tr></thead>
+    <tbody>
+      <tr><td><strong>M5 Max</strong></td><td class="hl">12+ streams</td><td class="hl">8 streams</td><td class="hl">Realtime playback</td></tr>
+      <tr><td><strong>M5 Pro</strong></td><td class="gd">8 streams</td><td class="gd">4-5 streams</td><td>Χρειάζεται proxy</td></tr>
+      <tr><td><strong>M5</strong></td><td>4-5 streams</td><td>2-3 streams</td><td class="cn">Δεν αντέχει</td></tr>
+      <tr><td><strong>M4 (iMac/mini)</strong></td><td>4-5 streams</td><td>2-3 streams</td><td class="cn">Δεν αντέχει</td></tr>
+    </tbody>
+  </table></div>
+  <div class="section-title">Thunderbolt 5 vs TB4 — Πότε αλλάζει κάτι</div>
+  <div class="ec bl">
+    <h3>TB4 (MacBook Air) vs TB5 (MacBook Pro)</h3>
+    <ul class="sl">
+      <li><strong>TB4: 40 Gbps</strong> — αρκεί για Studio Display 5K, external NVMe SSD (~3GB/s), USB hub</li>
+      <li><strong>TB5: 120 Gbps</strong> — για Studio Display XDR 6K, δύο εξωτερικές 6K οθόνες, RAW video capture</li>
+      <li><strong>Transfer speed:</strong> TB5 εξωτερικό SSD → 1TB footage σε ~90 δευτερόλεπτα. TB4 → ~5-6 λεπτά.</li>
+      <li><strong>Πότε πρέπει TB5:</strong> Studio Display XDR, daily RAW video workflow, multi-display pro setup.</li>
+    </ul>
+  </div>
+  <div class="ec">
+    <h3>MacBook Air M5 — 18 ώρες: τι σημαίνει στην πράξη</h3>
+    <ul class="sl">
+      <li><strong>Αεροπλάνο Αθήνα→Νέα Υόρκη (10h):</strong> φτάνεις με 45%+ μπαταρία.</li>
+      <li><strong>Ολοήμερο conference (8h παρουσιάσεις + 4h email):</strong> δεν ψάχνεις πρίζα.</li>
+      <li><strong>Windows i7 σύγκριση:</strong> 5-7 ώρες πραγματικής χρήσης.</li>
+    </ul>
+  </div>
+  <div class="qs">
+    <div class="qh">❓ Quiz — Real-World Performance</div>
+    <div class="qc">
+      <div class="qq">1. Photographer κάνει batch AI masking σε 500 φωτογραφίες ανά εβδομάδα. Ποιο argument χρησιμοποιείς για M5 vs παλιό Intel Mac;</div>
+      <div class="qo-wrap">
+        <div class="qo" onclick="mq(this,false,'q5a')">Ο M5 έχει καλύτερο display και fanless design για άνετη εργασία</div>
+        <div class="qo" onclick="mq(this,true,'q5a')">Lightroom AI masking με M5: &lt;1 δευτερόλεπτο ανά φωτογραφία. Με Intel i7: ~8 δευτερόλεπτα. Για 500 φωτογραφίες: M5 = 8 λεπτά, Intel = 66 λεπτά. Αυτή είναι η πραγματική διαφορά.</div>
+        <div class="qo" onclick="mq(this,false,'q5a')">Ο M5 έχει Unified Memory που κάνει το Lightroom πιο ομαλό σε multitasking</div>
+      </div>
+      <div class="qf" id="q5a-fb"></div>
+    </div>
+    <div class="qc">
+      <div class="qq">2. Πελάτης ρωτάει γιατί να πληρώσει επιπλέον για TB5 (MacBook Pro) αν θέλει external SSD για video footage;</div>
+      <div class="qo-wrap">
+        <div class="qo" onclick="mq(this,false,'q5b')">Γιατί το TB5 υποστηρίζει φόρτιση μέσω καλωδίου display</div>
+        <div class="qo" onclick="mq(this,false,'q5b')">Γιατί το TB4 δεν υποστηρίζει εξωτερικές οθόνες άνω των 4K</div>
+        <div class="qo" onclick="mq(this,true,'q5b')">Για daily video work: TB5 μεταφέρει 1TB footage σε ~90 δευτερόλεπτα. Με TB4: ~5-6 λεπτά. Αν το κάνει κάθε μέρα, αυτός ο χρόνος αθροίζεται.</div>
+      </div>
+      <div class="qf" id="q5b-fb"></div>
+    </div>
+    <div class="qs-score" id="qs5"></div>
+  </div>
   <div class="nav-btns">
-    <button class="btn btn-secondary" onclick="prev()">← Enterprise</button>
-    <button class="btn btn-primary" onclick="next()">Coaching Junior Staff →</button>
+    <button class="btn btn-s" onclick="prev()">← Chip Differences</button>
+    <button class="btn btn-p" onclick="next()">Upsell μέσω Features →</button>
   </div>
 </section>
 
-
-<!-- ══ MODULE 5 — COACHING JUNIOR STAFF ══ -->
+<!-- M6 UPSELL -->
 <section class="module" id="m6">
-  <div class="mod-eyebrow">Expert · Ενότητα 7 από 9</div>
-  <h1 class="mod-title">Coaching Junior Staff</h1>
-  <p class="mod-desc">Η ικανότητα να μεταδίδεις γνώση είναι το σημάδι του true expert. Εδώ μαθαίνεις πώς να ανεβάζεις το επίπεδο της ομάδας σου.</p>
-  <div class="mod-meta"><span>🧑‍🏫 Observation · Feedback · Role modelling</span><span>⏱ ~14 λεπτά</span></div>
+  <div class="mod-eyebrow">Expert · Ενότητα 7 από 10</div>
+  <h1 class="mod-title">Upsell μέσω Features</h1>
+  <p class="mod-desc">Το upsell δεν είναι «πάρε το ακριβότερο» — είναι «επειδή μου είπες Χ, αυτό το feature λύνει ακριβώς αυτό».</p>
+  <div class="mod-meta"><span>📈 Discover → Match → Justify</span><span>⏱ ~14 λεπτά</span></div>
   <div class="mod-divider"></div>
-
-  <div class="section-title">👁 Observation — Πώς παρατηρείς και βοηθάς</div>
-
-  <div class="expert-card">
-    <h3>Το «shadow» approach</h3>
-    <p style="margin-bottom:12px;">Ο καλύτερος τρόπος να βοηθήσεις έναν junior είναι να τον δεις σε πραγματική συνθήκη — όχι σε simulation. Παρακολούθησε χωρίς να παρεμβαίνεις.</p>
-    <ul class="spec-list">
-      <li><strong>Κράτα σημειώσεις με specifics:</strong> όχι «δεν ακούς», αλλά «στο σημείο που ο πελάτης είπε X, δεν ρώτησες follow-up»</li>
-      <li><strong>Καταγράφεις τι πήγε καλά:</strong> το feedback δεν είναι μόνο για τα λάθη — ενισχύεις τα σωστά behaviors</li>
-      <li><strong>Δεν παρεμβαίνεις κατά τη διάρκεια</strong> εκτός από extreme cases — ο junior πρέπει να νιώσει ότι είναι ο κύριος της συνομιλίας</li>
+  <div class="cl cl-go"><span class="cl-icon">🎯</span><div class="cl-body"><strong>Το μοντέλο Discover → Match → Justify</strong><strong>Discover:</strong> Ρωτάς και ακούς — ποιες ανάγκες αναδύονται; <strong>Match:</strong> Συνδέεις feature με ανάγκη που μόλις άκουσες. <strong>Justify:</strong> Δικαιολογείς με real-world αποτέλεσμα.</div></div>
+  <div class="section-title">Mac Upsell Scenarios</div>
+  <div class="ec" style="border-left-color:var(--gold);">
+    <h3>MacBook Air M5 16GB → 24GB</h3>
+    <ul class="sl">
+      <li><strong>Discover:</strong> «Τρέχω πολλά tabs, Spotify, Slack και Figma ταυτόχρονα»</li>
+      <li><strong>Match:</strong> Unified Memory — όλα μοιράζονται το ίδιο pool</li>
+      <li><strong>Justify:</strong> «Με 16GB, το σύστημα αρχίζει να χρησιμοποιεί τον SSD σαν RAM — το laptop γίνεται αργό. Τα 24GB σε κρατούν άνετα για 5+ χρόνια. Και η RAM δεν αναβαθμίζεται αργότερα — είναι μέσα στο chip.»</li>
     </ul>
   </div>
-
-  <div class="section-title">💬 Feedback — Πώς το δίνεις αποτελεσματικά</div>
-
-  <div class="expert-card green">
-    <h3>Το SBI Framework (Situation — Behavior — Impact)</h3>
-    <p style="margin-bottom:12px;">Το πιο αποτελεσματικό μοντέλο feedback — συγκεκριμένο, χωρίς κρίση, με focus στο αποτέλεσμα.</p>
-    <div class="step-list">
-      <div class="step-item">
-        <div class="step-num">S</div>
-        <div class="step-body">
-          <h4>Situation — Περιέγραψε τη συγκεκριμένη στιγμή</h4>
-          <p>«Όταν ο πελάτης είπε ότι χρησιμοποιεί Adobe Premiere...»</p>
-        </div>
-      </div>
-      <div class="step-item">
-        <div class="step-num">B</div>
-        <div class="step-body">
-          <h4>Behavior — Περιέγραψε τι έκανες (χωρίς κρίση)</h4>
-          <p>«...προχώρησες στα specs χωρίς να ρωτήσεις αν κάνει 4K ή HD.»</p>
-        </div>
-      </div>
-      <div class="step-item">
-        <div class="step-num">I</div>
-        <div class="step-body">
-          <h4>Impact — Εξήγησε τι σήμαινε αυτό</h4>
-          <p>«Αυτή η ερώτηση θα έδινε πληροφορία για το αν χρειάζεται M5 Pro ή αρκεί ο M5 — και θα δείχνε ότι σκέφτεσαι για τη δουλειά του.»</p>
-          <div class="note">↳ Πάντα τελείωνε με ερώτηση: «Τι θα έκανες διαφορετικά;» — ο junior εσωτερικεύει καλύτερα αν βγάλει μόνος του το συμπέρασμα.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section-title">🎭 Role Modelling — «Άφησέ με να σου δείξω»</div>
-
-  <div class="expert-card blue">
-    <h3>Πώς κάνεις live demo για junior staff</h3>
-    <p style="margin-bottom:12px;">Το πιο αποτελεσματικό coaching δεν γίνεται σε meeting room — γίνεται live στο floor, με πραγματικό πελάτη ή σε simulation.</p>
-    <ul class="spec-list">
-      <li><strong>«Watch me first»:</strong> κάνε εσύ μια πώληση ενώ ο junior παρακολουθεί — εστίασέ του σε συγκεκριμένα σημεία που θέλεις να μάθει</li>
-      <li><strong>«Now you try»:</strong> αμέσως μετά, ο junior κάνει μια παρόμοια συνομιλία. Η αμεσότητα είναι κρίσιμη — η γνώση δεν κολλάει αν δεν εφαρμοστεί σύντομα</li>
-      <li><strong>Simulation:</strong> παίξε τον δύσκολο πελάτη — objections, αντιρρήσεις, αποσπασμένος πελάτης. Η εξάσκηση στο δύσκολο κάνει το εύκολο αυτόματο</li>
-      <li><strong>Micro-feedback:</strong> μετά από κάθε interaction, 2-3 λεπτά ανατροφοδότηση — όχι lecture</li>
+  <div class="ec bl">
+    <h3>MacBook Air M5 → MacBook Pro M5 (base)</h3>
+    <ul class="sl">
+      <li><strong>Discover:</strong> «Κάνω video editing και μερικές φορές το laptop ζεσταίνεται πολύ»</li>
+      <li><strong>Match:</strong> Active cooling + Liquid Retina XDR display</li>
+      <li><strong>Justify:</strong> «Το MacBook Air είναι fanless — σε render επί ώρες μπορεί να μειώσει απόδοση γιατί δεν έχει τρόπο να αποβάλλει θερμότητα. Το Pro έχει ανεμιστήρα που το κρατάει stable. Και η XDR οθόνη σου δείχνει τα χρώματα ακριβώς όπως θα βγουν.»</li>
     </ul>
   </div>
-
-  <div class="section-title">⚠️ Τα Πιο Συνηθισμένα Λάθη Junior Staff — και Πώς τα Διορθώνεις</div>
-  <div class="compare-wrap">
-    <table class="compare-table">
-      <thead><tr><th>Λάθος pattern</th><th>Τι κρύβεται από κάτω</th><th>Πώς το αντιμετωπίζεις</th></tr></thead>
-      <tbody>
-        <tr><td>Μιλάει πολύ, ακούει λίγο</td><td>Νευρικότητα, θέλει να αποδείξει γνώση</td><td>«Ρώτα 2 ερωτήσεις πριν πεις οτιδήποτε για προϊόν»</td></tr>
-        <tr><td>Προτείνει το πιο ακριβό πάντα</td><td>Πιστεύει ότι αυτό θέλει η διοίκηση</td><td>«Η σωστή σύσταση φέρνει πίσω τον πελάτη — αυτό αξίζει περισσότερο»</td></tr>
-        <tr><td>Φοβάται το «όχι»</td><td>Παίρνει την άρνηση προσωπικά</td><td>«Ο πελάτης αρνείται το προϊόν, όχι εσένα — ρώτα τι ακριβώς τον κρατάει»</td></tr>
-        <tr><td>Δεν κάνει demo</td><td>Δεν νιώθει σίγουρος με τη συσκευή</td><td>Εξάσκηση χρήσης — πρέπει να νιώθει το product σαν δικό του</td></tr>
-        <tr><td>Χάνει τον πελάτη στα specs</td><td>Δεν έχει συνδέσει specs με ανθρώπινη ανάγκη</td><td>«Για κάθε spec, πρόσθεσε "αυτό σημαίνει ότι..."»</td></tr>
-      </tbody>
-    </table>
+  <div class="ec gr">
+    <h3>MacBook Pro M5 → MacBook Pro M5 Pro</h3>
+    <ul class="sl">
+      <li><strong>Discover:</strong> «Δουλεύω με Parallels για Windows apps + native Mac apps ταυτόχρονα»</li>
+      <li><strong>Match:</strong> 64GB RAM ceiling + 307 GB/s bandwidth</li>
+      <li><strong>Justify:</strong> «Parallels τρέχει essentially έναν άλλο υπολογιστή μέσα στον Mac. Χρειάζεσαι RAM για και τα δύο — το M5 Pro φτάνει 64GB, το M5 μόνο 32GB. Και με 307 GB/s bandwidth, τα δύο περιβάλλοντα δεν μπλέκονται.»</li>
+    </ul>
   </div>
-
-  <!-- QUIZ -->
-  <div class="quiz-section">
-    <div class="quiz-header">❓ Expert Quiz — Coaching</div>
-    <div class="quiz-card">
-      <div class="quiz-q">1. Junior staff προτείνει πάντα το πιο ακριβό μοντέλο. Πώς του δίνεις feedback;</div>
-      <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,false,'mq9')">Αφήνεις να το καταλάβει μόνος του</div>
-        <div class="quiz-opt" onclick="mq(this,true,'mq9')">SBI: «Όταν ο πελάτης είπε X, πρότεινες αμέσως Pro Max. Αυτό αφήνει εντύπωση πώλησης αντί για συμβουλής. Η σωστή σύσταση φέρνει πίσω τον πελάτη — αξίζει περισσότερο μακροπρόθεσμα.»</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq9')">«Μην προτείνεις πάντα το ακριβό — δεν είναι επαγγελματικό»</div>
-    </div>
-      <div class="quiz-feedback" id="mq9-fb"></div>
-    </div>
-    <div class="quiz-score" id="mqs5"></div>
+  <div class="section-title">iPad Upsell Scenarios</div>
+  <div class="ec pu">
+    <h3>iPad Air → iPad Pro</h3>
+    <ul class="sl">
+      <li><strong>Discover:</strong> «Κάνω color grading και photo retouching επαγγελματικά»</li>
+      <li><strong>Match:</strong> Tandem OLED — P3 wide color, 1000 nits full-screen, απόλυτα μαύρα</li>
+      <li><strong>Justify:</strong> «Το iPad Air έχει Liquid Retina — καλή οθόνη. Αλλά για color grading, η OLED του Pro σε ενημερώνει για τα πραγματικά χρώματα. Αυτό που βλέπεις είναι αυτό που θα βγει.»</li>
+    </ul>
   </div>
-
+  <div class="ec or">
+    <h3>Pencil USB-C → Pencil Pro</h3>
+    <ul class="sl">
+      <li><strong>Discover:</strong> «Σχεδιάζω illustrations και θέλω πιο φυσικό αίσθημα»</li>
+      <li><strong>Match:</strong> Barrel Roll + Hover detection</li>
+      <li><strong>Justify:</strong> «Το Pencil USB-C δεν έχει Barrel Roll — η βούρτσα είναι πάντα στην ίδια γωνία. Με το Pro, στρέφεις το Pencil και η βούρτσα στρέφει. Σε εφαρμογές σαν το Procreate αλλάζει τελείως το αίσθημα. Μπορείς να το δεις live;»</li>
+    </ul>
+  </div>
+  <div class="ec re">
+    <h3>RAM Upsell — Πάντα να το αναφέρεις</h3>
+    <ul class="sl">
+      <li><strong>Unified Memory δεν αναβαθμίζεται:</strong> είναι μέσα στο chip. Αυτό που αγοράζεις, έχεις για 5 χρόνια.</li>
+      <li><strong>Real-world:</strong> Όταν η RAM γεμίσει, macOS χρησιμοποιεί SSD swap — το laptop αισθητά πιο αργό.</li>
+      <li><strong>Ερώτηση:</strong> «Σκέφτεσαι να το κρατήσεις 4-5 χρόνια;»</li>
+      <li><strong>Framing:</strong> «Το upgrade RAM τώρα κοστίζει €200. Νέο Mac σε 3 χρόνια επειδή δεν αντέχει — κοστίζει €1.000+.»</li>
+    </ul>
+  </div>
+  <div class="qs">
+    <div class="qh">❓ Quiz — Upsell μέσω Features</div>
+    <div class="qc">
+      <div class="qq">1. Πελάτης θέλει MacBook Air M5 16GB, λέει «θέλω να το κρατήσω 5 χρόνια». Πώς κάνεις το RAM upgrade;</div>
+      <div class="qo-wrap">
+        <div class="qo" onclick="mq(this,false,'q6a')">«Τα 16GB αρκούν για 3 εφαρμογές, δεν χρειάζεσαι upgrade αν δεν κάνεις βαριά tasks»</div>
+        <div class="qo" onclick="mq(this,true,'q6a')">«Επειδή σκέφτεσαι 5 χρόνια: η RAM είναι μέσα στο chip, δεν αναβαθμίζεται. Σε 3 χρόνια οι εφαρμογές θέλουν περισσότερα. Όταν γεμίσει, το Mac χρησιμοποιεί SSD swap και γίνεται αισθητά πιο αργό.»</div>
+        <div class="qo" onclick="mq(this,false,'q6a')">«Πάντα καλύτερα να πάρεις 24GB — ποτέ δεν ξέρεις τι θα χρειαστείς στο μέλλον»</div>
+      </div>
+      <div class="qf" id="q6a-fb"></div>
+    </div>
+    <div class="qc">
+      <div class="qq">2. Πελάτης αγοράζει iPad Pro 11" και κοιτάει Pencil USB-C. «Θέλω να ζωγραφίζω ψηφιακά». Πώς κάνεις upsell στο Pencil Pro;</div>
+      <div class="qo-wrap">
+        <div class="qo" onclick="mq(this,false,'q6b')">«Το Pencil Pro είναι η καλύτερη επιλογή για iPad Pro, φορτίζει ασύρματα και έχει Find My»</div>
+        <div class="qo" onclick="mq(this,true,'q6b')">«Επειδή μου είπες ζωγραφική — το Pencil Pro έχει Barrel Roll: στρέφεις το Pencil και η βούρτσα στρέφει, ακριβώς σαν πραγματικό πινέλο. Το USB-C δεν το έχει. Μπορώ να σου δείξω live σε 30 δευτερόλεπτα;»</div>
+        <div class="qo" onclick="mq(this,false,'q6b')">«Το Pencil USB-C δεν είναι συμβατό με iPad Pro — χρειάζεται το Pencil Pro»</div>
+      </div>
+      <div class="qf" id="q6b-fb"></div>
+    </div>
+    <div class="qs-score" id="qs6"></div>
+  </div>
   <div class="nav-btns">
-    <button class="btn btn-secondary" onclick="prev()">← Expert Σενάρια</button>
-    <button class="btn btn-primary" onclick="next()">Apple Intelligence & Future →</button>
+    <button class="btn btn-s" onclick="prev()">← Real-World</button>
+    <button class="btn btn-p" onclick="next()">Αξεσουάρ ως Extension →</button>
   </div>
 </section>
 
-
-<!-- ══ MODULE 6 — APPLE INTELLIGENCE & FUTURE ══ -->
+<!-- M7 ACCESSORIES -->
 <section class="module" id="m7">
-  <div class="mod-eyebrow">Expert · Ενότητα 8 από 9</div>
-  <h1 class="mod-title">Apple Intelligence & Το Μέλλον</h1>
-  <p class="mod-desc">Τι είναι το Apple Intelligence στην πράξη, πού πάει, και πώς επηρεάζει τις πωλήσεις τώρα — και στα επόμενα 2–3 χρόνια.</p>
-  <div class="mod-meta"><span>🔮 AI features · Privacy · Roadmap thinking</span><span>⏱ ~12 λεπτά</span></div>
+  <div class="mod-eyebrow">Expert · Ενότητα 8 από 10</div>
+  <h1 class="mod-title">Αξεσουάρ ως Feature Extension</h1>
+  <p class="mod-desc">Τα αξεσουάρ δεν είναι extras — είναι η ολοκλήρωση του setup. Κάθε αξεσουάρ λύνει ανάγκη που ήδη αναφέρθηκε.</p>
+  <div class="mod-meta"><span>🎒 Studio Display · Trackpad · AirPods Pro 3 · Pencil Pro</span><span>⏱ ~12 λεπτά</span></div>
   <div class="mod-divider"></div>
-
-  <div class="section-title">🧠 Τι είναι πραγματικά το Apple Intelligence</div>
-
-  <div class="expert-card gold">
-    <h3>Πέρα από το marketing — τι κάνει σήμερα</h3>
-    <ul class="spec-list">
-      <li><strong>Writing Tools:</strong> rewrite, proofread, summarize σε οποιοδήποτε text field — Mail, Notes, Pages, third-party apps. Δεν χρειάζεται να ανοίξεις ChatGPT.</li>
-      <li><strong>Photo cleanup & generation:</strong> Remove background, Clean Up tool, Image Playground. Ανταγωνίζεται Adobe Photoshop για casual users.</li>
-      <li><strong>Notification summaries:</strong> ο iPhone διαβάζει όλα τα notifications και σου δίνει summary — «3 μηνύματα από την Άννα: θέλει να αλλάξετε συνάντηση»</li>
-      <li><strong>Priority notifications:</strong> τα urgent ξεχωρίζουν αυτόματα — δεν χάνεις σημαντικά μηνύματα σε σωρό notifications</li>
-      <li><strong>Siri contextual awareness:</strong> «Στείλε στον Γιώργη αυτή τη φωτογραφία» — καταλαβαίνει ποιον Γιώργη από context</li>
+  <div class="ct"><table class="fn-table">
+    <thead><tr><th>Αξεσουάρ</th><th>Feature που προσθέτει</th><th>Πότε να το φέρεις</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Studio Display</strong></td><td>5K Retina + 12MP Center Stage + ένα TB cable για power+video+hub</td><td>«Δουλεύεις από γραφείο, θέλεις μεγάλη οθόνη — ένα καλώδιο, φορτίζει και το laptop»</td></tr>
+      <tr><td><strong>Studio Display XDR</strong></td><td>6K + mini-LED + 1000 nits + ProMotion — TB5 μόνο</td><td>«Κάνεις color-critical work — χρειάζεσαι MacBook Pro και XDR»</td></tr>
+      <tr><td><strong>Magic Trackpad</strong></td><td>Force Touch, Mission Control/App Exposé/Spaces gestures, pinch-to-zoom, three-finger drag</td><td>«Έχεις Mac mini ή iMac — ο Trackpad ανεβάζει δραματικά την ταχύτητα navigation»</td></tr>
+      <tr><td><strong>Magic Mouse</strong></td><td>Multi-touch surface, scroll, swipe — πιο οικείο για Windows switchers</td><td>«Έρχεσαι από Windows — το Mouse νιώθει πιο οικείο, μαθαίνεις gestures σταδιακά»</td></tr>
+      <tr><td><strong>AirPods Pro 3</strong></td><td>Καρδιακός ρυθμός, Live Translation, κορυφαίο ANC — H3 chip</td><td>«Ταξιδεύεις πολύ ή international meetings — Live Translation in-ear, real-time»</td></tr>
+      <tr><td><strong>Samsung SSD T9</strong></td><td>USB 3.2 Gen 2×2, έως 2GB/s — portable</td><td>«Δουλεύεις με video footage on-the-go — external SSD για χώρο και ταχύτητα»</td></tr>
+    </tbody>
+  </table></div>
+  <div class="section-title">Studio Display — Το «ένα καλώδιο» argument</div>
+  <div class="ec gr">
+    <h3>Πώς να το παρουσιάζεις</h3>
+    <ul class="sl">
+      <li>Ένα Thunderbolt cable → power (96W για Air, 140W για Pro), 5K video, USB hub, network</li>
+      <li>Φτάνεις: συνδέεις ένα καλώδιο. Φεύγεις: βγάζεις ένα καλώδιο. Τελείως φορτισμένος.</li>
+      <li>12MP Center Stage camera — καλύτερη webcam από τους περισσότερους</li>
     </ul>
+    <div class="cl cl-bl" style="margin-top:12px;margin-bottom:0;"><span class="cl-icon">💬</span><div class="cl-body">«Σκέψου το setup σου τώρα — πόσα καλώδια βγάζεις κάθε φορά που φεύγεις; Με το Studio Display είναι ένα.»</div></div>
   </div>
-
-  <div class="expert-card purple">
-    <h3>Γιατί η Privacy είναι το μεγαλύτερο differentiator</h3>
-    <p style="margin-bottom:12px;">Σχεδόν κάθε AI competitor (Google, Microsoft, Meta) λειτουργεί cloud-first — τα δεδομένα ανεβαίνουν στα server τους. Apple έχει επιλέξει διαφορετική αρχιτεκτονική.</p>
-    <ul class="spec-list">
-      <li><strong>On-device processing:</strong> η πλειοψηφία των Apple Intelligence tasks γίνεται στη συσκευή — τίποτα δεν φεύγει χωρίς να το επιλέξεις εσύ</li>
-      <li><strong>Private Cloud Compute:</strong> για complex tasks που χρειάζονται cloud, Apple χρησιμοποιεί isolated servers — ακόμα και η Apple δεν μπορεί να δει τα requests σου. Third-party auditable.</li>
-      <li><strong>No data training:</strong> τα δεδομένα σου δεν χρησιμοποιούνται για training του model — σε αντίθεση με Google/Microsoft</li>
-    </ul>
-    <div class="callout callout-gold" style="margin-top:12px; margin-bottom:0;">
-      <span class="callout-icon">💬</span>
-      <div class="callout-body">«Ο ανταγωνισμός έχει ισχυρότερο AI σε ορισμένα tasks — αλλά αυτό επιτυγχάνεται επειδή διαβάζουν τα δεδομένα σου. Η Apple επέλεξε να μην το κάνει. Αυτή είναι η διαφορά.»</div>
+  <div class="section-title">Magic Trackpad vs Magic Mouse</div>
+  <div class="ct"><table>
+    <thead><tr><th>Gesture</th><th>Magic Mouse</th><th>Magic Trackpad</th></tr></thead>
+    <tbody>
+      <tr><td>Scroll</td><td class="gd">✓ 1 δάχτυλο</td><td class="gd">✓ 2 δάχτυλα</td></tr>
+      <tr><td>Mission Control</td><td class="gd">✓ double tap</td><td class="gd">✓ 3 δάχτυλα πάνω</td></tr>
+      <tr><td>App Exposé</td><td class="cn">—</td><td class="hl">✓ 3 δάχτυλα κάτω</td></tr>
+      <tr><td>Spaces swipe</td><td class="cn">—</td><td class="hl">✓ 4 δάχτυλα</td></tr>
+      <tr><td>Force Touch</td><td class="cn">—</td><td class="hl">✓ Πλήρες</td></tr>
+      <tr><td>Pinch to zoom</td><td class="cn">—</td><td class="hl">✓ 2 δάχτυλα</td></tr>
+    </tbody>
+  </table></div>
+  <div class="cl cl-go"><span class="cl-icon">🎯</span><div class="cl-body"><strong>Upsell rule:</strong> Πελάτης με iMac ή Mac mini → δείξε live gestures στο Trackpad. Σχεδόν κανείς δεν ξέρει ότι υπάρχει Force Touch. Μόλις το δει, σπάνια δεν το θέλει.</div></div>
+  <div class="qs">
+    <div class="qh">❓ Quiz — Αξεσουάρ</div>
+    <div class="qc">
+      <div class="qq">1. Πελάτης αγοράζει MacBook Pro M5 Pro για γραφείο. «Θέλω μεγάλη οθόνη, ένα setup χωρίς πολλά καλώδια». Ποιο αξεσουάρ και γιατί;</div>
+      <div class="qo-wrap">
+        <div class="qo" onclick="mq(this,false,'q7a')">Studio Display XDR — η καλύτερη οθόνη Apple για pro setups με MacBook Pro</div>
+        <div class="qo" onclick="mq(this,true,'q7a')">Studio Display (5K) — ένα Thunderbolt cable δίνει power, 5K video και USB hub ταυτόχρονα. XDR θέλει TB5 — το Pro το έχει, αλλά Studio Display αρκεί για τις περισσότερες ανάγκες.</div>
+        <div class="qo" onclick="mq(this,false,'q7a')">Magic Trackpad + Magic Keyboard — πρώτα τα peripherals, μετά η οθόνη</div>
+      </div>
+      <div class="qf" id="q7a-fb"></div>
     </div>
+    <div class="qs-score" id="qs7"></div>
   </div>
-
-  <div class="section-title">🔮 Πού πάει — Και Πώς Επηρεάζει τις Πωλήσεις</div>
-
-  <div class="expert-card blue">
-    <h3>Roadmap thinking για expert πωλητή</h3>
-    <ul class="spec-list">
-      <li><strong>Apple Intelligence = chip requirement:</strong> Κάθε νέο AI feature απαιτεί A17 Pro ή M-series. Αυτό σημαίνει ότι η αγορά παλαιότερης γενιάς περιορίζει μελλοντικές δυνατότητες — ισχυρό future-proofing argument.</li>
-      <li><strong>Siri evolution:</strong> Siri γίνεται progressively πιο capable με κάθε update — πελάτης που αγοράζει τώρα θα βλέπει τη συσκευή να «γίνεται καλύτερη» με τον καιρό</li>
-      <li><strong>Live Translation:</strong> ήδη σε AirPods Pro 3 — θα εξαπλωθεί. Για business travelers, αυτό είναι game-changing</li>
-      <li><strong>Health features:</strong> Apple Watch + AirPods Pro 3 συνδυάζονται για health monitoring — ένα ecosystem που δεν αντιγράφεται εύκολα</li>
-    </ul>
-    <div class="callout callout-blue" style="margin-top:12px; margin-bottom:0;">
-      <span class="callout-icon">💬</span>
-      <div class="callout-body">«Κάθε Apple συσκευή που αγοράζεις σήμερα γίνεται πιο ικανή με τον καιρό — δωρεάν, μέσω updates. Αυτό δεν ισχύει για κανέναν ανταγωνιστή.»</div>
-    </div>
-  </div>
-
-  <!-- QUIZ -->
-  <div class="quiz-section">
-    <div class="quiz-header">❓ Expert Quiz — Apple Intelligence</div>
-    <div class="quiz-card">
-      <div class="quiz-q">1. Πελάτης λέει «το Google Gemini είναι πολύ πιο έξυπνο από το Siri». Πώς αντιδράς;</div>
-      <div class="quiz-opts">
-        <div class="quiz-opt" onclick="mq(this,false,'mq10')">«Δεν είναι αλήθεια»</div>
-        <div class="quiz-opt" onclick="mq(this,true,'mq10')">Αναγνωρίζεις ότι το Gemini είναι ισχυρό σε web-based tasks, αλλά επισημαίνεις ότι λειτουργεί cloud-first — τα δεδομένα φεύγουν στα Google servers. Το Apple Intelligence επεξεργάζεται on-device ή σε Private Cloud, ακόμα και η Apple δεν έχει πρόσβαση.</div>
-        <div class="quiz-opt" onclick="mq(this,false,'mq10')">«Το Siri βελτιώνεται συνέχεια»</div>
-    </div>
-      <div class="quiz-feedback" id="mq10-fb"></div>
-    </div>
-    <div class="quiz-score" id="mqs6"></div>
-  </div>
-
   <div class="nav-btns">
-    <button class="btn btn-secondary" onclick="prev()">← Coaching</button>
-    <button class="btn btn-primary" onclick="next()">Expert Αξιολόγηση →</button>
+    <button class="btn btn-s" onclick="prev()">← Upsell</button>
+    <button class="btn btn-p" onclick="next()">Advanced Scenarios →</button>
   </div>
 </section>
 
-
-<!-- ══ MODULE 7 — FINAL QUIZ ══ -->
+<!-- M8 ADVANCED SCENARIOS -->
 <section class="module" id="m8">
-  <div class="mod-eyebrow">Expert · Ενότητα 9 από 9</div>
-  <h1 class="mod-title">Expert Αξιολόγηση 💎</h1>
-  <p class="mod-desc">12 ερωτήσεις που αξιολογούν judgment, όχι απομνημόνευση — scenarios, ethics, coaching και strategic thinking.</p>
-  <div class="mod-meta"><span>❓ 12 ερωτήσεις</span><span>⏱ ~8 λεπτά</span></div>
+  <div class="mod-eyebrow">Expert · Ενότητα 9 από 10</div>
+  <h1 class="mod-title">Advanced Customer Scenarios</h1>
+  <p class="mod-desc">Σύνθετοι πελάτες με αντικρουόμενες ανάγκες — εδώ εφαρμόζεις όλα μαζί.</p>
+  <div class="mod-meta"><span>🎭 6 σενάρια · Feature-driven επιλογές</span><span>⏱ ~16 λεπτά</span></div>
+  <div class="mod-divider"></div>
+  <div class="sc go">
+    <div class="sc-who">🎬 Σενάριο 1 — Freelance Video Editor</div>
+    <div class="sc-ctx">Κάνει 4K ProRes editing, ταξιδεύει για shoots, χρησιμοποιεί Windows desktop στο σπίτι και παίρνει ώρες κάθε export.</div>
+    <div class="sc-q">«Θέλω κάτι που να παίρνω στα shoots αλλά να κάνει και serious post-production.»</div>
+    <div class="sc-feat"><div class="lbl">Feature match</div><div class="txt">MacBook Pro 16" M5 Max — 2 ProRes Media Engines (1 ώρα footage σε ~8' αντί ~55' Windows), active cooling για sustained performance, TB5 για external SSD on-location</div></div>
+    <div class="sc-up"><div class="lbl">Upsell connection</div><div class="txt">«Είπες ότι περιμένεις ώρες για export. Με M5 Max αυτό γίνεται 8 λεπτά. Σε ένα μήνα με 20 exports, κερδίζεις 10+ ώρες ζωής πίσω.»</div></div>
+  </div>
+  <div class="sc bl">
+    <div class="sc-who">🏗️ Σενάριο 2 — Αρχιτεκτονική Εταιρία</div>
+    <div class="sc-ctx">5 αρχιτέκτονες, δουλεύουν με Revit, AutoCAD, 3D Max. Θέλουν Mac αλλά ανησυχούν για το software.</div>
+    <div class="sc-q">«Τα προγράμματά μας τρέχουν σε Mac;»</div>
+    <div class="sc-feat"><div class="lbl">Feature match</div><div class="txt">MacBook Pro M5 Pro + Parallels Desktop — M5 Pro τρέχει Windows VM με performance που ξεπερνά πολλά native Windows laptops. 24-64GB RAM για VM + native Mac apps παράλληλα.</div></div>
+    <div class="sc-up"><div class="lbl">Upsell connection</div><div class="txt">«Δεν χρειάζεται να αλλάξετε τίποτα — Revit και AutoCAD τρέχουν μέσα στο Mac, στο ίδιο παράθυρο. Και παράλληλα έχετε πλήρη Mac ecosystem.»</div></div>
+  </div>
+  <div class="sc gr">
+    <div class="sc-who">📸 Σενάριο 3 — Επαγγελματίας Φωτογράφος</div>
+    <div class="sc-ctx">Fashion photographer, shoots on-location, color grading στο studio. Έχει iPhone. Βαριέται βαρύ laptop.</div>
+    <div class="sc-q">«Θέλω κάτι ελαφρύ για location αλλά να κάνω professional color grading.»</div>
+    <div class="sc-feat"><div class="lbl">Feature match</div><div class="txt">iPad Pro 13" M5 + Magic Keyboard + Pencil Pro — Tandem OLED για P3 color grading, Lightroom for iPad native, Pencil Pro για local adjustments, AirDrop με iPhone για instant transfer</div></div>
+    <div class="sc-up"><div class="lbl">Upsell connection</div><div class="txt">«Είπες ότι έχεις iPhone — μόλις τελειώσεις το shoot, AirDrop τα RAW αρχεία στο iPad αμέσως. Lightroom αρχίζει import ενώ ακόμα μαζεύεις εξοπλισμό.»</div></div>
+  </div>
+  <div class="sc pu">
+    <div class="sc-who">🎓 Σενάριο 4 — Γονέας για Παιδί σε Σχολή Αρχιτεκτονικής</div>
+    <div class="sc-ctx">Γονέας, θέλει «το καλύτερο», δεν ξέρει τεχνικές λεπτομέρειες. Παιδί θα χρησιμοποιεί AutoCAD, Rhino, rendering.</div>
+    <div class="sc-q">«Θέλω το καλύτερο για το παιδί μου — να μην λείψει τίποτα.»</div>
+    <div class="sc-feat"><div class="lbl">Feature match</div><div class="txt">MacBook Pro 14" M5 Pro + 24GB + 1TB — M5 Pro για sustained rendering, 24GB για Parallels + native apps, 1TB γιατί τα architecture projects είναι μεγάλα. ΟΧΙ M5 Max — δεν χρειάζεται ακόμα.</div></div>
+    <div class="sc-up"><div class="lbl">Honest upsell</div><div class="txt">«Το M5 Pro έχει περισσότερη απόδοση από ό,τι θα χρειαστεί στα πρώτα 4 χρόνια σπουδών. Τα 24GB RAM όμως αξίζουν — δεν αναβαθμίζεται αργότερα.»</div></div>
+  </div>
+  <div class="sc or">
+    <div class="sc-who">💼 Σενάριο 5 — IT Manager · B2B Fleet</div>
+    <div class="sc-ctx">Εταιρία 30 ατόμων, mixed Mac/Windows, χρησιμοποιεί Microsoft Intune. Πρέπει να δικαιολογήσει επένδυση.</div>
+    <div class="sc-q">«Γιατί Mac αντί Windows laptops που κοστίζουν τη μισή τιμή;»</div>
+    <div class="sc-feat"><div class="lbl">Feature match — TCO</div><div class="txt">Apple Business Manager + Intune = zero-touch deployment. Mac αντικαθίσταται κάθε 5-6 χρόνια vs 3-4 Windows. Υψηλή αξία μεταπώλησης. AppleCare+ Express Replacement για zero downtime on-the-road.</div></div>
+    <div class="sc-up"><div class="lbl">Connection</div><div class="txt">«Σε 5 χρόνια: Mac €1.500 − αξία μεταπώλησης €400 = €1.100. Windows €800 × 1.5 = €1.200. Και χωρίς IT overhead για ABM setup. Ο υπολογισμός αλλάζει.»</div></div>
+  </div>
+  <div class="sc re">
+    <div class="sc-who">🔄 Σενάριο 6 — Windows Switcher με Αντιρρήσεις</div>
+    <div class="sc-ctx">15 χρόνια Windows, είχε Mac παλιά — δεν του άρεσε το file management. Τώρα έχει iPhone.</div>
+    <div class="sc-q">«Είχα Mac παλιά — δεν μπορούσα να βρω τα αρχεία μου. Αλλά έχω iPhone τώρα.»</div>
+    <div class="sc-feat"><div class="lbl">Feature match</div><div class="txt">MacBook Air M5 + Continuity ecosystem — επειδή έχει iPhone: Universal Clipboard, AirDrop instant, iPhone Mirroring, Continuity Camera. Αυτά δεν υπάρχουν πουθενά αλλού.</div></div>
+    <div class="sc-up"><div class="lbl">Connection</div><div class="txt">«Το file management είναι διαφορετικό τώρα — Stage Manager, Column View, Quick Look. Μπορώ να σου δείξω σε 2 λεπτά. Αλλά το σημαντικότερο: επειδή έχεις iPhone, Mac και iPhone δουλεύουν σαν ένα.»</div></div>
+  </div>
+  <div class="qs">
+    <div class="qh">❓ Quiz — Advanced Scenarios</div>
+    <div class="qc">
+      <div class="qq">1. Graphic designer δουλεύει Procreate + Lightroom, ταξιδεύει συχνά, έχει iPhone. Ποιο setup και ποια features;</div>
+      <div class="qo-wrap">
+        <div class="qo" onclick="mq(this,false,'q8a')">MacBook Air M5 — fanless, ελαφρύ για ταξίδια, αρκετά ισχυρό για Lightroom και Procreate</div>
+        <div class="qo" onclick="mq(this,true,'q8a')">iPad Pro 13" M5 + Pencil Pro + Magic Keyboard — Procreate και Lightroom native, Tandem OLED για χρωματική ακρίβεια, Barrel Roll για φυσικό σχέδιο, AirDrop με iPhone instant</div>
+        <div class="qo" onclick="mq(this,false,'q8a')">MacBook Pro 14" M5 Pro — professional performance για creative work</div>
+      </div>
+      <div class="qf" id="q8a-fb"></div>
+    </div>
+    <div class="qc">
+      <div class="qq">2. IT Manager: «γιατί Mac αντί Windows που κοστίζει λιγότερο;». Ποιο feature-driven argument;</div>
+      <div class="qo-wrap">
+        <div class="qo" onclick="mq(this,false,'q8b')">Το macOS είναι πιο ασφαλές και δεν χρειάζεται antivirus</div>
+        <div class="qo" onclick="mq(this,true,'q8b')">Apple Business Manager + Intune = zero-touch deployment. Σε 5 χρόνια ο συνολικός υπολογισμός (διάρκεια ζωής + αξία μεταπώλησης + IT overhead) συχνά βγαίνει υπέρ Mac.</div>
+        <div class="qo" onclick="mq(this,false,'q8b')">Το Mac έχει καλύτερο design και οι εργαζόμενοι είναι πιο ευχαριστημένοι</div>
+      </div>
+      <div class="qf" id="q8b-fb"></div>
+    </div>
+    <div class="qs-score" id="qs8"></div>
+  </div>
+  <div class="nav-btns">
+    <button class="btn btn-s" onclick="prev()">← Αξεσουάρ</button>
+    <button class="btn btn-p" onclick="next()">Αξιολόγηση →</button>
+  </div>
+</section>
+
+<!-- M9 ASSESSMENT -->
+<section class="module" id="m9">
+  <div class="mod-eyebrow">Expert · Ενότητα 10 από 10</div>
+  <h1 class="mod-title">Αξιολόγηση 💎</h1>
+  <p class="mod-desc">12 ερωτήσεις — product knowledge, chip differences, real-world performance και feature-to-need scenarios.</p>
+  <div class="mod-meta"><span>❓ 12 ερωτήσεις</span><span>⏱ ~10 λεπτά</span></div>
   <div class="mod-divider"></div>
 
-  <div class="fquiz-card">
-    <div class="fquiz-q">1. Ποια είναι η πρακτική διαφορά M5 Max vs M5 Pro για video editor που κάνει ProRes 4K καθημερινά;</div>
-    <div class="fquiz-opts">
-      <div class="fquiz-opt" onclick="fq(this,true,'fq1')">Δύο ProRes encode engines αντί για ένα — 1 ώρα footage εξάγεται σε ~8 λεπτά αντί ~35, με δυνατότητα δύο exports ταυτόχρονα</div>
-      <div class="fquiz-opt" onclick="fq(this,false,'fq1')">Υποστηρίζει εξωτερικές GPU μέσω Thunderbolt</div>
-      <div class="fquiz-opt" onclick="fq(this,false,'fq1')">Μεγαλύτερη οθόνη και καλύτερη κάμερα</div>
-    </div>
-    <div class="fquiz-feedback" id="fq1-fb"></div>
-  </div>
+  <div class="fqc"><div class="fqq">1. Πελάτης: «δουλεύω σε open space γραφείο, πολύ ήσυχο». Ποιο Mac feature και γιατί;</div>
+  <div class="fqo-wrap">
+    <div class="fqo" onclick="fq(this,false,'fq1')">Thunderbolt 4 — συνδέει external display χωρίς θόρυβο και επιπλέον hub</div>
+    <div class="fqo" onclick="fq(this,false,'fq1')">18 ώρες μπαταρία — δεν χρειάζεται να συνδεθεί στο ρεύμα κοντά σε άλλους</div>
+    <div class="fqo" onclick="fq(this,true,'fq1')">Fanless design του MacBook Air — εντελώς αθόρυβο ακόμα και υπό φόρτο, ποτέ δεν ακούγεται ανεμιστήρας. Σε ήσυχο γραφείο αυτό είναι ουσιαστικό.</div>
+  </div><div class="fqf" id="fq1-fb"></div></div>
 
-  <div class="fquiz-card">
-    <div class="fquiz-q">2. Αρχιτέκτονας δουλεύει με Revit και ArchiCAD καθημερινά, θέλει Mac. Τι προτείνεις;</div>
-    <div class="fquiz-opts">
-      <div class="fquiz-opt" onclick="fq(this,false,'fq2')">iPad Pro M5 — ισχυρό chip και φορητό</div>
-      <div class="fquiz-opt" onclick="fq(this,false,'fq2')">MacBook Air M5 16GB — αρκεί για τα περισσότερα tasks</div>
-      <div class="fquiz-opt" onclick="fq(this,true,'fq2')">MacBook Pro M5 Pro + Parallels Desktop — Revit και ArchiCAD δεν υπάρχουν native για macOS, αλλά τρέχουν πλήρως σε Windows VM με επαγγελματική απόδοση</div>
-    </div>
-    <div class="fquiz-feedback" id="fq2-fb"></div>
-  </div>
+  <div class="fqc"><div class="fqq">2. Developer: Xcode + Docker + iOS Simulator παράλληλα, το laptop επιβραδύνεται. Ποιο chip;</div>
+  <div class="fqo-wrap">
+    <div class="fqo" onclick="fq(this,true,'fq2')">M5 Pro — 307 GB/s bandwidth για παράλληλα environments, έως 64GB RAM, active cooling για sustained performance ώρες</div>
+    <div class="fqo" onclick="fq(this,false,'fq2')">M5 Max — μέγιστη απόδοση, εγγυάται ότι τίποτα δεν επιβραδύνεται ποτέ</div>
+    <div class="fqo" onclick="fq(this,false,'fq2')">M5 — αρκεί για development, το πρόβλημα είναι το SSD και όχι η CPU</div>
+  </div><div class="fqf" id="fq2-fb"></div></div>
 
-  <div class="fquiz-card">
-    <div class="fquiz-q">3. Ποιο iPad ΔΕΝ υποστηρίζει Apple Pencil Pro;</div>
-    <div class="fquiz-opts">
-      <div class="fquiz-opt" onclick="fq(this,true,'fq3')">iPad 11η γενιά (A16) — υποστηρίζει μόνο Pencil USB-C</div>
-      <div class="fquiz-opt" onclick="fq(this,false,'fq3')">iPad Air M4</div>
-      <div class="fquiz-opt" onclick="fq(this,false,'fq3')">iPad mini 7η γενιά (A17 Pro)</div>
-    </div>
-    <div class="fquiz-feedback" id="fq3-fb"></div>
-  </div>
+  <div class="fqc"><div class="fqq">3. Illustrator: «θέλω φυσικό αίσθημα στο ψηφιακό σχέδιο». Ποιο Pencil Pro feature πρώτα;</div>
+  <div class="fqo-wrap">
+    <div class="fqo" onclick="fq(this,false,'fq3')">Hover detection — βλέπει cursor πριν αγγίξει για ακρίβεια τοποθέτησης</div>
+    <div class="fqo" onclick="fq(this,true,'fq3')">Barrel Roll — αναγνωρίζει τη στροφή του Pencil, η ψηφιακή βούρτσα αποκρίνεται σαν πραγματικό πινέλο. Αυτό είναι το «φυσικό αίσθημα» που ζήτησε.</div>
+    <div class="fqo" onclick="fq(this,false,'fq3')">Ασύρματη φόρτιση — πάντα έτοιμο χωρίς να χρειάζεται καλώδιο</div>
+  </div><div class="fqf" id="fq3-fb"></div></div>
 
-  <div class="fquiz-card">
-    <div class="fquiz-q">4. Φοιτητής μηχανολογίας χρησιμοποιεί SolidWorks και MATLAB, budget ~€1.500. Τι προτείνεις;</div>
-    <div class="fquiz-opts">
-      <div class="fquiz-opt" onclick="fq(this,false,'fq4')">MacBook Air M5 16GB</div>
-      <div class="fquiz-opt" onclick="fq(this,true,'fq4')">MacBook Pro 14" M5 Pro + Parallels — SolidWorks δεν υπάρχει για macOS. 24GB RAM αντέχει VM + native apps ταυτόχρονα, μέσα στο budget</div>
-      <div class="fquiz-opt" onclick="fq(this,false,'fq4')">iPad Pro M5 με Magic Keyboard</div>
-    </div>
-    <div class="fquiz-feedback" id="fq4-fb"></div>
-  </div>
+  <div class="fqc"><div class="fqq">4. Video editor κάνει 1 ώρα 4K ProRes export καθημερινά, παίρνει ~35 λεπτά. Τι του λες για M5 Max;</div>
+  <div class="fqo-wrap">
+    <div class="fqo" onclick="fq(this,false,'fq4')">Ο M5 Max έχει 40-core GPU που κάνει rendering και export πολύ πιο γρήγορα σε όλα τα tasks</div>
+    <div class="fqo" onclick="fq(this,true,'fq4')">Ο M5 Max έχει 2 ProRes encode engines — το ίδιο export σε ~8 αντί ~35 λεπτά. Καθημερινά: 25+ λεπτά κερδισμένου χρόνου, πάνω από 150 ώρες τον χρόνο.</div>
+    <div class="fqo" onclick="fq(this,false,'fq4')">Ο M5 Max έχει 614 GB/s bandwidth που επιταχύνει τη μεταφορά δεδομένων κατά το export</div>
+  </div><div class="fqf" id="fq4-fb"></div></div>
 
-  <div class="fquiz-card">
-    <div class="fquiz-q">5. Τι είναι το Private Cloud Compute και γιατί αφορά εταιρίες με GDPR υποχρεώσεις;</div>
-    <div class="fquiz-opts">
-      <div class="fquiz-opt" onclick="fq(this,true,'fq5')">AI requests επεξεργάζονται σε isolated Apple servers — ακόμα και η Apple δεν μπορεί να δει τα δεδομένα. Third-party auditable. Εταιρικά δεδομένα δεν φεύγουν σε τρίτους.</div>
-      <div class="fquiz-opt" onclick="fq(this,false,'fq5')">Είναι το enterprise backup σύστημα της Apple</div>
-      <div class="fquiz-opt" onclick="fq(this,false,'fq5')">Είναι η VPN λύση για remote εργασία</div>
-    </div>
-    <div class="fquiz-feedback" id="fq5-fb"></div>
-  </div>
+  <div class="fqc"><div class="fqq">5. Πελάτης θέλει iPad για «laptop replacement» — email, documents, Slack, video calls. Ποιο iPad και ποιο accessory είναι κρίσιμο;</div>
+  <div class="fqo-wrap">
+    <div class="fqo" onclick="fq(this,false,'fq5')">iPad Pro 11" M5 — πιο ισχυρό chip για professional tasks, με Bluetooth keyboard</div>
+    <div class="fqo" onclick="fq(this,true,'fq5')">iPad Air M4 + Magic Keyboard for iPad Air — το Magic Keyboard δίνει trackpad με haptic feedback και proper layout, πλήρη laptop experience. M4 αρκεί για αυτά τα tasks.</div>
+    <div class="fqo" onclick="fq(this,false,'fq5')">iPad Air M4 με Smart Folio — καλύτερη προστασία και basic keyboard για productivity</div>
+  </div><div class="fqf" id="fq5-fb"></div></div>
 
-  <div class="fquiz-card">
-    <div class="fquiz-q">6. Graphic designer δουλεύει Procreate και Lightroom, ταξιδεύει συχνά, έχει iPhone. Ποιο setup;</div>
-    <div class="fquiz-opts">
-      <div class="fquiz-opt" onclick="fq(this,false,'fq6')">MacBook Air M5 — fanless και ελαφρύ</div>
-      <div class="fquiz-opt" onclick="fq(this,true,'fq6')">iPad Pro M5 13" + Apple Pencil Pro + Magic Keyboard — Procreate και Lightroom τρέχουν native, Tandem OLED για χρωματική ακρίβεια, πλήρες ecosystem με iPhone</div>
-      <div class="fquiz-opt" onclick="fq(this,false,'fq6')">MacBook Pro 16" M5 Max — μέγιστη GPU απόδοση</div>
-    </div>
-    <div class="fquiz-feedback" id="fq6-fb"></div>
-  </div>
+  <div class="fqc"><div class="fqq">6. Πελάτης MacBook Air M5 16GB: «θέλω να το κρατήσω 5 χρόνια». Πώς κάνεις το RAM upsell;</div>
+  <div class="fqo-wrap">
+    <div class="fqo" onclick="fq(this,false,'fq6')">Εξαρτάται από τι κάνει — αν κάνει βασικά tasks, 16GB αρκεί για 5 χρόνια άνετα</div>
+    <div class="fqo" onclick="fq(this,false,'fq6')">Ναι, πάντα καλύτερα περισσότερη RAM, ανεξάρτητα από χρήση</div>
+    <div class="fqo" onclick="fq(this,true,'fq6')">Επειδή θέλει 5 χρόνια: η RAM δεν αναβαθμίζεται — είναι μέσα στο chip. Σε 3 χρόνια οι εφαρμογές θέλουν περισσότερα. Όταν γεμίσει, το Mac χρησιμοποιεί SSD swap και γίνεται αισθητά πιο αργό.</div>
+  </div><div class="fqf" id="fq6-fb"></div></div>
 
-  <div class="fquiz-card">
-    <div class="fquiz-q">7. Ιατρός θέλει tablet για health records on-site, να χωράει στην τσέπη σακακιού, με Apple Intelligence. Ποιο;</div>
-    <div class="fquiz-opts">
-      <div class="fquiz-opt" onclick="fq(this,false,'fq7')">iPad Air 11" M4</div>
-      <div class="fquiz-opt" onclick="fq(this,true,'fq7')">iPad mini 7η γενιά (A17 Pro) — χωράει στην τσέπη σακακιού, πλήρες Apple Intelligence, υποστηρίζει Pencil Pro</div>
-      <div class="fquiz-opt" onclick="fq(this,false,'fq7')">iPad Pro 11" M5</div>
-    </div>
-    <div class="fquiz-feedback" id="fq7-fb"></div>
-  </div>
+  <div class="fqc"><div class="fqq">7. Ποιο iPad ΔΕΝ υποστηρίζει Apple Pencil Pro και τι υποστηρίζει αντ' αυτού;</div>
+  <div class="fqo-wrap">
+    <div class="fqo" onclick="fq(this,true,'fq7')">iPad 11η γενιά (A16) — υποστηρίζει μόνο Apple Pencil USB-C. Δεν έχει Barrel Roll, Hover ή Squeeze.</div>
+    <div class="fqo" onclick="fq(this,false,'fq7')">iPad mini 7η γενιά (A17 Pro) — χρησιμοποιεί παλαιότερο Pencil λόγω μικρού μεγέθους</div>
+    <div class="fqo" onclick="fq(this,false,'fq7')">iPad Air M4 — υποστηρίζει Pencil Pro μόνο σε 13" έκδοση</div>
+  </div><div class="fqf" id="fq7-fb"></div></div>
 
-  <div class="fquiz-card">
-    <div class="fquiz-q">8. Τι σημαίνει στην πράξη το διπλάσιο memory bandwidth του M5 Pro (307 vs 153 GB/s);</div>
-    <div class="fquiz-opts">
-      <div class="fquiz-opt" onclick="fq(this,false,'fq8')">Επιτρέπει μεγαλύτερο SSD</div>
-      <div class="fquiz-opt" onclick="fq(this,true,'fq8')">Σε παρατεταμένα workloads η CPU/GPU τροφοδοτείται 2× πιο γρήγορα — δεν μειώνεται απόδοση υπό φόρτο. Χειρίζεται 8 streams 4K vs 3-4 του M5.</div>
-      <div class="fquiz-opt" onclick="fq(this,false,'fq8')">Βελτιώνει την αυτονομία μπαταρίας</div>
-    </div>
-    <div class="fquiz-feedback" id="fq8-fb"></div>
-  </div>
+  <div class="fqc"><div class="fqq">8. Αρχιτέκτονας χρειάζεται Revit και AutoCAD. Θέλει Mac. Τι προτείνεις και γιατί ΟΧΙ iPad;</div>
+  <div class="fqo-wrap">
+    <div class="fqo" onclick="fq(this,false,'fq8')">iPad Pro M5 — αρκετά ισχυρό για αρχιτεκτονικά σχέδια με AutoCAD mobile</div>
+    <div class="fqo" onclick="fq(this,true,'fq8')">MacBook Pro M5 Pro + Parallels Desktop — Revit και AutoCAD desktop δεν υπάρχουν για iPad. Parallels τρέχει πλήρη Windows VM. iPad έχει μόνο mobile versions με περιορισμένες δυνατότητες.</div>
+    <div class="fqo" onclick="fq(this,false,'fq8')">Mac mini M4 Pro — ισχυρό desktop για CAD, συνδέεται με μεγάλη οθόνη</div>
+  </div><div class="fqf" id="fq8-fb"></div></div>
 
-  <div class="fquiz-card">
-    <div class="fquiz-q">9. Εταιρία 30 ατόμων, mixed Mac/Windows, IT με Microsoft Intune. Ποιο Apple εργαλείο αναφέρεις;</div>
-    <div class="fquiz-opts">
-      <div class="fquiz-opt" onclick="fq(this,false,'fq9')">Jamf Pro</div>
-      <div class="fquiz-opt" onclick="fq(this,true,'fq9')">Apple Business Manager — ενσωματώνεται με Microsoft Intune για zero-touch deployment. Τα Mac μπαίνουν αυτόματα στο MDM χωρίς να αγγίξει κανείς τη συσκευή.</div>
-      <div class="fquiz-opt" onclick="fq(this,false,'fq9')">Apple Business Essentials</div>
-    </div>
-    <div class="fquiz-feedback" id="fq9-fb"></div>
-  </div>
+  <div class="fqc"><div class="fqq">9. Τι σημαίνει το διπλάσιο memory bandwidth του M5 Pro (307 vs 153 GB/s) σε sustained workloads;</div>
+  <div class="fqo-wrap">
+    <div class="fqo" onclick="fq(this,false,'fq9')">Επιτρέπει μεγαλύτερο SSD και ταχύτερη πρόσβαση σε αρχεία τοπικά</div>
+    <div class="fqo" onclick="fq(this,true,'fq9')">Σε sustained workloads η CPU/GPU τροφοδοτείται 2× πιο γρήγορα — ο M5 Pro δεν μειώνει απόδοση υπό φόρτο, ενώ ο M5 μπορεί. Χειρίζεται 8 streams 4K vs 3-4 του M5.</div>
+    <div class="fqo" onclick="fq(this,false,'fq9')">Βελτιώνει σημαντικά την αυτονομία γιατί ο επεξεργαστής δουλεύει πιο αποδοτικά</div>
+  </div><div class="fqf" id="fq9-fb"></div></div>
 
-  <div class="fquiz-card">
-    <div class="fquiz-q">10. Πελάτης με MacBook Air M2 ρωτάει αν αξίζει η αναβάθμιση σε M5. Τι του λες;</div>
-    <div class="fquiz-opts">
-      <div class="fquiz-opt" onclick="fq(this,false,'fq10')">Όχι, το M2 αρκεί για όλες τις χρήσεις</div>
-      <div class="fquiz-opt" onclick="fq(this,false,'fq10')">Ναι, πάντα αξίζει το νεότερο μοντέλο</div>
-      <div class="fquiz-opt" onclick="fq(this,true,'fq10')">Εξαρτάται. Για βασικά tasks το M2 αρκεί. Αν κάνει Xcode, video export ή χρειάζεται Apple Intelligence πλήρως — M5 δίνει ~40% γρηγορότερο CPU και νέας γενιάς Neural Engine.</div>
-    </div>
-    <div class="fquiz-feedback" id="fq10-fb"></div>
-  </div>
+  <div class="fqc"><div class="fqq">10. Πελάτης αγοράζει Mac mini M4. Πώς κάνεις την παρουσίαση του Magic Trackpad;</div>
+  <div class="fqo-wrap">
+    <div class="fqo" onclick="fq(this,false,'fq10')">Εξηγείς ότι έχει Force Touch και gestures που δεν υπάρχουν στο Magic Mouse</div>
+    <div class="fqo" onclick="fq(this,true,'fq10')">Δείχνεις live: Mission Control με 3 δάχτυλα, App Exposé, pinch-to-zoom, Force Touch σε λέξη για instant Dictionary. Ο πελάτης δεν ξέρει ότι υπάρχουν — μόλις τα δει, σπάνια δεν το θέλει.</div>
+    <div class="fqo" onclick="fq(this,false,'fq10')">Αναφέρεις ότι είναι η ίδια εμπειρία με το built-in trackpad του MacBook</div>
+  </div><div class="fqf" id="fq10-fb"></div></div>
 
-  <div class="fquiz-card">
-    <div class="fquiz-q">11. Πελάτης επιστρέφει iPad Pro μετά 5 μέρες — «δεν μπορώ να τρέξω το AutoCAD που χρειάζομαι». Τι πήγε στραβά;</div>
-    <div class="fquiz-opts">
-      <div class="fquiz-opt" onclick="fq(this,true,'fq11')">AutoCAD desktop δεν υπάρχει για iPad. Η ανάγκη για desktop apps δεν αναγνωρίστηκε στην αρχική συνομιλία — χρειάζεται Mac.</div>
-      <div class="fquiz-opt" onclick="fq(this,false,'fq11')">Δεν έχει ενημερώσει το iPadOS</div>
-      <div class="fquiz-opt" onclick="fq(this,false,'fq11')">Δεν έχει αρκετή αποθήκευση</div>
-    </div>
-    <div class="fquiz-feedback" id="fq11-fb"></div>
-  </div>
+  <div class="fqc"><div class="fqq">11. Πελάτης επιστρέφει iPad Pro M5 μετά 5 μέρες — «δεν μπορώ να τρέξω το AutoCAD που χρειάζομαι». Τι πήγε στραβά;</div>
+  <div class="fqo-wrap">
+    <div class="fqo" onclick="fq(this,false,'fq11')">Δεν ενημερώθηκε ότι χρειάζεται να κατεβάσει το AutoCAD από το App Store</div>
+    <div class="fqo" onclick="fq(this,false,'fq11')">Το iPad Pro M5 δεν έχει αρκετή RAM για να τρέξει desktop AutoCAD</div>
+    <div class="fqo" onclick="fq(this,true,'fq11')">Η ανάγκη για desktop apps δεν αναγνωρίστηκε στη φάση Discover. AutoCAD desktop δεν υπάρχει για iPad. Η σωστή ερώτηση ήταν «ποιο AutoCAD χρησιμοποιείς και τι κάνεις με αυτό;»</div>
+  </div><div class="fqf" id="fq11-fb"></div></div>
 
-  <div class="fquiz-card">
-    <div class="fquiz-q">12. Freelancer κάνει motion graphics και 3D (After Effects, Cinema 4D), δουλεύει από σπίτι, δεν ταξιδεύει. Budget €2.500. Ποιο setup;</div>
-    <div class="fquiz-opts">
-      <div class="fquiz-opt" onclick="fq(this,false,'fq12')">iMac M4 — all-in-one για home office</div>
-      <div class="fquiz-opt" onclick="fq(this,false,'fq12')">MacBook Pro 16" M5 Max — η καλύτερη GPU</div>
-      <div class="fquiz-opt" onclick="fq(this,true,'fq12')">Mac Studio M4 Max — για fixed home setup: 40-core GPU, υποστήριξη 4 οθονών, περισσότερα ports. Μέσα στο budget με χώρο για monitor.</div>
-    </div>
-    <div class="fquiz-feedback" id="fq12-fb"></div>
-  </div>
+  <div class="fqc"><div class="fqq">12. Freelancer: motion graphics (After Effects, Cinema 4D), δουλεύει από σπίτι, δεν ταξιδεύει. Budget €2.500. Ποιο setup;</div>
+  <div class="fqo-wrap">
+    <div class="fqo" onclick="fq(this,false,'fq12')">MacBook Pro 16" M5 Max — μέγιστη GPU για 3D rendering, θα κρατήσει πολλά χρόνια</div>
+    <div class="fqo" onclick="fq(this,true,'fq12')">Mac Studio M4 Max — για fixed home setup: 40-core GPU, υποστήριξη 4 οθονών, περισσότερα ports. Μέσα στο budget με χώρο για monitor. Δεν χρειάζεται το laptop premium αφού δεν ταξιδεύει.</div>
+    <div class="fqo" onclick="fq(this,false,'fq12')">iMac M4 — all-in-one, δεν χρειάζεται ξεχωριστό monitor, M4 αρκεί για motion graphics</div>
+  </div><div class="fqf" id="fq12-fb"></div></div>
 
-  
-
-  <div class="final-result" id="finalResult">
-    <div class="result-emoji" id="rEmoji"></div>
-    <div class="result-title" id="rTitle"></div>
-    <div class="result-score" id="rScore"></div>
-    <div class="result-msg" id="rMsg"></div>
-    <button class="btn btn-secondary" style="margin-top:20px;" onclick="resetFinal()">Επανάληψη</button>
-  </div>
-
+  <div class="fr" id="fr"><div class="fr-emoji" id="rEmoji"></div><div class="fr-title" id="rTitle"></div><div class="fr-score" id="rScore"></div><div class="fr-msg" id="rMsg"></div><button class="btn btn-s" style="margin-top:20px;" onclick="resetFinal()">Επανάληψη</button></div>
   <div class="nav-btns">
-    <button class="btn btn-secondary" onclick="prev()">← Apple Intelligence</button>
-    <button class="btn btn-primary" id="finishBtn" onclick="showResult()" disabled>Ολοκλήρωση 💎</button>
+    <button class="btn btn-s" onclick="prev()">← Σενάρια</button>
+    <button class="btn btn-p" id="finBtn" onclick="showResult()" disabled>Ολοκλήρωση 💎</button>
   </div>
 </section>
 
@@ -1176,104 +920,19 @@
 </div>
 
 <script>
-  let cur = 0;
-  const total = 9;
-  const visited = new Set([0]);
-
-  function go(i) {
-    document.getElementById('m' + cur).classList.remove('active');
-    document.querySelectorAll('.sb-item[data-i]').forEach(el => el.classList.remove('active'));
-    cur = i;
-    document.getElementById('m' + cur).classList.add('active');
-    document.querySelector('.sb-item[data-i="' + i + '"]').classList.add('active');
-    visited.add(i);
-    updateUI();
-    window.scrollTo(0, 0);
-  }
-  function next() { if (cur < total - 1) go(cur + 1); }
-  function prev() { if (cur > 0) go(cur - 1); }
-
-  function updateUI() {
-    const pct = Math.round((visited.size / total) * 100);
-    document.getElementById('pFill').style.width = pct + '%';
-    document.getElementById('pLabel').textContent = 'ΕΝΟΤΗΤΑ ' + (cur + 1) + ' ΑΠΟ ' + total;
-    document.getElementById('pBadge').textContent = pct === 100 ? '💎 EXPERT' : pct + '%';
-    document.querySelectorAll('.sb-item[data-i]').forEach(el => {
-      el.classList.toggle('done', visited.has(parseInt(el.dataset.i)));
-    });
-  }
-
-  // Mini quiz
-  const mqA = {};
-  const mqG = { mq_p1:'p',mq_p2:'p',mq_p3:'p', mq1:1,mq2:1, mq3:2,mq4:2, mq5:3,mq6:3, mq7:4,mq8:4, mq9:5, mq10:6 };
-
-  function mq(el, correct, id) {
-    if (mqA[id] !== undefined) return;
-    mqA[id] = correct;
-    el.parentElement.querySelectorAll('.quiz-opt').forEach(s => s.classList.add('disabled'));
-    el.classList.add(correct ? 'correct' : 'wrong');
-    if (!correct) el.parentElement.querySelectorAll('.quiz-opt').forEach(s => { if (s.__c) s.classList.add('correct'); });
-    const fb = document.getElementById(id + '-fb');
-    fb.className = 'quiz-feedback show ' + (correct ? 'c' : 'w');
-    fb.textContent = correct ? '✅ Σωστά.' : '❌ Δεν πειράζει — δες τη σωστή απάντηση.';
-    const grp = mqG[id];
-    const keys = Object.keys(mqG).filter(k => mqG[k] === grp);
-    if (keys.every(k => mqA[k] !== undefined)) {
-      const ct = keys.filter(k => mqA[k]).length;
-      const sc = document.getElementById('mqs' + grp);
-      if (sc) { sc.className = 'quiz-score show'; sc.textContent = ct + ' / ' + keys.length + (ct === keys.length ? ' — Άριστα.' : ' — Επανέλαβε αν χρειαστεί.'); }
-    }
-  }
-
-  // Final quiz
-  const fqA = {};
-  const fqTotal = 12;
-
-  function fq(el, correct, id) {
-    if (fqA[id] !== undefined) return;
-    fqA[id] = correct;
-    el.parentElement.querySelectorAll('.fquiz-opt').forEach(s => s.classList.add('disabled'));
-    el.classList.add(correct ? 'correct' : 'wrong');
-    if (!correct) el.parentElement.querySelectorAll('.fquiz-opt').forEach(s => { if (s.__c) s.classList.add('correct'); });
-    const fb = document.getElementById(id + '-fb');
-    fb.className = 'fquiz-feedback show ' + (correct ? 'c' : 'w');
-    fb.textContent = correct ? '✅ Σωστά.' : '❌ Δεν πειράζει.';
-    if (Object.keys(fqA).length === fqTotal) document.getElementById('finishBtn').disabled = false;
-  }
-
-  function showResult() {
-    const score = Object.values(fqA).filter(Boolean).length;
-    const pct = Math.round((score / fqTotal) * 100);
-    const r = document.getElementById('finalResult');
-    r.className = 'final-result show';
-    r.scrollIntoView({ behavior: 'smooth' });
-    document.getElementById('rScore').textContent = score + ' / ' + fqTotal + ' (' + pct + '%)';
-    let emoji, title, msg;
-    if (pct >= 92) { emoji='💎'; title='Expert.'; msg='Το επίπεδο που χωρίζει τους καλούς από τους εξαιρετικούς.'; }
-    else if (pct >= 75) { emoji='⭐'; title='Πολύ κοντά.'; msg='Επανέλαβε τις ερωτήσεις που έχασες — είσαι ήδη σε υψηλό επίπεδο.'; }
-    else if (pct >= 58) { emoji='📚'; title='Καλή βάση.'; msg='Ξαναδές τις ενότητες που δυσκολεύτηκες και επανέλα.'; }
-    else { emoji='🔄'; title='Συνέχισε.'; msg='Το expert επίπεδο έρχεται με εμπειρία και αναστοχασμό — ξαναδές τις ενότητες.'; }
-    document.getElementById('rEmoji').textContent = emoji;
-    document.getElementById('rTitle').textContent = title;
-    document.getElementById('rMsg').textContent = msg;
-    visited.add(8);
-    updateUI();
-  }
-
-  function resetFinal() {
-    Object.keys(fqA).forEach(k => delete fqA[k]);
-    document.querySelectorAll('.fquiz-opt').forEach(o => o.className = 'fquiz-opt');
-    document.querySelectorAll('.fquiz-feedback').forEach(f => f.className = 'fquiz-feedback');
-    document.getElementById('finalResult').className = 'final-result';
-    document.getElementById('finishBtn').disabled = true;
-    window.scrollTo(0, 0);
-  }
-
-  // Mark correct
-  document.querySelectorAll('.quiz-opt, .fquiz-opt').forEach(el => {
-    if ((el.getAttribute('onclick') || '').includes(',true,')) el.__c = true;
-  });
-
+  let cur=0;const total=10;const visited=new Set([0]);
+  function go(i){document.getElementById('m'+cur).classList.remove('active');document.querySelectorAll('.sb-item[data-i]').forEach(el=>el.classList.remove('active'));cur=i;document.getElementById('m'+cur).classList.add('active');document.querySelector('.sb-item[data-i="'+i+'"]').classList.add('active');visited.add(i);updateUI();window.scrollTo(0,0);}
+  function next(){if(cur<total-1)go(cur+1);}
+  function prev(){if(cur>0)go(cur-1);}
+  function updateUI(){const pct=Math.round((visited.size/total)*100);document.getElementById('pFill').style.width=pct+'%';document.getElementById('pLabel').textContent='ΕΝΟΤΗΤΑ '+(cur+1)+' ΑΠΟ '+total;document.getElementById('pBadge').textContent=pct===100?'💎 EXPERT':pct+'%';document.querySelectorAll('.sb-item[data-i]').forEach(el=>{el.classList.toggle('done',visited.has(parseInt(el.dataset.i)));});}
+  document.querySelectorAll('.qo,.fqo').forEach(el=>{if((el.getAttribute('onclick')||'').includes(',true,'))el.__c=true;});
+  const mqA={};
+  const mqG={q1a:1,q1b:1,q2a:2,q2b:2,q3a:3,q3b:3,q4a:4,q4b:4,q5a:5,q5b:5,q6a:6,q6b:6,q7a:7,q8a:8,q8b:8};
+  function mq(el,correct,id){if(mqA[id]!==undefined)return;mqA[id]=correct;el.parentElement.querySelectorAll('.qo').forEach(s=>s.classList.add('disabled'));el.classList.add(correct?'correct':'wrong');if(!correct)el.parentElement.querySelectorAll('.qo').forEach(s=>{if(s.__c)s.classList.add('correct');});const fb=document.getElementById(id+'-fb');fb.className='qf show '+(correct?'c':'w');fb.textContent=correct?'✅ Σωστά.':'❌ Δεν πειράζει.';const grp=mqG[id];const keys=Object.keys(mqG).filter(k=>mqG[k]===grp);if(keys.every(k=>mqA[k]!==undefined)){const ct=keys.filter(k=>mqA[k]).length;const sc=document.getElementById('qs'+grp);if(sc){sc.className='qs-score show';sc.textContent=ct+' / '+keys.length+(ct===keys.length?' — Άριστα.'>' — Επανέλαβε αν χρειαστεί.');}}}
+  const fqA={};const fqT=12;
+  function fq(el,correct,id){if(fqA[id]!==undefined)return;fqA[id]=correct;el.parentElement.querySelectorAll('.fqo').forEach(s=>s.classList.add('disabled'));el.classList.add(correct?'correct':'wrong');if(!correct)el.parentElement.querySelectorAll('.fqo').forEach(s=>{if(s.__c)s.classList.add('correct');});const fb=document.getElementById(id+'-fb');fb.className='fqf show '+(correct?'c':'w');fb.textContent=correct?'✅ Σωστά.':'❌ Δεν πειράζει.';if(Object.keys(fqA).length===fqT)document.getElementById('finBtn').disabled=false;}
+  function showResult(){const score=Object.values(fqA).filter(Boolean).length;const pct=Math.round((score/fqT)*100);const r=document.getElementById('fr');r.className='fr show';r.scrollIntoView({behavior:'smooth'});document.getElementById('rScore').textContent=score+' / '+fqT+' ('+pct+'%)';let emoji,title,msg;if(pct>=92){emoji='💎';title='Expert.';msg='Ξέρεις πώς να συνδέεις features με ανάγκες. Αυτό είναι το επίπεδο που μετράει.';}else if(pct>=75){emoji='⭐';title='Πολύ καλά.';msg='Δυνατή βάση. Επανέλαβε τις ερωτήσεις που έχασες.';}else if(pct>=58){emoji='📚';title='Καλή προσπάθεια.';msg='Ξαναδές τις ενότητες που δυσκολεύτηκες.';}else{emoji='🔄';title='Συνέχισε.';msg='Ξανακοίτα τις ενότητες — το framework χρειάζεται εξάσκηση.';}document.getElementById('rEmoji').textContent=emoji;document.getElementById('rTitle').textContent=title;document.getElementById('rMsg').textContent=msg;visited.add(9);updateUI();}
+  function resetFinal(){Object.keys(fqA).forEach(k=>delete fqA[k]);document.querySelectorAll('.fqo').forEach(o=>o.className='fqo');document.querySelectorAll('.fqf').forEach(f=>f.className='fqf');document.getElementById('fr').className='fr';document.getElementById('finBtn').disabled=true;window.scrollTo(0,0);}
   updateUI();
 </script>
 </body>
