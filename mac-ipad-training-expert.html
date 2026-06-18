@@ -25,7 +25,7 @@
   .layout{display:flex;min-height:calc(100vh - var(--header));}
   .sidebar{width:var(--sidebar);flex-shrink:0;background:#0d0d0f;border-right:1px solid var(--border);position:sticky;top:var(--header);height:calc(100vh - var(--header));overflow-y:auto;padding:20px 0;}
   .sb-label{font-size:9px;font-weight:700;color:rgba(255,255,255,0.2);text-transform:uppercase;letter-spacing:1.5px;padding:10px 20px 4px;}
-  .sb-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;font-size:13px;color:rgba(255,255,255,0.4);border-left:2px solid transparent;transition:all 0.15s;user-select:none;}
+  .sb-item{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;font-size:13px;color:rgba(255,255,255,0.4);border-left:2px solid transparent;transition:all 0.15s;user-select:none;}
   .sb-item:hover{background:var(--light);color:rgba(255,255,255,0.75);}
   .sb-item.active{background:var(--gold-dim);border-left-color:var(--gold);color:var(--gold);font-weight:600;}
   .sb-item .sb-icon{font-size:14px;width:18px;text-align:center;}
@@ -156,16 +156,16 @@
 <div class="layout">
 <nav class="sidebar">
   <div class="sb-label">Expert Modules</div>
-  <div class="sb-item active" onclick="go(0)" data-i="0"><span class="sb-icon">💎</span>Εισαγωγή<span class="sb-check">✓</span></div>
-  <div class="sb-item" onclick="go(1)" data-i="1"><span class="sb-icon">🔗</span>Feature → Need<span class="sb-check">✓</span></div>
-  <div class="sb-item" onclick="go(2)" data-i="2"><span class="sb-icon">💻</span>Mac: Specs & Νόημα<span class="sb-check">✓</span></div>
-  <div class="sb-item" onclick="go(3)" data-i="3"><span class="sb-icon">📱</span>iPad: Specs & Νόημα<span class="sb-check">✓</span></div>
-  <div class="sb-item" onclick="go(4)" data-i="4"><span class="sb-icon">🧬</span>Chip Differences<span class="sb-check">✓</span></div>
-  <div class="sb-item" onclick="go(5)" data-i="5"><span class="sb-icon">⚡</span>Real-World Performance<span class="sb-check">✓</span></div>
-  <div class="sb-item" onclick="go(6)" data-i="6"><span class="sb-icon">📈</span>Upsell μέσω Features<span class="sb-check">✓</span></div>
-  <div class="sb-item" onclick="go(7)" data-i="7"><span class="sb-icon">🎒</span>Αξεσουάρ ως Extension<span class="sb-check">✓</span></div>
-  <div class="sb-item" onclick="go(8)" data-i="8"><span class="sb-icon">🎭</span>Advanced Scenarios<span class="sb-check">✓</span></div>
-  <div class="sb-item" onclick="go(9)" data-i="9"><span class="sb-icon">🏆</span>Αξιολόγηση<span class="sb-check">✓</span></div>
+  <button class="sb-item active" onclick="go(0)" data-i="0"><span class="sb-icon">💎</span>Εισαγωγή<span class="sb-check">✓</span></button>
+  <button class="sb-item" onclick="go(1)" data-i="1"><span class="sb-icon">🔗</span>Feature → Need<span class="sb-check">✓</span></button>
+  <button class="sb-item" onclick="go(2)" data-i="2"><span class="sb-icon">💻</span>Mac: Specs & Νόημα<span class="sb-check">✓</span></button>
+  <button class="sb-item" onclick="go(3)" data-i="3"><span class="sb-icon">📱</span>iPad: Specs & Νόημα<span class="sb-check">✓</span></button>
+  <button class="sb-item" onclick="go(4)" data-i="4"><span class="sb-icon">🧬</span>Chip Differences<span class="sb-check">✓</span></button>
+  <button class="sb-item" onclick="go(5)" data-i="5"><span class="sb-icon">⚡</span>Real-World Performance<span class="sb-check">✓</span></button>
+  <button class="sb-item" onclick="go(6)" data-i="6"><span class="sb-icon">📈</span>Upsell μέσω Features<span class="sb-check">✓</span></button>
+  <button class="sb-item" onclick="go(7)" data-i="7"><span class="sb-icon">🎒</span>Αξεσουάρ ως Extension<span class="sb-check">✓</span></button>
+  <button class="sb-item" onclick="go(8)" data-i="8"><span class="sb-icon">🎭</span>Advanced Scenarios<span class="sb-check">✓</span></button>
+  <button class="sb-item" onclick="go(9)" data-i="9"><span class="sb-icon">🏆</span>Αξιολόγηση<span class="sb-check">✓</span></button>
 </nav>
 <main class="main">
 
