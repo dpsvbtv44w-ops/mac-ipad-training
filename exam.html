@@ -322,7 +322,7 @@ const QUESTIONS = [
     q: 'Ποιο iPad ΔΕΝ υποστηρίζει Apple Pencil Pro;',
     opts: ['iPad Air M4', 'iPad Pro M5', 'iPad mini 7η γενιά', 'iPad 11η γενιά (A16)'],
     correct: 3,
-    explain: 'Το iPad 11ης γενιάς (A16) υποστηρίζει ΜΟΝΟ Apple Pencil USB-C. Τα iPad Air, Pro και mini 7 υποστηρίζουν Pencil Pro.'
+    explain: 'Το iPad 11ης γενιάς (A16) υποστηρίζει Apple Pencil USB-C και Pencil 1st gen — ΟΧΙ Pencil Pro. Τα iPad Air, Pro και mini 7 υποστηρίζουν Pencil Pro.'
   },
   {
     level: 'basic', category: 'Αξεσουάρ',
@@ -385,9 +385,9 @@ const QUESTIONS = [
   {
     level: 'advanced', category: 'Chip Architecture',
     q: 'Ποια είναι η πιο σημαντική διαφορά μεταξύ M5 και M5 Pro σε real-world workloads;',
-    opts: ['Το M5 Pro έχει καλύτερη μπαταρία', 'Το M5 Pro έχει διπλάσιο memory bandwidth (307 vs 153 GB/s) — δεν throttle σε sustained loads', 'Το M5 Pro υποστηρίζει περισσότερες εξωτερικές οθόνες', 'Το M5 Pro είναι fanless'],
+    opts: ['Το M5 Pro έχει καλύτερη μπαταρία', 'Το M5 Pro έχει διπλάσιο memory bandwidth (307 vs 153 GB/s) — διατηρεί σταθερή απόδοση υπό παρατεταμένο φόρτο', 'Το M5 Pro υποστηρίζει περισσότερες εξωτερικές οθόνες', 'Το M5 Pro είναι fanless'],
     correct: 1,
-    explain: 'Το διπλάσιο memory bandwidth (307 GB/s) σημαίνει ότι η CPU/GPU τροφοδοτείται με δεδομένα 2× πιο γρήγορα — το M5 Pro δεν throttle υπό φόρτο, ενώ το M5 μπορεί να σταθεροποιήσει χαμηλότερα.'
+    explain: 'Το διπλάσιο memory bandwidth (307 GB/s) σημαίνει ότι η CPU/GPU τροφοδοτείται με δεδομένα 2× πιο γρήγορα — ο M5 Pro διατηρεί σταθερή απόδοση υπό φόρτο, ενώ ο M5 μπορεί να τη μειώσει σε παρατεταμένη χρήση.'
   },
   {
     level: 'advanced', category: 'Thunderbolt',
@@ -462,18 +462,18 @@ const QUESTIONS = [
     explain: '2 ώρες footage σε M5: ~35 λεπτά export. Με M5 Max (2 ProRes engines): ~8 λεπτά. Καθημερινή διαφορά ~27 λεπτά = 160+ ώρες τον χρόνο. Αυτό είναι το πραγματικό ROI.'
   },
   {
-    level: 'expert', category: 'Apple Sales DNA',
-    q: 'Ποια είναι η πιο σημαντική διαφορά μεταξύ Advanced και Expert πωλητή;',
-    opts: ['Ο Expert ξέρει περισσότερα specs', 'Ο Expert ξέρει τι να ΜΗΝ πει — πότε η σιωπή είναι πιο αποτελεσματική από κάθε επιχείρημα', 'Ο Expert κλείνει περισσότερες πωλήσεις', 'Ο Expert χρησιμοποιεί περισσότερες τεχνικές'],
+    level: 'expert', category: 'Feature → Need',
+    q: 'Πελάτης λέει «κάνω πολύ video editing και μερικές φορές το laptop ζεσταίνεται». Ποιο feature και ποιο μοντέλο συνδέεις;',
+    opts: ['MacBook Air M5 — fanless, άρα πάντα αθόρυβο ακόμα και υπό φόρτο', 'MacBook Pro M5 (base) — active cooling διατηρεί σταθερή απόδοση υπό παρατεταμένο φόρτο, και η XDR οθόνη δείχνει ακριβή χρώματα', 'MacBook Air M5 15" — μεγαλύτερη οθόνη για editing', 'Mac mini M4 — desktop με περισσότερα ports'],
     correct: 1,
-    explain: 'Ο Expert έχει τη σοφία της επιλογής — ξέρει πότε να μιλήσει, πότε να σιωπήσει, πότε να αφήσει τον πελάτη να βγάλει μόνος του το συμπέρασμα.'
+    explain: 'Το MacBook Air είναι fanless — σε παρατεταμένο φόρτο μπορεί να μειώσει απόδοση. Το MacBook Pro έχει active cooling που κρατάει σταθερή απόδοση. Η XDR οθόνη είναι επιπλέον feature match για video editing.'
   },
   {
-    level: 'expert', category: 'Trust Architecture',
-    q: 'Ποιο επίπεδο Trust Architecture κερδίζεται όταν παραδέχεσαι ένα limitation ή προτείνεις κάτι φθηνότερο;',
-    opts: ['Επίπεδο 1 — Competence', 'Επίπεδο 2 — Honesty', 'Επίπεδο 3 — Alignment', 'Επίπεδο 4 — Reliability'],
+    level: 'expert', category: 'Upsell μέσω Features',
+    q: 'Πελάτης αγοράζει iPad Pro M5 και κοιτάει Pencil USB-C. Λέει «θέλω να ζωγραφίζω». Ποιο το σωστό upsell argument για Pencil Pro;',
+    opts: ['«Το Pencil Pro φορτίζει ασύρματα και έχει Find My»', '«Επειδή μου είπες ζωγραφική — το Pencil Pro έχει Barrel Roll: στρέφεις το Pencil και η βούρτσα στρέφει σαν πραγματικό πινέλο. Το USB-C δεν το έχει. Μπορώ να σου δείξω live;»', '«Το Pencil USB-C δεν είναι συμβατό με iPad Pro»', '«Το Pro είναι πάντα καλύτερο»'],
     correct: 1,
-    explain: 'Honesty (επίπεδο 2): ο πελάτης νιώθει «μου λέει την αλήθεια». Κερδίζεται ακριβώς όταν δεν πουλάς — όταν παραδέχεσαι ένα weakness ή προτείνεις χαμηλότερο μοντέλο αν αρμόζει.'
+    explain: 'Το σωστό upsell συνδέει το feature (Barrel Roll) με αυτό που είπε ο πελάτης (ζωγραφική) — όχι γενικά πλεονεκτήματα. Και κλείνει με live demo.'
   },
   {
     level: 'expert', category: 'Competitive Intelligence',
@@ -483,18 +483,18 @@ const QUESTIONS = [
     explain: 'Private Cloud Compute: Apple χρησιμοποιεί isolated servers που ακόμα και η Apple δεν μπορεί να δει. Third-party auditable. Για εταιρίες με GDPR requirements, αυτό είναι dealmaker.'
   },
   {
-    level: 'expert', category: 'Coaching',
-    q: 'Junior staff ακούει μόνο για να απαντήσει — διακόπτει τον πελάτη. Ποιο SBI feedback δίνεις;',
-    opts: ['«Μην διακόπτεις τον πελάτη»', 'Situation: «Όταν ο πελάτης μιλούσε για...» / Behavior: «Τον διέκοψες πριν τελειώσει» / Impact: «Ο πελάτης νιώθει ότι δεν τον ακούς — χάνεις την εμπιστοσύνη του»', 'Τον αφήνεις να το καταλάβει μόνος του', 'Του δίνεις γραπτές οδηγίες'],
+    level: 'expert', category: 'Advanced Scenarios',
+    q: 'Graphic designer δουλεύει Procreate και Lightroom, ταξιδεύει συχνά, έχει iPhone. Ποιο setup και γιατί;',
+    opts: ['MacBook Air M5 — fanless και ελαφρύ για ταξίδια', 'iPad Pro M5 13" + Apple Pencil Pro + Magic Keyboard — Tandem OLED για χρωματική ακρίβεια, Barrel Roll για φυσικό σχέδιο, και με iPhone: AirDrop + Sidecar built-in', 'MacBook Pro 14" M5 Pro — professional performance', 'iPad Air M4 — καλή ισορροπία τιμής/απόδοσης'],
     correct: 1,
-    explain: 'SBI: Situation (συγκεκριμένη στιγμή) → Behavior (τι έκανε, χωρίς κρίση) → Impact (τι σημαίνει αυτό). Πάντα τελείωσε με «Τι θα έκανες διαφορετικά;»'
+    explain: 'Κάθε feature match με αυτά που είπε: Tandem OLED → χρωματική ακρίβεια για designers, Pencil Pro Barrel Roll → φυσικό σχέδιο, iPhone ecosystem → AirDrop instant transfer και Sidecar ως second screen.'
   },
   {
-    level: 'expert', category: 'Enterprise',
-    q: 'IT Manager λέει «έχουμε εσωτερικό IT, δεν χρειαζόμαστε AppleCare+». Ποιο argument χρησιμοποιείς;',
-    opts: ['«Είναι φθηνό»', 'Express Replacement: αν σπάσει συσκευή σε ταξίδι, Apple στέλνει αντικατάσταση πριν επιστρέψεις την παλιά. Zero downtime — κάτι που ο εσωτερικός IT δεν μπορεί να κάνει.', '«Μειώνει τα support tickets»', '«Καλύπτει accidental damage»'],
+    level: 'expert', category: 'B2B & Enterprise',
+    q: 'Εταιρία 25 ατόμων χρησιμοποιεί Microsoft Intune για MDM. Θέλουν να αγοράσουν Mac. Ποιο Apple εργαλείο αναφέρεις;',
+    opts: ['Apple Business Essentials — περιλαμβάνει MDM και iCloud storage', 'Apple Business Manager — ενσωματώνεται με Microsoft Intune για zero-touch deployment. Τα Mac μπαίνουν αυτόματα στο Intune MDM χωρίς να τα αγγίξει κανείς.', 'Jamf Pro — το καλύτερο MDM για Mac fleet', 'Finder Network — για file sharing μεταξύ Mac'],
     correct: 1,
-    explain: 'Express Replacement addressess το specific pain point του IT Manager: downtime. Δεν αντικαθιστά τον IT — τον συμπληρώνει για το scenario που ο IT δεν μπορεί να λύσει (remote hardware failure).'
+    explain: 'Apple Business Manager ενσωματώνεται με Microsoft Intune — τα Mac enrollάρουν αυτόματα στο υπάρχον MDM της εταιρίας. Zero-touch deployment: η συσκευή φτάνει έτοιμη, ο IT δεν χρειάζεται να τη ρυθμίσει χειροκίνητα.'
   },
   {
     level: 'expert', category: 'Δύσκολα Σενάρια',
@@ -511,18 +511,18 @@ const QUESTIONS = [
     explain: 'Η ειλικρίνεια χτίζει εμπιστοσύνη. Αν πουλήσεις iPad Pro για Revit και δεν δουλέψει, χάνεις τον πελάτη για πάντα. Η σωστή λύση είναι MacBook Pro + Parallels για το γραφείο, iPad Pro για on-site annotations.'
   },
   {
-    level: 'expert', category: 'Trade In & Pricing',
-    q: 'Πότε αναφέρεις το Trade In για μέγιστο αποτέλεσμα;',
-    opts: ['Μετά την αντίρρηση «είναι ακριβό»', 'Στο τέλος ως bonus', 'Κατά τη φάση Understand — «έχεις παλιά Apple συσκευή;» αλλάζει το pricing frame από νωρίς', 'Μόνο για B2B fleet purchases'],
-    correct: 2,
-    explain: 'Αν αναφέρεις Trade In νωρίς, ο πελάτης κάνει τους υπολογισμούς του από την αρχή με μειωμένη τιμή — δεν βλέπει ποτέ την «πλήρη» τιμή ως αντίρρηση.'
+    level: 'expert', category: 'Real-World Performance',
+    q: 'Photographer κάνει batch AI masking σε 500 φωτογραφίες κάθε εβδομάδα. Ποιο argument χρησιμοποιείς για M5 vs παλιό Intel Mac;',
+    opts: ['Ο M5 έχει καλύτερο display για color accurate editing', 'Lightroom AI masking με M5: κάτω από 1 δευτερόλεπτο ανά φωτογραφία. Με Intel i7: ~8 δευτερόλεπτα. Για 500 φωτογραφίες: M5 = 8 λεπτά, Intel = 66 λεπτά. Αυτή είναι η πραγματική διαφορά.', 'Ο M5 έχει Unified Memory που κάνει το Lightroom πιο ομαλό', 'Ο M5 έχει καλύτερη μπαταρία για μεγάλα sessions'],
+    correct: 1,
+    explain: 'Real-world numbers: M5 Neural Engine επεξεργάζεται AI tasks σε <1 δευτερόλεπτο vs ~8 δευτερόλεπτα στον Intel. Για 500 φωτογραφίες εβδομαδιαίως: 8 vs 66 λεπτά — αυτό είναι ~1 ώρα κάθε εβδομάδα που κερδίζεται.'
   },
   {
     level: 'expert', category: 'Apple Intelligence',
     q: 'Τι είναι το Private Cloud Compute και γιατί είναι σημαντικό;',
-    opts: ['Η Apple cloud storage υπηρεσία', 'Isolated servers για AI tasks — ακόμα και η Apple δεν μπορεί να δει τα δεδομένα. Third-party auditable. Κρίσιμο για GDPR.', 'Το encryption της iCloud', 'Νέα λειτουργία backup'],
-    correct: 2,
-    explain: 'Private Cloud Compute: όταν το Apple Intelligence χρειάζεται cloud processing, χρησιμοποιεί isolated Apple servers που δεν κρατούν δεδομένα και είναι independently auditable. Κανένας ανταγωνιστής δεν προσφέρει αυτό.'
+    opts: ['Η Apple cloud storage υπηρεσία', 'Όταν το Apple Intelligence χρειάζεται server για σύνθετες ερωτήσεις, τα στέλνει σε ειδικά Apple servers που δεν αποθηκεύουν τα δεδομένα σου — ακόμα και η Apple δεν μπορεί να τα δει.', 'Το σύστημα κρυπτογράφησης της iCloud', 'Νέα λειτουργία cloud backup'],
+    correct: 1,
+    explain: 'Private Cloud Compute: αντί να στέλνει AI ερωτήματα στα server της Apple με πρόσβαση σε δεδομένα, χρησιμοποιεί isolated servers που δεν κρατούν τίποτα μετά την επεξεργασία. Για εταιρίες με GDPR υποχρεώσεις, αυτή η διαφορά από Google/Microsoft είναι κρίσιμη.
   }
 ];
 
