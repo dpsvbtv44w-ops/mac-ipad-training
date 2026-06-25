@@ -111,6 +111,7 @@
 
   .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
   .option {
+    all: unset; box-sizing: border-box;
     padding: 15px 20px; border-radius: 12px;
     border: 1px solid var(--border);
     background: var(--card);
@@ -118,6 +119,7 @@
     color: rgba(255,255,255,0.7);
     transition: all 0.15s; user-select: none;
     display: flex; align-items: flex-start; gap: 12px;
+    width: 100%;
   }
   .option:hover { border-color: rgba(255,214,10,0.4); background: var(--gold-dim); color: var(--white); }
   .option .opt-letter {
@@ -603,11 +605,11 @@ function renderQuestion() {
   optsEl.innerHTML = '';
   const letters = ['Α', 'Β', 'Γ', 'Δ'];
   q.opts.forEach((opt, i) => {
-    const div = document.createElement('div');
-    div.className = 'option';
-    div.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
-    div.onclick = () => selectAnswer(i);
-    optsEl.appendChild(div);
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectAnswer(i);
+    optsEl.appendChild(btn);
   });
 
   // Reset feedback & next
