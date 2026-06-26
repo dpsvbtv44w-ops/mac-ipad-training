@@ -3,727 +3,650 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mac & iPad — Τελική Εξέταση</title>
+<title>Mac & iPad — Τελική Αξιολόγηση</title>
 <style>
-  :root {
-    --bg: #0a0a0a;
-    --surface: #141416;
-    --card: #1c1c1e;
-    --border: rgba(255,255,255,0.07);
-    --gold: #ffd60a;
-    --gold-dim: rgba(255,214,10,0.1);
-    --blue: #0a84ff;
-    --green: #30d158;
-    --red: #ff453a;
-    --orange: #ff9f0a;
-    --purple: #bf5af2;
-    --white: #fff;
-    --gray: rgba(255,255,255,0.45);
-    --light: rgba(255,255,255,0.08);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--white); min-height: 100vh; overflow-x: hidden; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #0a0a0a;
+  color: #fff;
+  min-height: 100vh;
+}
 
-  /* ── SCREENS ── */
-  .screen { display: none; min-height: 100vh; }
-  .screen.active { display: flex; flex-direction: column; }
-  #quiz.active, #results.active { overflow-y: auto; }
+/* INTRO */
+#intro {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,214,10,0.07) 0%, transparent 60%);
+}
+#intro h1 {
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+#intro h1 span { color: #ffd60a; }
+#intro p { font-size: 16px; color: rgba(255,255,255,0.5); max-width: 480px; margin-bottom: 36px; line-height: 1.6; }
+.stats { display: flex; gap: 28px; justify-content: center; margin-bottom: 36px; flex-wrap: wrap; }
+.stat-val { font-size: 30px; font-weight: 800; color: #fff; }
+.stat-lbl { font-size: 11px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+.pills { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+.pill {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  display: flex; align-items: center; gap: 6px;
+}
+.pill .dot { width: 7px; height: 7px; border-radius: 50%; }
+.d-blue { background: #0a84ff; }
+.d-gold { background: #ffd60a; }
+.d-purple { background: #bf5af2; }
+#startBtn {
+  background: #ffd60a;
+  color: #0a0a0a;
+  border: none;
+  padding: 16px 52px;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: -0.3px;
+  touch-action: manipulation;
+}
+#startBtn:active { opacity: 0.85; }
 
-  /* ── INTRO SCREEN ── */
-  #intro {
-    align-items: center; justify-content: center;
-    padding: 40px 24px; text-align: center;
-    background: radial-gradient(ellipse at 50% 0%, rgba(255,214,10,0.08) 0%, transparent 60%);
-  }
-  .intro-badge {
-    display: inline-block; font-size: 10px; font-weight: 700;
-    letter-spacing: 2px; text-transform: uppercase;
-    color: var(--gold); border: 1px solid rgba(255,214,10,0.3);
-    padding: 5px 14px; border-radius: 20px; margin-bottom: 24px;
-    background: var(--gold-dim);
-  }
-  .intro-title { font-size: clamp(32px,6vw,52px); font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 16px; }
-  .intro-title span { color: var(--gold); }
-  .intro-desc { font-size: 17px; color: var(--gray); line-height: 1.6; max-width: 520px; margin: 0 auto 36px; }
-  .intro-stats {
-    display: flex; gap: 32px; justify-content: center;
-    margin-bottom: 40px; flex-wrap: wrap;
-  }
-  .stat { text-align: center; }
-  .stat-val { font-size: 32px; font-weight: 800; color: var(--white); letter-spacing: -1px; }
-  .stat-lbl { font-size: 11px; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
-  .intro-levels {
-    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
-    margin-bottom: 40px;
-  }
-  .level-pill {
-    display: flex; align-items: center; gap: 8px;
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 10px; padding: 10px 16px; font-size: 13px;
-  }
-  .level-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
-  .dot-basic { background: var(--blue); }
-  .dot-advanced { background: var(--gold); }
-  .dot-expert { background: var(--purple); }
-  .start-btn {
-    background: var(--gold); color: var(--bg);
-    border: none; padding: 16px 48px; border-radius: 14px;
-    font-size: 16px; font-weight: 800; cursor: pointer;
-    transition: all 0.2s; letter-spacing: -0.3px;
-    touch-action: manipulation; -webkit-tap-highlight-color: transparent;
-  }
-  .start-btn:hover { background: #e6c200; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,214,10,0.25); }
+/* QUIZ */
+#quiz { display: none; min-height: 100vh; flex-direction: column; }
+#quiz.on { display: flex; }
 
-  /* ── QUIZ SCREEN ── */
-  #quiz { flex-direction: column; overflow-y: auto; }
+.qbar {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(10,10,10,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  padding: 12px 20px;
+  display: flex; align-items: center; gap: 14px;
+}
+.qbar-counter { font-size: 13px; font-weight: 700; color: #ffd60a; white-space: nowrap; }
+.qbar-prog { flex: 1; background: rgba(255,255,255,0.1); border-radius: 3px; height: 4px; }
+.qbar-fill { height: 4px; border-radius: 3px; background: #ffd60a; transition: width 0.4s; }
+.qbar-badge {
+  font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 6px;
+  white-space: nowrap; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.b-basic  { background: rgba(10,132,255,0.2);  color: #0a84ff; }
+.b-advanced { background: rgba(255,214,10,0.15);  color: #ffd60a; }
+.b-expert { background: rgba(191,90,242,0.15); color: #bf5af2; }
+.qbar-timer {
+  font-size: 14px; font-weight: 800; padding: 4px 10px;
+  border-radius: 8px; background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  min-width: 56px; text-align: center;
+}
+.qbar-timer.warn { color: #ff9f0a; }
+.qbar-timer.danger { color: #ff453a; background: rgba(255,69,58,0.1); }
 
-  .quiz-header {
-    position: sticky; top: 0; z-index: 50;
-    background: rgba(10,10,10,0.92);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 24px;
-    display: flex; align-items: center; gap: 16px;
-  }
-  .q-counter { font-size: 13px; font-weight: 700; color: var(--gold); white-space: nowrap; }
-  .q-progress-wrap { flex: 1; }
-  .q-progress-bg { background: rgba(255,255,255,0.1); border-radius: 3px; height: 4px; }
-  .q-progress-fill { height: 4px; border-radius: 3px; background: var(--gold); transition: width 0.4s; }
-  .q-timer {
-    font-size: 15px; font-weight: 800; letter-spacing: -0.5px;
-    padding: 5px 12px; border-radius: 8px;
-    background: var(--card); border: 1px solid var(--border);
-    white-space: nowrap; min-width: 58px; text-align: center;
-    transition: color 0.3s, background 0.3s;
-  }
-  .q-timer.warn { color: var(--orange); border-color: rgba(255,159,10,0.3); }
-  .q-timer.danger { color: var(--red); border-color: rgba(255,69,58,0.3); background: rgba(255,69,58,0.08); }
-  .q-level-badge {
-    font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 6px;
-    text-transform: uppercase; letter-spacing: 1px; white-space: nowrap;
-  }
-  .badge-basic { background: rgba(10,132,255,0.15); color: var(--blue); border: 1px solid rgba(10,132,255,0.2); }
-  .badge-advanced { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(255,214,10,0.2); }
-  .badge-expert { background: rgba(191,90,242,0.12); color: var(--purple); border: 1px solid rgba(191,90,242,0.2); }
+.qbody {
+  flex: 1;
+  padding: 28px 20px 48px;
+  max-width: 680px;
+  margin: 0 auto;
+  width: 100%;
+}
+.qcat { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.3); margin-bottom: 10px; }
+.qtext { font-size: 19px; font-weight: 700; line-height: 1.35; letter-spacing: -0.3px; margin-bottom: 24px; }
+.qopts { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.qopt {
+  all: unset;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.7);
+  font-size: 14px;
+  line-height: 1.45;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  touch-action: manipulation;
+  transition: border-color 0.15s, background 0.15s;
+}
+.qopt:hover { border-color: rgba(255,214,10,0.4); background: rgba(255,214,10,0.07); color: #fff; }
+.qopt.correct { border-color: #30d158; background: rgba(48,209,88,0.1); color: #6eda8a; font-weight: 600; pointer-events: none; }
+.qopt.wrong   { border-color: #ff453a; background: rgba(255,69,58,0.08); color: #ff6b6b; pointer-events: none; }
+.qopt.reveal  { border-color: rgba(48,209,88,0.25); pointer-events: none; }
+.qopt.off     { pointer-events: none; opacity: 0.45; }
+.oletter {
+  width: 22px; height: 22px; border-radius: 6px; flex-shrink: 0;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.4);
+}
+.qopt.correct .oletter { background: #30d158; border-color: #30d158; color: #000; }
+.qopt.wrong   .oletter { background: #ff453a; border-color: #ff453a; color: #fff; }
 
-  .quiz-body { flex: 1; display: flex; flex-direction: column; padding: 32px 24px; max-width: 720px; margin: 0 auto; width: 100%; }
+.qfeedback {
+  display: none; margin-bottom: 16px;
+  font-size: 13px; padding: 10px 14px; border-radius: 9px; line-height: 1.5;
+}
+.qfeedback.on { display: block; }
+.qfeedback.c { background: rgba(48,209,88,0.1); color: #6eda8a; }
+.qfeedback.w { background: rgba(255,69,58,0.08); color: #ff6b6b; }
 
-  .q-category { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gray); margin-bottom: 10px; }
-  .q-text { font-size: 20px; font-weight: 700; letter-spacing: -0.4px; line-height: 1.35; margin-bottom: 28px; color: var(--white); }
+#nextBtn {
+  all: unset;
+  box-sizing: border-box;
+  display: none;
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  background: #fff;
+  color: #000;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+#nextBtn.on { display: block; }
+#nextBtn:active { opacity: 0.8; }
 
-  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
-  .option {
-    all: unset; box-sizing: border-box;
-    padding: 15px 20px; border-radius: 12px;
-    border: 1px solid var(--border);
-    background: var(--card);
-    cursor: pointer; font-size: 14px; line-height: 1.45;
-    color: rgba(255,255,255,0.7);
-    transition: all 0.15s; user-select: none;
-    display: flex; align-items: flex-start; gap: 12px;
-    width: 100%;
-  }
-  .option:hover { border-color: rgba(255,214,10,0.4); background: var(--gold-dim); color: var(--white); }
-  .option .opt-letter {
-    width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0;
-    background: rgba(255,255,255,0.06); border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 700; color: var(--gray);
-    transition: all 0.15s;
-  }
-  .option:hover .opt-letter { background: var(--gold-dim); border-color: rgba(255,214,10,0.4); color: var(--gold); }
-  .option.correct { border-color: rgba(48,209,88,0.5); background: rgba(48,209,88,0.08); color: var(--white); pointer-events: none; }
-  .option.correct .opt-letter { background: var(--green); border-color: var(--green); color: var(--bg); }
-  .option.wrong { border-color: rgba(255,69,58,0.5); background: rgba(255,69,58,0.08); color: rgba(255,255,255,0.5); pointer-events: none; }
-  .option.wrong .opt-letter { background: var(--red); border-color: var(--red); color: var(--white); }
-  .option.reveal { border-color: rgba(48,209,88,0.3); background: rgba(48,209,88,0.05); pointer-events: none; }
-  .option.disabled { pointer-events: none; opacity: 0.5; }
+/* RESULTS */
+#results {
+  display: none;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 24px 80px;
+  overflow-y: auto;
+}
+#results.on { display: flex; }
+.results-inner { max-width: 640px; width: 100%; }
+.res-hero { text-align: center; margin-bottom: 40px; }
+.res-emoji { font-size: 56px; margin-bottom: 12px; }
+.res-title { font-size: 28px; font-weight: 800; letter-spacing: -0.8px; margin-bottom: 8px; }
+.res-sub { font-size: 16px; color: rgba(255,255,255,0.45); margin-bottom: 20px; }
+.res-ring {
+  width: 130px; height: 130px; border-radius: 50%; margin: 0 auto 14px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border: 3px solid #ffd60a; background: rgba(255,214,10,0.08);
+}
+.res-pct { font-size: 38px; font-weight: 800; color: #ffd60a; letter-spacing: -2px; line-height: 1; }
+.res-raw { font-size: 13px; color: rgba(255,255,255,0.35); margin-bottom: 4px; }
 
-  .q-feedback {
-    border-radius: 10px; padding: 12px 16px; font-size: 13px; line-height: 1.5;
-    display: none; margin-bottom: 16px;
-  }
-  .q-feedback.show { display: block; }
-  .q-feedback.correct { background: rgba(48,209,88,0.1); border: 1px solid rgba(48,209,88,0.2); color: #6eda8a; }
-  .q-feedback.wrong { background: rgba(255,69,58,0.08); border: 1px solid rgba(255,69,58,0.2); color: #ff6b6b; }
+.breakdown { margin-bottom: 28px; }
+.bd-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.3); margin-bottom: 12px; }
+.bd-item { background: rgba(255,255,255,0.04); border-radius: 12px; padding: 14px 18px; margin-bottom: 8px; display: flex; align-items: center; gap: 14px; border: 1px solid rgba(255,255,255,0.07); }
+.bd-icon { font-size: 20px; }
+.bd-lbl { font-size: 14px; font-weight: 600; flex: 1; }
+.bd-bar-wrap { flex: 2; }
+.bd-bg { background: rgba(255,255,255,0.08); border-radius: 4px; height: 6px; }
+.bd-fill { height: 6px; border-radius: 4px; transition: width 1s ease; }
+.bd-score { font-size: 13px; font-weight: 700; min-width: 44px; text-align: right; }
 
-  .q-next-btn {
-    width: 100%; background: var(--white); color: var(--bg);
-    border: none; padding: 14px 28px; border-radius: 10px;
-    font-size: 15px; font-weight: 700; cursor: pointer;
-    transition: all 0.2s; display: none; margin-top: 8px;
-  }
-  .q-next-btn.show { display: block; }
-  .q-next-btn:hover { background: #e5e5e5; transform: translateY(-1px); }
+.review { margin-bottom: 28px; }
+.rev-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.3); margin-bottom: 12px; }
+.rev-item { background: rgba(255,255,255,0.04); border-radius: 12px; padding: 14px 16px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.07); border-left: 3px solid #ff453a; }
+.rev-item.ok { border-left-color: #30d158; }
+.rev-q { font-size: 13px; font-weight: 600; margin-bottom: 6px; line-height: 1.4; }
+.rev-ans { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.5; }
+.rev-ans .ca { color: #6eda8a; }
+.rev-ans .wa { color: #ff6b6b; }
 
-  /* ── RESULTS SCREEN ── */
-  #results { align-items: center; justify-content: flex-start; padding: 48px 24px 80px; overflow-y: auto; }
-  .results-inner { max-width: 680px; width: 100%; margin: 0 auto; }
+.res-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+#retryBtn {
+  background: #ffd60a; color: #000; border: none;
+  padding: 13px 32px; border-radius: 12px; font-size: 15px; font-weight: 800;
+  cursor: pointer; touch-action: manipulation;
+}
+#retryBtn:active { opacity: 0.8; }
+#homeLink {
+  background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 13px 32px; border-radius: 12px; font-size: 15px; font-weight: 600;
+  text-decoration: none; display: inline-block;
+}
 
-  .result-hero { text-align: center; margin-bottom: 48px; }
-  .result-trophy { font-size: 64px; margin-bottom: 16px; }
-  .result-title { font-size: 36px; font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; }
-  .result-subtitle { font-size: 17px; color: var(--gray); margin-bottom: 24px; }
-  .result-score-ring {
-    width: 140px; height: 140px; border-radius: 50%; margin: 0 auto 24px;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    border: 3px solid var(--gold); background: var(--gold-dim);
-  }
-  .score-pct { font-size: 40px; font-weight: 800; color: var(--gold); letter-spacing: -2px; line-height: 1; }
-  .score-lbl { font-size: 11px; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
-
-  .breakdown { margin-bottom: 32px; }
-  .breakdown-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gray); margin-bottom: 14px; }
-  .breakdown-item {
-    display: flex; align-items: center; gap: 14px;
-    background: var(--card); border-radius: 12px; padding: 16px 18px;
-    margin-bottom: 8px; border: 1px solid var(--border);
-  }
-  .bd-icon { font-size: 22px; }
-  .bd-label { font-size: 14px; font-weight: 600; flex: 1; }
-  .bd-bar-wrap { flex: 2; }
-  .bd-bar-bg { background: rgba(255,255,255,0.08); border-radius: 4px; height: 6px; }
-  .bd-bar-fill { height: 6px; border-radius: 4px; transition: width 1s ease; }
-  .bd-score { font-size: 14px; font-weight: 700; min-width: 50px; text-align: right; }
-
-  .review-section { margin-bottom: 32px; }
-  .review-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gray); margin-bottom: 14px; }
-  .review-item {
-    background: var(--card); border-radius: 12px; padding: 16px 18px;
-    margin-bottom: 8px; border: 1px solid var(--border);
-    border-left: 3px solid var(--red);
-  }
-  .review-item.ok { border-left-color: var(--green); }
-  .review-q { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 6px; line-height: 1.4; }
-  .review-answer { font-size: 12px; color: var(--gray); }
-  .review-answer span { font-weight: 600; }
-  .review-answer .correct-ans { color: var(--green); }
-  .review-answer .your-ans { color: var(--red); }
-
-  .result-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-  .btn-retry { background: var(--gold); color: var(--bg); border: none; padding: 14px 32px; border-radius: 12px; font-size: 15px; font-weight: 800; cursor: pointer; transition: all 0.2s; }
-  .btn-retry:hover { background: #e6c200; transform: translateY(-1px); }
-  .btn-home { background: var(--card); color: var(--white); border: 1px solid var(--border); padding: 14px 32px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; }
-  .btn-home:hover { background: var(--light); }
-
-  @media (max-width: 600px) {
-    .quiz-body { padding: 24px 16px; }
-    .q-text { font-size: 17px; }
-    .intro-stats { gap: 20px; }
-    .breakdown-item { flex-wrap: wrap; }
-    .bd-bar-wrap { flex: 1 1 100%; }
-    .q-text { font-size: 16px; }
-    .option { font-size: 13px; padding: 12px 14px; }
-    #quiz { overflow-y: auto; }
-    .quiz-body { justify-content: flex-start; padding-bottom: 40px; }
-  }
+@media (max-width: 600px) {
+  .qtext { font-size: 16px; }
+  .qopt { font-size: 13px; padding: 12px 14px; }
+  .bd-item { flex-wrap: wrap; }
+  .bd-bar-wrap { flex: 1 1 100%; }
+}
 </style>
 </head>
 <body>
 
-<!-- ══════════ INTRO SCREEN ══════════ -->
-<div class="screen active" id="intro">
-  <div class="intro-badge">Τελική Αξιολόγηση · 2026</div>
-  <h1 class="intro-title">Mac & iPad<br><span>Τελική Εξέταση</span></h1>
-  <p class="intro-desc">30 ερωτήσεις από και τα 3 επίπεδα εκπαίδευσης. Προϊόντα, σενάρια πελατών, τεχνικές πωλήσεων, chips και enterprise.</p>
-
-  <div class="intro-stats">
-    <div class="stat"><div class="stat-val">30</div><div class="stat-lbl">Ερωτήσεις</div></div>
-    <div class="stat"><div class="stat-val">25'</div><div class="stat-lbl">Χρόνος</div></div>
-    <div class="stat"><div class="stat-val">70%</div><div class="stat-lbl">Για πέρασμα</div></div>
+<!-- INTRO -->
+<div id="intro">
+  <div class="pills">
+    <div class="pill"><span class="dot d-blue"></span>10 Basic</div>
+    <div class="pill"><span class="dot d-gold"></span>10 Advanced</div>
+    <div class="pill"><span class="dot d-purple"></span>10 Expert</div>
   </div>
-
-  <div class="intro-levels">
-    <div class="level-pill"><div class="dot dot-basic"></div>10 Basic ερωτήσεις</div>
-    <div class="level-pill"><div class="dot dot-advanced"></div>10 Advanced ερωτήσεις</div>
-    <div class="level-pill"><div class="dot dot-expert"></div>10 Expert ερωτήσεις</div>
+  <h1>Mac & iPad<br><span>Τελική Αξιολόγηση</span></h1>
+  <p>30 ερωτήσεις από και τα 3 επίπεδα εκπαίδευσης — προϊόντα, chips, σενάρια και τεχνικές πωλήσεων.</p>
+  <div class="stats">
+    <div><div class="stat-val">30</div><div class="stat-lbl">Ερωτήσεις</div></div>
+    <div><div class="stat-val">25'</div><div class="stat-lbl">Χρόνος</div></div>
+    <div><div class="stat-val">70%</div><div class="stat-lbl">Για πέρασμα</div></div>
   </div>
-
-  <button class="start-btn" onclick="startExam()">Έναρξη Εξέτασης →</button>
+  <button id="startBtn" onclick="startExam()">Έναρξη →</button>
 </div>
 
-
-<!-- ══════════ QUIZ SCREEN ══════════ -->
-<div class="screen" id="quiz">
-  <div class="quiz-header">
-    <div class="q-counter" id="qCounter">1 / 30</div>
-    <div class="q-progress-wrap">
-      <div class="q-progress-bg"><div class="q-progress-fill" id="qProgress" style="width:0%"></div></div>
-    </div>
-    <div class="q-level-badge badge-basic" id="qBadge">Basic</div>
-    <div class="q-timer" id="qTimer">25:00</div>
+<!-- QUIZ -->
+<div id="quiz">
+  <div class="qbar">
+    <span class="qbar-counter" id="qCounter">1 / 30</span>
+    <div class="qbar-prog"><div class="qbar-fill" id="qProg" style="width:0%"></div></div>
+    <span class="qbar-badge b-basic" id="qBadge">Basic</span>
+    <span class="qbar-timer" id="qTimer">25:00</span>
   </div>
-
-  <div class="quiz-body">
-    <div class="q-category" id="qCategory"></div>
-    <div class="q-text" id="qText"></div>
-    <div class="options" id="qOptions"></div>
-    <div class="q-feedback" id="qFeedback"></div>
-    <button class="q-next-btn" id="qNext" onclick="nextQuestion()">Επόμενη →</button>
+  <div class="qbody">
+    <div class="qcat" id="qCat"></div>
+    <div class="qtext" id="qText"></div>
+    <div class="qopts" id="qOpts"></div>
+    <div class="qfeedback" id="qFb"></div>
+    <button id="nextBtn" onclick="nextQ()">Επόμενη →</button>
   </div>
 </div>
 
-
-<!-- ══════════ RESULTS SCREEN ══════════ -->
-<div class="screen" id="results">
+<!-- RESULTS -->
+<div id="results">
   <div class="results-inner">
-
-    <div class="result-hero">
-      <div class="result-trophy" id="rTrophy"></div>
-      <h1 class="result-title" id="rTitle"></h1>
-      <p class="result-subtitle" id="rSubtitle"></p>
-      <div class="result-score-ring">
-        <div class="score-pct" id="rPct"></div>
-        <div class="score-lbl">Σκορ</div>
+    <div class="res-hero">
+      <div class="res-emoji" id="rEmoji"></div>
+      <div class="res-title" id="rTitle"></div>
+      <div class="res-sub" id="rSub"></div>
+      <div class="res-ring">
+        <div class="res-pct" id="rPct"></div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:2px;">Σκορ</div>
       </div>
-      <p style="font-size:15px; color:var(--gray);" id="rRaw"></p>
+      <div class="res-raw" id="rRaw"></div>
     </div>
-
     <div class="breakdown">
-      <div class="breakdown-title">Αποτέλεσμα ανά επίπεδο</div>
-      <div class="breakdown-item">
+      <div class="bd-title">Αποτέλεσμα ανά επίπεδο</div>
+      <div class="bd-item">
         <div class="bd-icon">📚</div>
-        <div class="bd-label">Basic</div>
-        <div class="bd-bar-wrap"><div class="bd-bar-bg"><div class="bd-bar-fill" id="barBasic" style="width:0%; background:var(--blue)"></div></div></div>
-        <div class="bd-score" id="scoreBasic" style="color:var(--blue)">—</div>
+        <div class="bd-lbl">Basic</div>
+        <div class="bd-bar-wrap"><div class="bd-bg"><div class="bd-fill" id="barBasic" style="width:0%;background:#0a84ff"></div></div></div>
+        <div class="bd-score" id="scBasic" style="color:#0a84ff">—</div>
       </div>
-      <div class="breakdown-item">
+      <div class="bd-item">
         <div class="bd-icon">⚡</div>
-        <div class="bd-label">Advanced</div>
-        <div class="bd-bar-wrap"><div class="bd-bar-bg"><div class="bd-bar-fill" id="barAdvanced" style="width:0%; background:var(--gold)"></div></div></div>
-        <div class="bd-score" id="scoreAdvanced" style="color:var(--gold)">—</div>
+        <div class="bd-lbl">Advanced</div>
+        <div class="bd-bar-wrap"><div class="bd-bg"><div class="bd-fill" id="barAdv" style="width:0%;background:#ffd60a"></div></div></div>
+        <div class="bd-score" id="scAdv" style="color:#ffd60a">—</div>
       </div>
-      <div class="breakdown-item">
+      <div class="bd-item">
         <div class="bd-icon">💎</div>
-        <div class="bd-label">Expert</div>
-        <div class="bd-bar-wrap"><div class="bd-bar-bg"><div class="bd-bar-fill" id="barExpert" style="width:0%; background:var(--purple)"></div></div></div>
-        <div class="bd-score" id="scoreExpert" style="color:var(--purple)">—</div>
+        <div class="bd-lbl">Expert</div>
+        <div class="bd-bar-wrap"><div class="bd-bg"><div class="bd-fill" id="barExp" style="width:0%;background:#bf5af2"></div></div></div>
+        <div class="bd-score" id="scExp" style="color:#bf5af2">—</div>
       </div>
     </div>
-
-    <div class="review-section">
-      <div class="review-title">Επισκόπηση απαντήσεων</div>
-      <div id="reviewList"></div>
+    <div class="review">
+      <div class="rev-title">Επισκόπηση</div>
+      <div id="revList"></div>
     </div>
-
-    <div class="result-actions">
-      <button class="btn-retry" onclick="retryExam()">🔄 Ξανά</button>
-      <a class="btn-home" href="index.html">← Αρχική</a>
+    <div class="res-actions">
+      <button id="retryBtn" onclick="retryExam()">🔄 Ξανά</button>
+      <a id="homeLink" href="index.html">← Αρχική</a>
     </div>
-
   </div>
 </div>
-
 
 <script>
-const QUESTIONS = [
-  // ─── BASIC (10) ───
-  {
-    level: 'basic', category: 'Γκάμα Mac',
-    q: 'Ποιο Mac είναι εντελώς αθόρυβο λόγω fanless design και ιδανικό για καθημερινή χρήση;',
-    opts: ['MacBook Pro 14" M5', 'Mac mini M4', 'MacBook Air M5', 'iMac M4'],
-    correct: 2,
-    explain: 'Τα MacBook Air (13" & 15") είναι fanless — εντελώς αθόρυβα. Το MacBook Pro, Mac mini και iMac έχουν ανεμιστήρα.'
-  },
-  {
-    level: 'basic', category: 'Γκάμα iPad',
-    q: 'Ποιο iPad ΔΕΝ υποστηρίζει Apple Pencil Pro;',
-    opts: ['iPad Air M4', 'iPad Pro M5', 'iPad mini 7η γενιά', 'iPad 11η γενιά (A16)'],
-    correct: 3,
-    explain: 'Το iPad 11ης γενιάς (A16) υποστηρίζει Apple Pencil USB-C και Pencil 1st gen — ΟΧΙ Pencil Pro. Τα iPad Air, Pro και mini 7 υποστηρίζουν Pencil Pro.'
-  },
-  {
-    level: 'basic', category: 'Αξεσουάρ',
-    q: 'Ένας πελάτης αγοράζει iPad Air M4. Ποιο keyboard του προτείνεις;',
-    opts: ['Magic Keyboard for iPad Pro', 'Magic Keyboard Folio', 'Magic Keyboard for iPad Air', 'Smart Keyboard'],
-    correct: 2,
-    explain: 'Το Magic Keyboard for iPad Air είναι σχεδιασμένο ειδικά για το iPad Air M4 (11" & 13"). Δεν είναι συμβατό με άλλα μοντέλα.'
-  },
-  {
-    level: 'basic', category: 'Σενάρια Πελατών',
-    q: 'Γονέας θέλει κάτι απλό για το σπίτι — εργασίες παιδιών και Netflix. Τι προτείνεις;',
-    opts: ['MacBook Pro 14"', 'iMac M4', 'Mac Studio', 'MacBook Air 15"'],
-    correct: 1,
-    explain: 'Το iMac M4 είναι all-in-one με 24" οθόνη, 7 χρώματα, και περιλαμβάνει keyboard & mouse. Ιδανικό για οικογένεια — απλό setup, χωρίς καλώδια.'
-  },
-  {
-    level: 'basic', category: 'Τεχνικές Πωλήσεων',
-    q: 'Πελάτης λέει «Θα το σκεφτώ». Ποια είναι η σωστή αντίδραση;',
-    opts: ['Να τον αφήσεις να φύγει ευγενικά', 'Να του προσφέρεις έκπτωση', 'Να ρωτήσεις τι ακριβώς τον κρατάει και να αντιμετωπίσεις το συγκεκριμένο ζήτημα', 'Να του πεις ότι η stock είναι περιορισμένη'],
-    correct: 2,
-    explain: 'Το «Θα το σκεφτώ» κρύβει μια συγκεκριμένη αντίρρηση. Η σωστή κίνηση είναι να τη βρεις και να την αντιμετωπίσεις — όχι να αφήσεις τον πελάτη να φύγει χωρίς απάντηση.'
-  },
-  {
-    level: 'basic', category: 'Γκάμα Mac',
-    q: 'Τι chip έχει το MacBook Neo;',
-    opts: ['M5', 'A16 Bionic', 'A18 Pro', 'M4'],
-    correct: 2,
-    explain: 'Το MacBook Neo τρέχει A18 Pro — το chip της σειράς iPhone 16 Pro, όχι M-series chip.'
-  },
-  {
-    level: 'basic', category: 'Setup & Λογισμικό',
-    q: 'Ποιος είναι ο καλύτερος τρόπος μεταφοράς δεδομένων από παλιό Mac σε νέο;',
-    opts: ['Χειροκίνητη αντιγραφή με USB', 'AirDrop αρχείο-αρχείο', 'Migration Assistant μέσω Wi-Fi ή Thunderbolt cable', 'iCloud backup & restore'],
-    correct: 2,
-    explain: 'Το Migration Assistant μεταφέρει εφαρμογές, αρχεία, ρυθμίσεις και λογαριασμούς σε ένα βήμα. Με Thunderbolt cable είναι ~10× πιο γρήγορο από Wi-Fi.'
-  },
-  {
-    level: 'basic', category: 'Continuity',
-    q: 'Τι κάνει το Sidecar;',
-    opts: ['Μεταφέρει αρχεία από Mac σε iPad', 'Χρησιμοποιεί το iPad ως δεύτερη οθόνη του Mac ασύρματα', 'Συγχρονίζει επαφές μεταξύ συσκευών', 'Ελέγχει το iPhone από Mac'],
-    correct: 1,
-    explain: 'Το Sidecar μετατρέπει το iPad σε δεύτερη οθόνη για το Mac — ασύρματα, με υποστήριξη Apple Pencil. Δωρεάν, ενσωματωμένο.'
-  },
-  {
-    level: 'basic', category: 'Γκάμα iPad',
-    q: 'Ποιο iPad έχει οθόνη Tandem OLED και Face ID;',
-    opts: ['iPad Air M4', 'iPad mini 7η γενιά', 'iPad Pro M5', 'iPad 11η γενιά'],
-    correct: 2,
-    explain: 'Μόνο το iPad Pro M5 έχει Tandem OLED (Ultra Retina XDR) και Face ID. Όλα τα άλλα iPad έχουν Liquid Retina και Touch ID.'
-  },
-  {
-    level: 'basic', category: 'Τεχνικές Πωλήσεων',
-    q: 'Γιατί πρέπει να προτείνεις upgrade RAM τώρα και όχι αργότερα;',
-    opts: ['Γιατί κοστίζει λιγότερο τώρα', 'Γιατί η RAM στα Mac ενσωματώνεται στο chip και δεν μπορεί να αναβαθμιστεί αργότερα', 'Γιατί η βασική RAM είναι αργή', 'Γιατί βελτιώνει την μπαταρία'],
-    correct: 1,
-    explain: 'Στα Mac με Apple Silicon, η RAM είναι Unified Memory — ενσωματωμένη στο chip. Μόλις αγοραστεί, δεν μπορεί να αλλάξει.'
-  },
+var QUESTIONS = [
+  // BASIC
+  {level:"basic",cat:"Γκάμα Mac",
+   q:"Ποιο Mac είναι εντελώς αθόρυβο λόγω fanless design;",
+   opts:["MacBook Pro 14\" M5","Mac mini M4","MacBook Air M5","iMac M4"],
+   correct:2,
+   ex:"Τα MacBook Air (13\" & 15\") είναι fanless. Ποτέ δεν ακούγεται ανεμιστήρας."},
+  {level:"basic",cat:"Γκάμα iPad",
+   q:"Ποιο iPad ΔΕΝ υποστηρίζει Apple Pencil Pro;",
+   opts:["iPad Air M4","iPad Pro M5","iPad mini 7η γενιά","iPad 11η γενιά (A16)"],
+   correct:3,
+   ex:"Το iPad A16 υποστηρίζει Pencil USB-C και Pencil 1st gen. Δεν υποστηρίζει Pencil Pro."},
+  {level:"basic",cat:"Αξεσουάρ",
+   q:"Ένας πελάτης αγοράζει iPad Air M4. Ποιο keyboard του προτείνεις;",
+   opts:["Magic Keyboard for iPad Pro","Magic Keyboard Folio","Smart Keyboard","Magic Keyboard for iPad Air"],
+   correct:3,
+   ex:"Το Magic Keyboard for iPad Air είναι σχεδιασμένο ειδικά για iPad Air M4."},
+  {level:"basic",cat:"Σενάρια",
+   q:"Γονέας θέλει απλό all-in-one για σπίτι. Τι προτείνεις;",
+   opts:["MacBook Pro 14\"","Mac Studio M4 Max","iMac M4","MacBook Air 15\""],
+   correct:2,
+   ex:"iMac M4: 24\" 4.5K, all-in-one, 7 χρώματα, περιλαμβάνει keyboard και mouse."},
+  {level:"basic",cat:"Τεχνικές",
+   q:"Πελάτης λέει «Θα το σκεφτώ». Τι κάνεις;",
+   opts:["Τον αφήνεις να φύγει","Προσφέρεις έκπτωση","Ρωτάς τι ακριβώς τον κρατάει","Του λες ότι το stock τελειώνει"],
+   correct:2,
+   ex:"Το «Θα το σκεφτώ» κρύβει συγκεκριμένη αντίρρηση. Βρες τη και αντιμετώπισέ την."},
+  {level:"basic",cat:"Γκάμα Mac",
+   q:"Τι chip έχει το MacBook Neo;",
+   opts:["M5","A16 Bionic","M4","A18 Pro"],
+   correct:3,
+   ex:"Το MacBook Neo τρέχει A18 Pro — chip της σειράς iPhone 16 Pro."},
+  {level:"basic",cat:"Setup",
+   q:"Ποιος είναι ο καλύτερος τρόπος μεταφοράς δεδομένων από παλιό Mac σε νέο;",
+   opts:["USB stick χειροκίνητα","AirDrop αρχείο-αρχείο","Migration Assistant","iCloud backup"],
+   correct:2,
+   ex:"Migration Assistant μεταφέρει apps, αρχεία, ρυθμίσεις σε ένα βήμα."},
+  {level:"basic",cat:"Continuity",
+   q:"Τι κάνει το Sidecar;",
+   opts:["Μεταφέρει αρχεία","iPad ως δεύτερη οθόνη Mac ασύρματα","Συγχρονίζει επαφές","Ελέγχει iPhone από Mac"],
+   correct:1,
+   ex:"Sidecar: iPad ως second screen για Mac ασύρματα, με Apple Pencil support."},
+  {level:"basic",cat:"Γκάμα iPad",
+   q:"Ποιο iPad έχει Tandem OLED και Face ID;",
+   opts:["iPad Air M4","iPad mini 7η γενιά","iPad 11η γενιά","iPad Pro M5"],
+   correct:3,
+   ex:"Μόνο το iPad Pro M5 έχει Tandem OLED (Ultra Retina XDR) και Face ID."},
+  {level:"basic",cat:"Τεχνικές",
+   q:"Γιατί να προτείνεις upgrade RAM τώρα και όχι αργότερα;",
+   opts:["Κοστίζει λιγότερο τώρα","Η RAM είναι μέσα στο chip και δεν αναβαθμίζεται αργότερα","Η βασική RAM είναι αργή","Βελτιώνει τη μπαταρία"],
+   correct:1,
+   ex:"Unified Memory είναι ενσωματωμένη στο chip. Μόλις αγοραστεί, δεν αλλάζει."},
 
-  // ─── ADVANCED (10) ───
-  {
-    level: 'advanced', category: 'Chip Architecture',
-    q: 'Ποια είναι η πιο σημαντική διαφορά μεταξύ M5 και M5 Pro σε real-world workloads;',
-    opts: ['Το M5 Pro έχει καλύτερη μπαταρία', 'Το M5 Pro έχει διπλάσιο memory bandwidth (307 vs 153 GB/s) — διατηρεί σταθερή απόδοση υπό παρατεταμένο φόρτο', 'Το M5 Pro υποστηρίζει περισσότερες εξωτερικές οθόνες', 'Το M5 Pro είναι fanless'],
-    correct: 1,
-    explain: 'Το διπλάσιο memory bandwidth (307 GB/s) σημαίνει ότι η CPU/GPU τροφοδοτείται με δεδομένα 2× πιο γρήγορα — ο M5 Pro διατηρεί σταθερή απόδοση υπό φόρτο, ενώ ο M5 μπορεί να τη μειώσει σε παρατεταμένη χρήση.'
-  },
-  {
-    level: 'advanced', category: 'Thunderbolt',
-    q: 'Πελάτης θέλει MacBook Air M5 και Studio Display XDR. Τι του εξηγείς;',
-    opts: ['Τέλεια συμβατότητα — δουλεύει με USB-C', 'Το Studio Display XDR απαιτεί Thunderbolt 5 για πλήρη λειτουργία. Το MacBook Air έχει TB4 — προτείνεις Studio Display (5K) ή MacBook Pro', 'Χρειάζεται adapter', 'Δεν υπάρχει πρόβλημα'],
-    correct: 1,
-    explain: 'Το Studio Display XDR σχεδιάστηκε για Thunderbolt 5 (MacBook Pro). Με TB4 (MacBook Air) συνδέεται αλλά δεν αξιοποιεί πλήρως τη σύνδεση. Το Studio Display (5K) είναι η σωστή επιλογή για Air.'
-  },
-  {
-    level: 'advanced', category: 'ProRes & Media Engine',
-    q: 'Τι κάνει ο M5 Max που δεν κάνει ο M5 Pro σε video editing;',
-    opts: ['Υποστηρίζει 8K display', 'Έχει δύο ProRes encode engines — διπλάσια ταχύτητα export και simultaneous streams', 'Έχει καλύτερη κάμερα', 'Υποστηρίζει περισσότερη SSD'],
-    correct: 1,
-    explain: 'Ο M5 Max έχει 2 ProRes encode engines αντί για 1 του M5 Pro. Αυτό σημαίνει ταυτόχρονο encode δύο streams και ~4× γρηγορότερο export σε ProRes workflows.'
-  },
-  {
-    level: 'advanced', category: 'Σενάρια B2B',
-    q: 'Αρχιτεκτονική εταιρία θέλει Mac αλλά χρησιμοποιεί Revit. Τι προτείνεις;',
-    opts: ['Δεν μπορούν να χρησιμοποιήσουν Mac — Revit δεν υπάρχει για macOS', 'MacBook Pro M5 Pro + Parallels Desktop — τρέχει Revit σε Windows VM με εξαιρετική απόδοση', 'iPad Pro — τρέχει Revit mobile', 'Mac mini με Boot Camp'],
-    correct: 1,
-    explain: 'Parallels Desktop σε M5 Pro τρέχει Windows με απόδοση που ξεπερνά πολλά native Windows laptops. Revit, AutoCAD, SolidWorks — όλα λειτουργούν μέσα στο VM.'
-  },
-  {
-    level: 'advanced', category: 'iPad Deep Dive',
-    q: 'Τι είναι το Barrel Roll του Apple Pencil Pro και γιατί αφορά illustrators;',
-    opts: ['Το gesture που αλλάζει εργαλείο με squeeze', 'Αναγνωρίζει τη στροφή του Pencil γύρω από τον άξονά του — οι βούρτσες αποκρίνονται σαν πραγματικές', 'Η ανίχνευση hover 12mm πριν αγγίξει', 'Το magnetic attachment στο iPad'],
-    correct: 1,
-    explain: 'Barrel Roll ανιχνεύει τον άξονα περιστροφής του Pencil — αν στρέψεις το Pencil, η ψηφιακή βούρτσα αλλάζει γωνία. Κάνει το ψηφιακό σχέδιο πιο φυσικό.'
-  },
-  {
-    level: 'advanced', category: 'Τεχνικές Πωλήσεων',
-    q: 'Ποια τεχνική χρησιμοποιείς για να κάνεις τη μεσαία επιλογή να φαίνεται λογική;',
-    opts: ['Solution selling', 'Τεχνική αντίθεσης — παρουσιάζεις πρώτα την ακριβότερη επιλογή', 'Ecosystem bridge', 'Cost-per-day reframe'],
-    correct: 1,
-    explain: 'Τεχνική αντίθεσης: παρουσιάζεις πρώτα το premium (π.χ. MacBook Pro 16" M5 Max), μετά προτείνεις την «ιδανική» μεσαία (14" M5 Pro) — φαίνεται λογική και οικονομική.'
-  },
-  {
-    level: 'advanced', category: 'Ecosystem',
-    q: 'Ποιο Continuity feature επιτρέπει να ελέγχεις Mac και iPad με το ίδιο keyboard ταυτόχρονα;',
-    opts: ['Sidecar', 'Handoff', 'Universal Control', 'AirPlay'],
-    correct: 2,
-    explain: 'Universal Control: μετακινείς τον cursor στην άκρη της Mac οθόνης και «περνάς» στο iPad. Drag & drop αρχεία μεταξύ τους, ένα keyboard/mouse για δύο συσκευές.'
-  },
-  {
-    level: 'advanced', category: 'Σενάρια',
-    q: 'Video editor δεν μεταφέρει ποτέ τον υπολογιστή και κάνει heavy 3D rendering. Σκέφτεται MacBook Pro 16" M5 Max. Τι εξετάζεις;',
-    opts: ['Πουλάς αμέσως — αυτό ζήτησε', 'Mac Studio M4 Max — για fixed setup δίνει περισσότερα ports, εξωτερικές οθόνες και καλύτερη αξία', 'iMac — έχει ωραία οθόνη', 'MacBook Pro 14" — πιο φορητό'],
-    correct: 1,
-    explain: 'Αν δεν ταξιδεύει, ένα desktop setup (Mac Studio) μπορεί να δίνει καλύτερη αξία με περισσότερα ports, δυνατότητα σύνδεσης πολλών οθονών και χαμηλότερη τιμή για ίδια απόδοση.'
-  },
-  {
-    level: 'advanced', category: 'iCloud',
-    q: 'Οικογένεια 5 ατόμων όλοι με iPhone και iPad. Ποιο iCloud πλάνο προτείνεις;',
-    opts: ['50GB για τον καθένα ξεχωριστά', 'iCloud+ 2TB με Family Sharing — μοιράζεται μεταξύ 5 ατόμων και συμπεριλαμβάνει Private Relay', 'Δωρεάν 5GB — αρκεί', '200GB για τον αρχηγό της οικογένειας'],
-    correct: 1,
-    explain: 'Το iCloud+ 2TB με Family Sharing μοιράζεται μεταξύ 6 μελών, κοστίζει €9,99/μήνα και περιλαμβάνει Private Relay, Hide My Email και Advanced Data Protection.'
-  },
-  {
-    level: 'advanced', category: 'Objection Handling',
-    q: 'Πελάτης λέει «τα άλλα laptops είναι φθηνότερα». Ποιο advanced argument χρησιμοποιείς;',
-    opts: ['«Ναι αλλά η Apple έχει καλύτερο design»', 'Συνολικό κόστος ιδιοκτησίας: Mac αντικαθίσταται κάθε 5-6 χρόνια, υψηλή αξία μεταπώλησης, ελάχιστο IT overhead', '«Δεν είναι τόσο ακριβό»', '«Περίμενε για offer»'],
-    correct: 1,
-    explain: 'Total Cost of Ownership: Mac διαρκεί 5-6 χρόνια (vs 3-4 Windows), υψηλή αξία μεταπώλησης, ελάχιστο IT support. Η σύγκριση στα 5 χρόνια συχνά αναστρέφει το αποτέλεσμα.'
-  },
+  // ADVANCED
+  {level:"advanced",cat:"Chip Architecture",
+   q:"Ποια είναι η κυριότερη διαφορά M5 vs M5 Pro σε sustained workloads;",
+   opts:["Ο M5 Pro έχει καλύτερη μπαταρία","Ο M5 Pro έχει διπλάσιο memory bandwidth (307 vs 153 GB/s) — διατηρεί σταθερή απόδοση υπό φόρτο","Ο M5 Pro υποστηρίζει περισσότερες εξωτερικές οθόνες","Ο M5 Pro είναι fanless"],
+   correct:1,
+   ex:"307 GB/s bandwidth: η CPU/GPU τροφοδοτείται 2x πιο γρήγορα — δεν μειώνεται απόδοση υπό παρατεταμένο φόρτο."},
+  {level:"advanced",cat:"Thunderbolt",
+   q:"Πελάτης με MacBook Air M5 θέλει Studio Display XDR. Τι του λες;",
+   opts:["Τέλεια συμβατότητα","Το XDR θέλει Thunderbolt 5 — ο Air έχει TB4. Το Studio Display (5K) είναι η σωστή επιλογή για Air.","Χρειάζεται adapter","Κανένα πρόβλημα"],
+   correct:1,
+   ex:"Studio Display XDR απαιτεί TB5 (MacBook Pro). Με TB4 (Air) το Studio Display 5K είναι η σωστή επιλογή."},
+  {level:"advanced",cat:"ProRes",
+   q:"Τι κάνει ο M5 Max που δεν κάνει ο M5 Pro για video editing;",
+   opts:["Υποστηρίζει 8K display","Έχει 2 ProRes encode engines — διπλάσια ταχύτητα export","Έχει καλύτερη κάμερα","Υποστηρίζει περισσότερη SSD"],
+   correct:1,
+   ex:"M5 Max: 2 ProRes encode engines αντί για 1. 1 ώρα ProRes footage: ~8 λεπτά αντί ~35."},
+  {level:"advanced",cat:"Σενάρια B2B",
+   q:"Αρχιτέκτονας χρειάζεται Revit. Τι προτείνεις;",
+   opts:["iPad Pro M5","Δεν μπορεί να χρησιμοποιήσει Mac","MacBook Pro M5 Pro + Parallels Desktop","Mac mini M4 Pro"],
+   correct:2,
+   ex:"Revit δεν υπάρχει native για macOS. Parallels σε M5 Pro τρέχει Windows VM με εξαιρετική απόδοση."},
+  {level:"advanced",cat:"iPad",
+   q:"Τι είναι το Barrel Roll του Apple Pencil Pro;",
+   opts:["Το gesture αλλαγής εργαλείου με squeeze","Αναγνωρίζει τη στροφή του Pencil — η βούρτσα αποκρίνεται σαν πραγματικό πινέλο","Hover detection 12mm πριν αγγίξει","Magnetic attachment"],
+   correct:1,
+   ex:"Barrel Roll: η ψηφιακή βούρτσα ακολουθεί τη στροφή του Pencil. Το πιο «φυσικό» feature για illustrators."},
+  {level:"advanced",cat:"Τεχνικές",
+   q:"Ποια τεχνική κάνει τη μεσαία επιλογή να φαίνεται λογική;",
+   opts:["Solution selling","Τεχνική αντίθεσης — παρουσιάζεις πρώτα την ακριβότερη","Ecosystem bridge","Cost-per-day reframe"],
+   correct:1,
+   ex:"Τεχνική αντίθεσης: δείχνεις πρώτα το premium μοντέλο, μετά η μεσαία επιλογή φαίνεται λογική και οικονομική."},
+  {level:"advanced",cat:"Ecosystem",
+   q:"Ποιο Continuity feature ελέγχει Mac και iPad με το ίδιο keyboard ταυτόχρονα;",
+   opts:["Sidecar","Handoff","Universal Control","AirPlay"],
+   correct:2,
+   ex:"Universal Control: cursor περνάει από Mac σε iPad. Drag & drop μεταξύ τους. Ένα keyboard/mouse για δύο συσκευές."},
+  {level:"advanced",cat:"Σενάρια",
+   q:"Video editor με fixed setup, δεν ταξιδεύει, heavy 3D. Σκέφτεται MacBook Pro 16\" M5 Max. Τι εξετάζεις;",
+   opts:["Πουλάς αμέσως — αυτό ζήτησε","Mac Studio M4 Max — για fixed setup: περισσότερα ports, 4 οθόνες, καλύτερη αξία","iMac — all-in-one","MacBook Pro 14\" — πιο φορητό"],
+   correct:1,
+   ex:"Αν δεν ταξιδεύει, Mac Studio δίνει καλύτερη αξία για fixed setup — δεν πληρώνει premium φορητότητας."},
+  {level:"advanced",cat:"iCloud",
+   q:"Οικογένεια 5 ατόμων, όλοι με iPhone/iPad. Ποιο iCloud πλάνο;",
+   opts:["50GB ο καθένας ξεχωριστά","iCloud+ 2TB με Family Sharing — κοινό storage για 6 άτομα","Δωρεάν 5GB — αρκεί","200GB για τον αρχηγό"],
+   correct:1,
+   ex:"iCloud+ 2TB Family Sharing: κοινό storage μεταξύ 6 μελών, Private Relay, Hide My Email."},
+  {level:"advanced",cat:"Objections",
+   q:"Πελάτης: «τα άλλα laptops είναι φθηνότερα». Ποιο argument;",
+   opts:["«Ναι αλλά το design είναι καλύτερο»","Συνολικό κόστος ιδιοκτησίας: Mac 5-6 χρόνια vs 3-4 Windows, υψηλή αξία μεταπώλησης","«Δεν είναι τόσο ακριβό»","«Περίμενε για offer»"],
+   correct:1,
+   ex:"Συνολικό κόστος ιδιοκτησίας σε 5 χρόνια συχνά αναστρέφει τη σύγκριση υπέρ Mac."},
 
-  // ─── EXPERT (10) ───
-  {
-    level: 'expert', category: 'Chip Real-World',
-    q: 'Πελάτης κάνει 2 ώρες ProRes 4K export καθημερινά. Με M5 Max, πόσο χρόνο κερδίζει;',
-    opts: ['~10 λεπτά', '~30 λεπτά', 'Πάνω από 1 ώρα — export που παίρνει 35 λεπτά με M5 γίνεται ~8 λεπτά με M5 Max', 'Καμία διαφορά στην πράξη'],
-    correct: 2,
-    explain: '2 ώρες footage σε M5: ~35 λεπτά export. Με M5 Max (2 ProRes engines): ~8 λεπτά. Καθημερινή διαφορά ~27 λεπτά = 160+ ώρες τον χρόνο. Αυτό είναι το πραγματικό ROI.'
-  },
-  {
-    level: 'expert', category: 'Feature → Need',
-    q: 'Πελάτης λέει «κάνω πολύ video editing και μερικές φορές το laptop ζεσταίνεται». Ποιο feature και ποιο μοντέλο συνδέεις;',
-    opts: ['MacBook Air M5 — fanless, άρα πάντα αθόρυβο ακόμα και υπό φόρτο', 'MacBook Pro M5 (base) — active cooling διατηρεί σταθερή απόδοση υπό παρατεταμένο φόρτο, και η XDR οθόνη δείχνει ακριβή χρώματα', 'MacBook Air M5 15" — μεγαλύτερη οθόνη για editing', 'Mac mini M4 — desktop με περισσότερα ports'],
-    correct: 1,
-    explain: 'Το MacBook Air είναι fanless — σε παρατεταμένο φόρτο μπορεί να μειώσει απόδοση. Το MacBook Pro έχει active cooling που κρατάει σταθερή απόδοση. Η XDR οθόνη είναι επιπλέον feature match για video editing.'
-  },
-  {
-    level: 'expert', category: 'Upsell μέσω Features',
-    q: 'Πελάτης αγοράζει iPad Pro M5 και κοιτάει Pencil USB-C. Λέει «θέλω να ζωγραφίζω». Ποιο το σωστό upsell argument για Pencil Pro;',
-    opts: ['«Το Pencil Pro φορτίζει ασύρματα και έχει Find My»', '«Επειδή μου είπες ζωγραφική — το Pencil Pro έχει Barrel Roll: στρέφεις το Pencil και η βούρτσα στρέφει σαν πραγματικό πινέλο. Το USB-C δεν το έχει. Μπορώ να σου δείξω live;»', '«Το Pencil USB-C δεν είναι συμβατό με iPad Pro»', '«Το Pro είναι πάντα καλύτερο»'],
-    correct: 1,
-    explain: 'Το σωστό upsell συνδέει το feature (Barrel Roll) με αυτό που είπε ο πελάτης (ζωγραφική) — όχι γενικά πλεονεκτήματα. Και κλείνει με live demo.'
-  },
-  {
-    level: 'expert', category: 'Competitive Intelligence',
-    q: 'Γιατί το Apple Intelligence είναι ισχυρότερο selling point για B2B vs Google Gemini;',
-    opts: ['Είναι δωρεάν', 'On-device processing και Private Cloud Compute — εταιρικά δεδομένα δεν φεύγουν σε third-party servers. Κρίσιμο για GDPR.', 'Είναι πιο έξυπνο', 'Λειτουργεί offline'],
-    correct: 1,
-    explain: 'Private Cloud Compute: Apple χρησιμοποιεί isolated servers που ακόμα και η Apple δεν μπορεί να δει. Third-party auditable. Για εταιρίες με GDPR requirements, αυτό είναι dealmaker.'
-  },
-  {
-    level: 'expert', category: 'Advanced Scenarios',
-    q: 'Graphic designer δουλεύει Procreate και Lightroom, ταξιδεύει συχνά, έχει iPhone. Ποιο setup και γιατί;',
-    opts: ['MacBook Air M5 — fanless και ελαφρύ για ταξίδια', 'iPad Pro M5 13" + Apple Pencil Pro + Magic Keyboard — Tandem OLED για χρωματική ακρίβεια, Barrel Roll για φυσικό σχέδιο, και με iPhone: AirDrop + Sidecar built-in', 'MacBook Pro 14" M5 Pro — professional performance', 'iPad Air M4 — καλή ισορροπία τιμής/απόδοσης'],
-    correct: 1,
-    explain: 'Κάθε feature match με αυτά που είπε: Tandem OLED → χρωματική ακρίβεια για designers, Pencil Pro Barrel Roll → φυσικό σχέδιο, iPhone ecosystem → AirDrop instant transfer και Sidecar ως second screen.'
-  },
-  {
-    level: 'expert', category: 'B2B & Enterprise',
-    q: 'Εταιρία 25 ατόμων χρησιμοποιεί Microsoft Intune για MDM. Θέλουν να αγοράσουν Mac. Ποιο Apple εργαλείο αναφέρεις;',
-    opts: ['Apple Business Essentials — περιλαμβάνει MDM και iCloud storage', 'Apple Business Manager — ενσωματώνεται με Microsoft Intune για zero-touch deployment. Τα Mac μπαίνουν αυτόματα στο Intune MDM χωρίς να τα αγγίξει κανείς.', 'Jamf Pro — το καλύτερο MDM για Mac fleet', 'Finder Network — για file sharing μεταξύ Mac'],
-    correct: 1,
-    explain: 'Apple Business Manager ενσωματώνεται με Microsoft Intune — τα Mac enrollάρουν αυτόματα στο υπάρχον MDM της εταιρίας. Zero-touch deployment: η συσκευή φτάνει έτοιμη, ο IT δεν χρειάζεται να τη ρυθμίσει χειροκίνητα.'
-  },
-  {
-    level: 'expert', category: 'Δύσκολα Σενάρια',
-    q: 'Πελάτης επιστρέφει iPad μετά 4 μέρες — «δεν με βολεύει». Η πρώτη σου κίνηση;',
-    opts: ['Επεξεργάζεσαι αμέσως την επιστροφή', 'Προτείνεις διαφορετικό μοντέλο', 'Ρωτάς «τι ακριβώς δεν λειτούργησε;» — συχνά είναι learning curve που λύνεται σε 15 λεπτά live demo', 'Τον παραπέμπεις στο Genius Bar'],
-    correct: 2,
-    explain: '70% των επιστροφών tablet κρύβουν learning curve, όχι πραγματική αντικατοποίηση. 15 λεπτά demo μπορεί να γυρίσει μια επιστροφή σε loyal πελάτη.'
-  },
-  {
-    level: 'expert', category: 'iPad Expert',
-    q: 'Αρχιτέκτονας θέλει iPad Pro για Revit on-site. Ποια η ειλικρινής απάντηση;',
-    opts: ['«Τρέχει Revit χωρίς πρόβλημα»', '«Χρησιμοποίησε Parallels»', 'Revit desktop δεν υπάρχει για iPad. Για on-site: AutoCAD mobile ή Morpholio Trace — αλλά για πλήρες Revit χρειάζεται Mac.', '«Θα τρέξει στο επόμενο update»'],
-    correct: 2,
-    explain: 'Η ειλικρίνεια χτίζει εμπιστοσύνη. Αν πουλήσεις iPad Pro για Revit και δεν δουλέψει, χάνεις τον πελάτη για πάντα. Η σωστή λύση είναι MacBook Pro + Parallels για το γραφείο, iPad Pro για on-site annotations.'
-  },
-  {
-    level: 'expert', category: 'Real-World Performance',
-    q: 'Photographer κάνει batch AI masking σε 500 φωτογραφίες κάθε εβδομάδα. Ποιο argument χρησιμοποιείς για M5 vs παλιό Intel Mac;',
-    opts: ['Ο M5 έχει καλύτερο display για color accurate editing', 'Lightroom AI masking με M5: κάτω από 1 δευτερόλεπτο ανά φωτογραφία. Με Intel i7: ~8 δευτερόλεπτα. Για 500 φωτογραφίες: M5 = 8 λεπτά, Intel = 66 λεπτά. Αυτή είναι η πραγματική διαφορά.', 'Ο M5 έχει Unified Memory που κάνει το Lightroom πιο ομαλό', 'Ο M5 έχει καλύτερη μπαταρία για μεγάλα sessions'],
-    correct: 1,
-    explain: 'Real-world numbers: M5 Neural Engine επεξεργάζεται AI tasks σε <1 δευτερόλεπτο vs ~8 δευτερόλεπτα στον Intel. Για 500 φωτογραφίες εβδομαδιαίως: 8 vs 66 λεπτά — αυτό είναι ~1 ώρα κάθε εβδομάδα που κερδίζεται.'
-  },
-  {
-    level: 'expert', category: 'Apple Intelligence',
-    q: 'Τι είναι το Private Cloud Compute και γιατί είναι σημαντικό;',
-    opts: ['Η Apple cloud storage υπηρεσία', 'Όταν το Apple Intelligence χρειάζεται server για σύνθετες ερωτήσεις, τα στέλνει σε ειδικά Apple servers που δεν αποθηκεύουν τα δεδομένα σου — ακόμα και η Apple δεν μπορεί να τα δει.', 'Το σύστημα κρυπτογράφησης της iCloud', 'Νέα λειτουργία cloud backup'],
-    correct: 1,
-    explain: 'Private Cloud Compute: αντί να στέλνει AI ερωτήματα στα server της Apple με πρόσβαση σε δεδομένα, χρησιμοποιεί isolated servers που δεν κρατούν τίποτα μετά την επεξεργασία. Για εταιρίες με GDPR υποχρεώσεις, αυτή η διαφορά από Google/Microsoft είναι κρίσιμη.
-  }
+  // EXPERT
+  {level:"expert",cat:"Real-World Performance",
+   q:"1 ώρα 4K ProRes footage. Πόσο παίρνει export με M5 Max vs M5;",
+   opts:["M5 Max ~8 λεπτά, M5 ~35 λεπτά — λόγω 2 ProRes encode engines","M5 Max ~20 λεπτά, M5 ~30 λεπτά","Καμία διαφορά — ίδιο chip generation","M5 Max ~15 λεπτά, M5 ~25 λεπτά"],
+   correct:0,
+   ex:"M5 Max: 2 ProRes encode engines vs 1 του M5. 1 ώρα ProRes: ~8' vs ~35'. 150+ ώρες κερδισμένες τον χρόνο."},
+  {level:"expert",cat:"Advanced Scenarios",
+   q:"Graphic designer: Procreate + Lightroom, ταξιδεύει, έχει iPhone. Ποιο setup;",
+   opts:["MacBook Pro 16\" M5 Max — μέγιστη GPU","iPad Pro 13\" M5 + Pencil Pro + Magic Keyboard — OLED, Barrel Roll, AirDrop με iPhone","MacBook Air M5 — ελαφρύ για ταξίδια","iPad Air M4 — καλύτερη τιμή-απόδοση"],
+   correct:1,
+   ex:"Feature match: OLED για χρωματική ακρίβεια, Barrel Roll για φυσικό σχέδιο, iPhone ecosystem: AirDrop + Sidecar."},
+  {level:"expert",cat:"Feature → Need",
+   q:"Πελάτης: «δουλεύω σε open space γραφείο, πολύ ήσυχο». Ποιο feature;",
+   opts:["Thunderbolt 4 — εξωτερική οθόνη","Fanless design MacBook Air — εντελώς αθόρυβο ακόμα και υπό φόρτο","18 ώρες μπαταρία","MagSafe για ασφαλή σύνδεση"],
+   correct:1,
+   ex:"Fanless = εντελώς αθόρυβο. Ποτέ δεν ακούγεται σε ήσυχο περιβάλλον, ανεξάρτητα από φόρτο."},
+  {level:"expert",cat:"Chip Differences",
+   q:"Developer: Xcode + Docker + iOS Simulator παράλληλα, laptop επιβραδύνεται. Ποιο chip;",
+   opts:["M5 — ισχυρός και fanless","M5 Pro — 307 GB/s bandwidth, 64GB RAM ceiling, active cooling για sustained performance","M5 Max — μέγιστη απόδοση","M4 Pro σε Mac mini — desktop απόδοση"],
+   correct:1,
+   ex:"M5 Pro: διπλάσιο bandwidth για παράλληλα environments, 64GB RAM για multiple VMs, active cooling."},
+  {level:"expert",cat:"iPad Expert",
+   q:"Ποιο iPad ΔΕΝ υποστηρίζει Apple Pencil Pro και τι υποστηρίζει;",
+   opts:["iPad mini 7 — χρησιμοποιεί 2nd gen λόγω μεγέθους","iPad Air M4 — μόνο σε 13\" έκδοση","iPad 11η γενιά (A16) — υποστηρίζει Pencil USB-C και Pencil 1st gen","iPad Pro M5 — μόνο το Pencil Pro"],
+   correct:2,
+   ex:"iPad A16: Pencil USB-C και Pencil 1st gen. ΔΕΝ υποστηρίζει Pencil Pro."},
+  {level:"expert",cat:"Mac vs Windows",
+   q:"Πελάτης: «Dell XPS 13 έχει ίδιες specs με MacBook Air, φθηνότερα». Ποιο argument;",
+   opts:["«Ναι αλλά macOS είναι καλύτερο λειτουργικό»","Real-world numbers: Lightroom AI masking M5 <1 δευτερόλεπτο vs ~8 στον Dell, μπαταρία 18h vs 6-8h, fanless","«Το Mac έχει καλύτερο design»","«Η αξία μεταπώλησης είναι καλύτερη»"],
+   correct:1,
+   ex:"Δείχνεις τους αριθμούς για τη συγκεκριμένη χρήση — ο πελάτης βγάζει μόνος του το συμπέρασμα."},
+  {level:"expert",cat:"B2B",
+   q:"Εταιρία 30 ατόμων με Microsoft Intune. Ποιο Apple εργαλείο αναφέρεις;",
+   opts:["Apple Business Essentials","Jamf Pro","Apple Business Manager — ενσωματώνεται με Intune για zero-touch deployment","Finder Network sharing"],
+   correct:2,
+   ex:"Apple Business Manager + Intune: τα Mac enrollάρουν αυτόματα στο MDM της εταιρίας χωρίς να τα αγγίξει κανείς."},
+  {level:"expert",cat:"Upsell",
+   q:"Πελάτης iPad Pro 11\" κοιτάει Pencil USB-C. «Θέλω να ζωγραφίζω». Πώς κάνεις upsell στο Pencil Pro;",
+   opts:["«Το Pro φορτίζει ασύρματα και έχει Find My»","«Επειδή μου είπες ζωγραφική — Barrel Roll: η βούρτσα στρέφει σαν πραγματικό πινέλο. Το USB-C δεν το έχει. Σου δείχνω live;»","«Το USB-C δεν είναι συμβατό με iPad Pro»","«Το Pro είναι πάντα καλύτερο»"],
+   correct:1,
+   ex:"Feature match: Barrel Roll (φυσικό σχέδιο) + connection με αυτό που είπε + live demo offer."},
+  {level:"expert",cat:"Android Switch",
+   q:"Πελάτης έχει iPhone + Android tablet. Ποιο το πιο ισχυρό argument για iPad;",
+   opts:["«iPadOS είναι πιο σταθερό»","«Καλύτερες apps για creative work»","Επειδή έχει iPhone: AirDrop, Universal Clipboard, Sidecar, Handoff — το Android tablet δεν κάνει τίποτα από αυτά με iPhone","«Το iPad έχει καλύτερο chip»"],
+   correct:2,
+   ex:"Το ecosystem είναι ήδη Apple. Android tablet δεν κάνει AirDrop με iPhone, δεν γίνεται second screen, δεν έχει Universal Clipboard."},
+  {level:"expert",cat:"Private Cloud",
+   q:"Τι είναι το Private Cloud Compute και γιατί αφορά εταιρίες;",
+   opts:["Η Apple cloud storage υπηρεσία","Όταν το Apple Intelligence χρειάζεται server, στέλνει σε isolated Apple servers που δεν αποθηκεύουν τα δεδομένα — ακόμα και η Apple δεν μπορεί να τα δει","Το σύστημα encryption της iCloud","Cloud backup για επιχειρήσεις"],
+   correct:1,
+   ex:"Private Cloud Compute: AI processing σε isolated servers, χωρίς αποθήκευση, third-party auditable. Κρίσιμο για GDPR."}
 ];
 
-// ─── STATE ───
-let questions = [];
-let current = 0;
-let answers = [];
-let timerInterval = null;
-let timeLeft = 25 * 60;
-let answered = false;
+var questions = [];
+var cur = 0;
+var answers = [];
+var timeLeft = 25 * 60;
+var timerID = null;
 
 function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
   }
   return a;
 }
 
 function startExam() {
   questions = shuffle(QUESTIONS);
-  answers = new Array(questions.length).fill(null);
-  current = 0;
+  answers = [];
+  cur = 0;
   timeLeft = 25 * 60;
-  answered = false;
-
-  document.getElementById('intro').classList.remove('active');
-  document.getElementById('quiz').classList.add('active');
-
-  renderQuestion();
+  document.getElementById('intro').style.display = 'none';
+  document.getElementById('quiz').classList.add('on');
+  renderQ();
   startTimer();
 }
 
 function startTimer() {
-  clearInterval(timerInterval);
-  timerInterval = setInterval(() => {
+  if (timerID) clearInterval(timerID);
+  timerID = setInterval(function() {
     timeLeft--;
     updateTimer();
     if (timeLeft <= 0) {
-      clearInterval(timerInterval);
+      clearInterval(timerID);
       showResults();
     }
   }, 1000);
 }
 
 function updateTimer() {
-  const m = Math.floor(timeLeft / 60);
-  const s = timeLeft % 60;
-  const el = document.getElementById('qTimer');
-  el.textContent = m + ':' + String(s).padStart(2, '0');
-  el.className = 'q-timer' + (timeLeft <= 60 ? ' danger' : timeLeft <= 180 ? ' warn' : '');
+  var m = Math.floor(timeLeft / 60);
+  var s = timeLeft % 60;
+  var el = document.getElementById('qTimer');
+  el.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+  el.className = 'qbar-timer' + (timeLeft <= 60 ? ' danger' : timeLeft <= 180 ? ' warn' : '');
 }
 
-function renderQuestion() {
-  const q = questions[current];
-  answered = false;
+function renderQ() {
+  var q = questions[cur];
+  var n = questions.length;
 
-  // Progress
-  document.getElementById('qCounter').textContent = (current + 1) + ' / ' + questions.length;
-  document.getElementById('qProgress').style.width = ((current / questions.length) * 100) + '%';
+  document.getElementById('qCounter').textContent = (cur + 1) + ' / ' + n;
+  document.getElementById('qProg').style.width = Math.round((cur / n) * 100) + '%';
 
-  // Level badge
-  const badge = document.getElementById('qBadge');
+  var badge = document.getElementById('qBadge');
   badge.textContent = q.level.charAt(0).toUpperCase() + q.level.slice(1);
-  badge.className = 'q-level-badge badge-' + q.level;
+  badge.className = 'qbar-badge b-' + q.level;
 
-  // Question
-  document.getElementById('qCategory').textContent = q.category;
+  document.getElementById('qCat').textContent = q.cat;
   document.getElementById('qText').textContent = q.q;
 
-  // Options
-  const optsEl = document.getElementById('qOptions');
+  var optsEl = document.getElementById('qOpts');
   optsEl.innerHTML = '';
-  const letters = ['Α', 'Β', 'Γ', 'Δ'];
-  q.opts.forEach((opt, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'option';
-    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
-    btn.onclick = () => selectAnswer(i);
+  var letters = ['Α','Β','Γ','Δ'];
+  for (var i = 0; i < q.opts.length; i++) {
+    var btn = document.createElement('button');
+    btn.className = 'qopt';
+    btn.setAttribute('data-idx', i);
+    btn.innerHTML = '<span class="oletter">' + letters[i] + '</span><span>' + q.opts[i] + '</span>';
+    btn.onclick = (function(idx) { return function() { selectAnswer(idx); }; })(i);
     optsEl.appendChild(btn);
-  });
+  }
 
-  // Reset feedback & next
-  const fb = document.getElementById('qFeedback');
-  fb.className = 'q-feedback';
+  var fb = document.getElementById('qFb');
+  fb.className = 'qfeedback';
   fb.textContent = '';
-  document.getElementById('qNext').className = 'q-next-btn';
+
+  var nxt = document.getElementById('nextBtn');
+  nxt.className = 'q-next-btn';
+  nxt.textContent = (cur < n - 1) ? 'Επόμενη →' : 'Αποτελέσματα →';
 
   window.scrollTo(0, 0);
 }
 
 function selectAnswer(idx) {
-  if (answered) return;
-  answered = true;
+  var q = questions[cur];
+  answers[cur] = idx;
+  var correct = (idx === q.correct);
 
-  const q = questions[current];
-  answers[current] = idx;
-  const isCorrect = idx === q.correct;
+  var btns = document.getElementById('qOpts').querySelectorAll('.qopt');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.add('off');
+    if (parseInt(btns[i].getAttribute('data-idx')) === q.correct) {
+      btns[i].classList.remove('off');
+      btns[i].classList.add('correct');
+    }
+  }
+  if (!correct) {
+    btns[idx].classList.remove('off');
+    btns[idx].classList.add('wrong');
+  }
 
-  // Style options
-  const opts = document.querySelectorAll('.option');
-  opts.forEach((opt, i) => {
-    opt.classList.add('disabled');
-    if (i === q.correct) opt.classList.add('correct');
-    else if (i === idx && !isCorrect) opt.classList.add('wrong');
-  });
+  var fb = document.getElementById('qFb');
+  fb.className = 'qfeedback on ' + (correct ? 'c' : 'w');
+  fb.textContent = (correct ? '✅ Σωστά. — ' : '❌ Λάθος. — ') + q.ex;
 
-  // Feedback
-  const fb = document.getElementById('qFeedback');
-  fb.className = 'q-feedback show ' + (isCorrect ? 'correct' : 'wrong');
-  fb.textContent = (isCorrect ? '✅ Σωστά! — ' : '❌ Λάθος. — ') + q.explain;
-
-  // Next button
-  const nextBtn = document.getElementById('qNext');
-  nextBtn.className = 'q-next-btn show';
-  nextBtn.textContent = current < questions.length - 1 ? 'Επόμενη →' : 'Αποτελέσματα →';
+  document.getElementById('nextBtn').className = 'q-next-btn on';
 }
 
-function nextQuestion() {
-  if (current < questions.length - 1) {
-    current++;
-    renderQuestion();
+function nextQ() {
+  if (cur < questions.length - 1) {
+    cur++;
+    renderQ();
   } else {
-    clearInterval(timerInterval);
+    clearInterval(timerID);
     showResults();
   }
 }
 
 function showResults() {
-  document.getElementById('quiz').classList.remove('active');
-  document.getElementById('results').classList.add('active');
+  document.getElementById('quiz').classList.remove('on');
+  document.getElementById('results').classList.add('on');
 
-  // Calculate scores
-  const byLevel = { basic: { correct: 0, total: 0 }, advanced: { correct: 0, total: 0 }, expert: { correct: 0, total: 0 } };
-  questions.forEach((q, i) => {
-    byLevel[q.level].total++;
-    if (answers[i] === q.correct) byLevel[q.level].correct++;
-  });
+  var byLevel = {basic:{c:0,t:0}, advanced:{c:0,t:0}, expert:{c:0,t:0}};
+  for (var i = 0; i < questions.length; i++) {
+    var lv = questions[i].level;
+    byLevel[lv].t++;
+    if (answers[i] === questions[i].correct) byLevel[lv].c++;
+  }
+  var total = questions.length;
+  var correct = byLevel.basic.c + byLevel.advanced.c + byLevel.expert.c;
+  var pct = Math.round((correct / total) * 100);
 
-  const total = questions.length;
-  const correct = Object.values(byLevel).reduce((s, l) => s + l.correct, 0);
-  const pct = Math.round((correct / total) * 100);
+  var emoji, title, sub;
+  if (pct >= 90)      { emoji = '💎'; title = 'Εξαιρετικό!';     sub = 'Expert επίπεδο. Είσαι έτοιμος.'; }
+  else if (pct >= 80) { emoji = '🏆'; title = 'Πολύ καλά!';      sub = 'Ισχυρές γνώσεις σε όλα τα επίπεδα.'; }
+  else if (pct >= 70) { emoji = '⭐'; title = 'Πέρασες!';         sub = 'Επανέλαβε τις ερωτήσεις που έχασες.'; }
+  else if (pct >= 50) { emoji = '📚'; title = 'Χρειάζεται δουλειά.'; sub = 'Ξαναδές τις ενότητες.'; }
+  else                { emoji = '🔄'; title = 'Συνέχισε.';        sub = 'Ξεκίνα από τη βασική εκπαίδευση.'; }
 
-  // Hero
-  let trophy, title, subtitle;
-  if (pct >= 90) { trophy = '💎'; title = 'Εξαιρετικό!'; subtitle = 'Expert επίπεδο. Είσαι έτοιμος να εκπαιδεύσεις τους άλλους.'; }
-  else if (pct >= 80) { trophy = '🏆'; title = 'Εξαιρετικά καλά!'; subtitle = 'Ισχυρές γνώσεις σε όλα τα επίπεδα.'; }
-  else if (pct >= 70) { trophy = '⭐'; title = 'Πέρασες!'; subtitle = 'Καλή βάση — επανέλαβε τις ερωτήσεις που έχασες.'; }
-  else if (pct >= 50) { trophy = '📚'; title = 'Χρειάζεται δουλειά.'; subtitle = 'Επανέλαβε τις ενότητες και δοκίμασε ξανά.'; }
-  else { trophy = '🔄'; title = 'Συνέχισε.'; subtitle = 'Ξεκίνα από τη βασική εκπαίδευση και ανέβα σταδιακά.'; }
-
-  document.getElementById('rTrophy').textContent = trophy;
+  document.getElementById('rEmoji').textContent = emoji;
   document.getElementById('rTitle').textContent = title;
-  document.getElementById('rSubtitle').textContent = subtitle;
+  document.getElementById('rSub').textContent = sub;
   document.getElementById('rPct').textContent = pct + '%';
   document.getElementById('rRaw').textContent = correct + ' σωστές από ' + total;
 
-  // Breakdown bars (animate after short delay)
-  setTimeout(() => {
-    ['basic', 'advanced', 'expert'].forEach(lvl => {
-      const d = byLevel[lvl];
-      const p = d.total ? Math.round((d.correct / d.total) * 100) : 0;
-      document.getElementById('bar' + lvl.charAt(0).toUpperCase() + lvl.slice(1)).style.width = p + '%';
-      document.getElementById('score' + lvl.charAt(0).toUpperCase() + lvl.slice(1)).textContent = d.correct + '/' + d.total;
-    });
+  setTimeout(function() {
+    var levels = [{key:'basic',bar:'barBasic',sc:'scBasic'},{key:'advanced',bar:'barAdv',sc:'scAdv'},{key:'expert',bar:'barExp',sc:'scExp'}];
+    for (var i = 0; i < levels.length; i++) {
+      var lv = levels[i];
+      var d = byLevel[lv.key];
+      var p = d.t ? Math.round((d.c / d.t) * 100) : 0;
+      document.getElementById(lv.bar).style.width = p + '%';
+      document.getElementById(lv.sc).textContent = d.c + '/' + d.t;
+    }
   }, 300);
 
-  // Review list
-  const list = document.getElementById('reviewList');
+  var list = document.getElementById('revList');
   list.innerHTML = '';
-  questions.forEach((q, i) => {
-    const ok = answers[i] === q.correct;
-    const div = document.createElement('div');
-    div.className = 'review-item' + (ok ? ' ok' : '');
-    const yourAns = answers[i] !== null ? q.opts[answers[i]] : '—';
-    div.innerHTML = `
-      <div class="review-q">${ok ? '✅' : '❌'} ${q.q}</div>
-      <div class="review-answer">
-        ${ok
-          ? `<span class="correct-ans">Σωστά: ${q.opts[q.correct]}</span>`
-          : `<span class="your-ans">Απάντησες: ${yourAns}</span> · <span class="correct-ans">Σωστό: ${q.opts[q.correct]}</span>`
-        }
-      </div>`;
+  for (var i = 0; i < questions.length; i++) {
+    var q = questions[i];
+    var ok = (answers[i] === q.correct);
+    var div = document.createElement('div');
+    div.className = 'rev-item' + (ok ? ' ok' : '');
+    var yourAns = (answers[i] !== undefined) ? q.opts[answers[i]] : '—';
+    div.innerHTML = '<div class="rev-q">' + (ok ? '✅' : '❌') + ' ' + q.q + '</div>'
+      + '<div class="rev-ans">'
+      + (ok
+          ? '<span class="ca">Σωστά: ' + q.opts[q.correct] + '</span>'
+          : '<span class="wa">Απάντησες: ' + yourAns + '</span> · <span class="ca">Σωστό: ' + q.opts[q.correct] + '</span>')
+      + '</div>';
     list.appendChild(div);
-  });
+  }
 
   window.scrollTo(0, 0);
 }
 
 function retryExam() {
-  document.getElementById('results').classList.remove('active');
-  document.getElementById('intro').classList.add('active');
+  document.getElementById('results').classList.remove('on');
+  document.getElementById('intro').style.display = 'flex';
 }
 </script>
 </body>
